@@ -1,0 +1,52 @@
+/* ---------------------------------------------
+# Start configuration
+-----------------------------------------------*/
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  /* overflow: hidden; */
+}
+
+/* ---------------------------------------------
+# Footer always down
+-----------------------------------------------*/
+.wrapper {
+  min-height: 100%;
+  margin-bottom: -50px;
+}
+
+#footer,
+.push {
+  height: 50px;
+}
+
+/* ---------------------------------------------
+# Root configuration
+-----------------------------------------------*/
+
+/* .root {
+    font-family: Verdana;
+    font-family: 'PT Sans';
+    font-weight: 500;
+} */
+
+/* ---------------------------------------------
+# Alpine Prevent render configuration
+-----------------------------------------------*/
+[x-cloak] {
+  display: none !important;
+}
+
+/* ---------------------------------------------
+# Spinner 
+-----------------------------------------------*/
+.indicator-style {
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}

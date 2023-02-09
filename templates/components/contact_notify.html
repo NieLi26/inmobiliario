@@ -1,0 +1,11 @@
+{% if contact_count > 0 %}
+<div 
+hx-get="{% url 'pages:hx_contact_notify' %}"
+hx-trigger="modal-contact-button from:body"
+hx-swap="outerHTML"
+class="absolute inline-block top-0 right-0 bottom-auto left-auto translate-x-2/4 -translate-y-1/2 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 py-1 px-2.5 text-xs leading-none text-center whitespace-nowrap align-baseline font-bold bg-indigo-700 text-white rounded-full z-10"
+>
+{{ contact_count }}
+
+</div>              
+{% endif %}

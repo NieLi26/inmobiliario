@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+{% endblock head %}
+
+ {% block content %}
+ <!-- <form action="."  style="margin-bottom: 5px;" enctype="multipart/form-data" method="POST" class="dropzone " id="dropzone">
+ {% csrf_token %}
+    <input type="hidden" name="file" multiple />
+
+ </form> -->
+
+ <div id="galeryContent">
+ {% if property_images %}
+  {% for property_image in property_images %}
+    <input type="hidden" name="" id="{{ property_image.id }}" value="{{ property_image.image }}" class="galeria">
+    
+  {% endfor %}
+ {% endif %}
+ </div>
+
+
+
+<input type="hidden" id="id_property" value="{{ property.id }}">
+
+
+
+<section class="">
+  <div class="mx-auto max-w-full px-4 py-10 sm:px-6 lg:px-8">
+
+    <div class="mx-auto max-w-lg text-center py-6">
+      <h2 class="text-3xl font-bold sm:text-4xl">Sube tus Imagenes</h2>
+<!-- 
+      <p class="mt-4 text-gray-700 text-left">
+        - Puedes subir hasta 15 imagenes con un tamaño maximo de 2.5mb cada una, y también se recomienda subir imagenes mas anchas que altas, 
+        para que se despliguen de buena forma en el detalle de la publicación.
+      </p> -->
+
+      <p class="mt-4 text-gray-700 text-left">
+        > Formatos permitidos <strong>png, jpg, jpeg</strong>. <br>
+        > Tamaño maximo por imagen hasta <strong>2.5 MB</strong>. <br>
+        > Puedes subir hasta un maximo de <strong>15</strong> imagenes. <br>
+        > Se recomienda subir imagenes mas anchas que altas. 
+      </p>
+
+    </div>
+    <div class="mx-auto text-center">
+      <form action="."  style="margin-bottom: 5px;" enctype="multipart/form-data" method="POST" class="dropzone " id="dropzone">
+        {% csrf_token %}
+           <input type="hidden" name="file" multiple />
+       
+        </form>
+       
+    </div>
+
+
+    <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" id="template-test">
+      {% for property_image in property_images %}
+      <div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">
+
+    <img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="{{ property_image.image.url }}" alt="Image 1" data-dz-remove>
+
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="mt-12 text-center">
+      <a
+      href="{% url 'properties:property_success' property.slug property.uuid %}"
+      class="mt-8 inline-flex items-center rounded border bg-[#11104d] hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 px-8 py-3 text-white  focus:outline-none focus:ring "
+    >
+      <span class="text-sm font-medium"> Finalizar </span>
+
+      <svg
+        class="ml-3 h-5 w-5"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 8l4 4m0 0l-4 4m4-4H3"
+        />
+      </svg>
+    </a>
+    </div>
+  </div>
+</section>
+
+<!-- <div hx-boost="true">
+<a href="{% url 'properties:property_success' property.slug property.uuid %}" >Blog</a>
+</div> -->
+
+
+
+{% endblock content %} 
+
+{% block footer %}
+  
+{% endblock footer %}
+
+{% block js %}
+
+<script >
+// console.log(location.host);
+// console.log(location.hostname);
+// console.log(location.pathname);
+// console.log(location.protocol);
+// console.log(document.domain);
+ Dropzone.autoDiscover = false;
+ const maxTotalSize = 2.5;
+ const acceptFiles = ['png', 'jpg', 'jpeg']
+ let maxFiles = 10;
+
+    const dropzone = new Dropzone('form#dropzone', {
+        dictDefaultMessage: 'Sube hasta 10 imágenes',
+        acceptedFiles: ".png,.jpg,.gif,.jpeg",
+        addRemoveLinks: true,
+        dictRemoveFile: "Eliminar Imagen",
+        // maxFilesize: 10, 
+
+
+        init: function(){
+          const galeria = document.querySelectorAll('.galeria');
+          //  const dominio ='http://localhost:8000'
+            if(galeria.length > 0 ) {
+                galeria.forEach(imagen => {
+                    const imagenPublicada = {};
+                    imagenPublicada.size = 1;
+                    imagenPublicada.name = imagen.value;
+                    imagenPublicada.id = imagen.id;
+                    maxFiles -= 1;
+                    this.options.addedfile.call(this, imagenPublicada);
+                    this.options.thumbnail.call(this, imagenPublicada, `${location.protocol}//${location.host}/media/${imagenPublicada.name}`);
+                      
+
+                    imagenPublicada.previewElement.classList.add('dz-success');
+                    imagenPublicada.previewElement.classList.add('dz-complete');
+                    
+               
+                })
+            }
+        }
+    })
+
+
+    dropzone.on('success', function(file, respuesta){
+      // file.previewElement.innerHTML = "";
+      // document.querySelector('#template-container').innerHTML = file.previewElement
+      // console.log(file.previewElement);
+      file.previewElement.parentNode.removeChild(file.previewElement);
+   })
+
+    dropzone.on('addedfile', function(file){
+        const property = document.querySelector('#id_property')
+        // const params = {
+        //     imagen: file.upload.filename,
+        //     action: 'create',
+        //     id: property.value
+        // }
+
+        // const maxImages = imagenesPrecargadas
+        const extension = file.type.split('/').pop()
+        const extensionValidated = acceptFiles.find(ext => ext === extension)
+        const currentFileSize = parseFloat((file.size / (1024*1024)).toFixed(2))
+        if (currentFileSize <= maxTotalSize && extensionValidated != undefined && maxFiles > 0) {
+          maxFiles -= 1;
+          const params = new FormData()
+          params.append('imagen', file)
+          params.append('action', 'create')
+          params.append('id', property.value)
+          const  url = location.href;
+        
+          fetch(url, {
+              method: "POST",
+              body: params,
+              headers: {
+              // "Content-type": "application/json;charset=UTF-8",
+              'X-CSRFToken': csrftoken
+            }
+              
+          }).then(function (res){
+            // if (res.status === 200 ) 
+            // if (!res.ok) throw new Error(res.statusText);
+            console.log(res.status);
+            if (!res.ok) throw res;
+            return res.json()
+
+          }).then(data=>{
+            // console.log(this.options);
+            // const dominio ='http://localhost:8000'
+            // if (!data.hasOwnProperty('error')){
+              const imagenPublicada = {};
+              imagenPublicada.size = 1;
+              imagenPublicada.name = data.property_image;
+              imagenPublicada.id = data.id;
+              imagenPublicada.status = 'success';
+            
+          
+              this.options.addedfile.call(this, imagenPublicada);
+              this.options.thumbnail.call(this, imagenPublicada, `${location.protocol}//${location.host}/media/${imagenPublicada.name}`);
+        
+
+              imagenPublicada.previewElement.classList.add('dz-success');
+              imagenPublicada.previewElement.classList.add('dz-complete');
+
+              
+
+              let html = ''
+              for(const i of data.preview_images) {
+                html += '<div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">'
+                html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${location.protocol}//${location.host}/${i.image}" alt="Image 1" data-dz-remove>`
+                html += '</div>'
+              }
+            
+              document.querySelector('#template-test').innerHTML = html
+
+              // return false
+            // }
+            
+            // throw data.error;
+          }) 
+          .catch(err => {
+            if (typeof err.json === "function") {
+            err.json()
+            .then(err => console.log(err.error))
+            .catch(err => console.log('error generico de la API'))
+            }
+            else {
+              console.log("Fetch error");
+              console.log(err);
+              dropzone.removeFile(err);
+            }
+          });
+        }
+
+    })
+    
+
+    dropzone.on('removedfile', function(file){
+        // const params = {
+        //     imagen: file.nombreServidor,
+        //     action: 'delete'
+        // }
+      
+        const params = new FormData()
+        // params.append('imagen', file.nombreServidor)
+        params.append('action', 'delete')
+        params.append('id', file.id)
+
+        // const  url=  document.querySelector("#url").value;
+        const  url = location.href;
+        maxFiles += 1;
+        fetch(url, {
+            method: "POST",
+            body: params,
+            headers: {
+            // "Content-type": "application/json;charset=UTF-8",
+            'X-CSRFToken': csrftoken
+          }
+            
+        }).then(function (res){
+          if (!res.ok) throw res;
+          return res.json()
+        }).then(data=>{
+          console.log(data);
+          // const dominio ='http://localhost:8000'
+          let html = ''
+          for(const i of data.preview_images) {
+            html += '<div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">'
+            html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${location.protocol}//${location.host}/${i.image}" alt="Image 1" data-dz-remove>`
+            html += '</div>'
+          }
+        
+          document.querySelector('#template-test').innerHTML = html
+
+        }) 
+        .catch(err => {
+          if (typeof err.json === "function") {
+            err.json()
+            .then(err => console.log(err.error))
+            .catch(err => console.log('error generico de la API'))
+          }
+          else {
+            console.log("Fetch error");
+            console.log(err);
+          }
+        });
+    })
+
+// document.addEventListener('DOMContentLoaded', () => {
+// })
+// or
+// onload
+</script>
+{% endblock js %}
+
+<!-- const params = {
+  imagen: file.nombreServidor,
+  action: 'delete'
+}
+
+// const  url=  document.querySelector("#url").value;
+const  url=  location.href; -->

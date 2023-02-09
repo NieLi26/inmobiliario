@@ -1,0 +1,30 @@
+Hola, Don Khan:<br />
+<br />
+Se requiere su atención para una consulta por una propiedad con el siguiente mensaje.<br />
+
+<br />
+{{ message }}
+<br />
+<br />
+-&nbsp; &nbsp; &nbsp;<strong>Nombre:</strong> {{ name | title }}<br />
+-&nbsp; &nbsp; &nbsp;<strong>Correo:</strong> {{ email }}<br />
+-&nbsp; &nbsp; &nbsp;<strong>Teléfono:</strong> {% if phone  %} {{ phone }} {% else %} No se ingreso {% endif %}<br />
+
+<br />
+Pinche el siguiente enlace para ir a la publicación:<br />
+<br />
+<a
+  href="{{ link }}"
+  rel="noreferrer"
+  target="_blank"
+  data-saferedirecturl="https://www.google.com/url?q=https://upload.aws.amazon.com?accountId%3D005044295233%26token%3D0v02d2ce618159c665508c4361a65b612a56b3433f60b9a09318958762ee53870a&amp;source=gmail&amp;ust=1671566950995000&amp;usg=AOvVaw1N1xGpZYqQR_StBfCd46Ax"
+  >{{ link }}</a><br />
+<br />
+Si tiene algun problema ponganse en contacto con nosotros
+<a href="mailto:seba.silver4@gmail.com" target="_blank"
+  >seba.silver4@gmail.com</a
+>
+<br />
+<br />
+Gracias por su atención lo saluda sistema de gestion web
+

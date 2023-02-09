@@ -1,0 +1,145 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% block title %} Contacto {% endblock title %}
+
+
+{% block content %}
+
+  <div class="max-w-7xl mx-auto py-8 px-4 sm:py-10 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <div class="text-center">
+        <h2
+          class="text-4xl tracking-tight font-bold text-gray-900 "
+        >
+          Contactanos
+        </h2>
+        <p
+          class="mt-3 max-w-2xl mx-auto text-lg text-gray-500 sm:mt-4 font-gilroy-medium"
+        >
+          Manténgase en contacto con nosotros!
+        </p>
+      </div>
+    </div>
+  </div>
+
+<!-- <div id="message-form">
+
+</div> -->
+
+<section class="text-gray-600 body-font">
+  <div class="container py-5 mx-auto">
+    <div class="lg:w-1/2 md:w-2/3 mx-auto">
+      <!-- Form Contact BEGIN -->
+      <div id="contact-form">
+        {% block contact_form %}
+
+        <form class="flex flex-wrap">
+          <div class="md:w-1/2 w-full px-2">
+            {{ form.name | as_crispy_field }}
+          </div>
+
+          <div class="md:w-1/2 w-full px-2">
+            {{ form.phone | as_crispy_field }}
+          </div>
+
+          <div class="md:w-1/2 w-full px-2">
+            {{ form.from_email | as_crispy_field }}
+          </div>
+
+          <div class="md:w-1/2 w-full px-2">
+            <label for="subject" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.subject.label }}<span class="asteriskField">*</span>
+            </label>
+
+            <div class="mb-3">
+              {{ form.subject }}
+            </div>
+
+            {% if form.errors.subject %}
+              {% for error in form.errors.subject %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <div class="w-full px-2">{{ form.message | as_crispy_field }}</div>
+
+
+          <button type="button" class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+            <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+                </path>
+            </svg>
+            <!-- loading -->
+          </button>
+          <div class="w-full">
+            <button
+              hx-post="."
+              hx-swap="innerHTML"
+              hx-target="#contact-form"
+              hx-indicator="#spinner"
+              hx-onstart="document.querySelector('#loader-hidden').innerHTML='';"
+              hx-onfinish="document.querySelector('#loader-hidden').innerHTML = 'Enviar';"
+              type="submit"
+              class="relative flex items-center justify-center mx-auto text-white bg-[#11104d] border-0 py-2 px-8 focus:outline-none hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 rounded text-lg"
+            >
+            
+            <svg width="20" height="20" fill="currentColor" class="absolute mr-2 animate-spin r htmx-indicator" id="spinner" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+              <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+              </path>
+            </svg>
+            <!-- <div class="w-4 h-4 border-4 border-dashed rounded-full animate-spin border-red-400 htmx-indicator"></div> -->
+            <p id="loader-hidden">
+              Enviar
+            </p>
+            </button>
+          </div>
+        </form>
+
+        {% include 'components/custom_sidealert.html' %}
+
+        {% endblock contact_form %}
+      </div>
+
+<!--       
+      <div class="fixed flex items-center justify-center inset-0 bg-gray-50 opacity-50 htmx=indicator" id="spinner" style="display: none;">
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-loader-3 animate-spin h-40 w-40 text-orange-400"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9"></path>
+          <path d="M17 12a5 5 0 1 0 -5 5"></path>
+       </svg>
+
+       <svg width="40" height="40" fill="currentColor" class="mr-2 animate-spin h-40 w-40 text-orange-400"viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg" style="width: 6rem; height: 6rem;">
+        <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+        </path>
+      </svg>
+
+        
+        <div style="border-top-color:transparent" class="tw-border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64"></div>
+      </div> -->
+    
+
+      
+
+      <!-- Additional Information BEGIN -->
+      <div class="p-2 w-full pt-8 my-10 border-t border-gray-300 text-center">
+        <p><b>Ubicación:</b></p>
+        <p class="leading-normal mb-5">Edificio Plaza Lyon , Providencia. RM - Chile</p>
+        <p><b>Correo:</b></p>
+        <a
+          href="mailto:contacto@propiedadesweb.cl"
+          target="_blank"
+          class="text-indigo-500"
+          >contacto@propiedadesweb.cl</a
+        >
+
+        <p class="mt-5"><b>Teléfono:</b></p>
+        <p class="leading-normal mb-5">+56950092733</p>
+      </div>
+      <!-- Additional Information END -->
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

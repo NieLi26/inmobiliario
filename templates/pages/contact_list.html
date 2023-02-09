@@ -1,0 +1,313 @@
+{% extends 'navigation/sidebar_config.html' %}
+
+{% block content_sidebar %}
+    
+ 
+
+        <div class="flex relative ">
+            <span class="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <circle cx="10" cy="10" r="7"></circle>
+                    <line x1="21" y1="21" x2="15" y2="15"></line>
+                </svg>
+            </span>
+            <input 
+            hx-get="{% url 'pages:hx_contact_table'  page_obj.number  %}" 
+            hx-target='#table-contact'
+            hx-swap="innerHTML"
+            hx-trigger = "keyup changed delay:500ms"
+            name="q"
+            type="text" class=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" name="email" placeholder="Busca el contacto"/>
+        </div>
+        
+            
+        <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div class="inline-block min-w-full shadow rounded-lg overflow-hidden border-2" id="table-contact" >
+                {% block table_list %}
+                    
+                <!-- Table  -->
+                <table class="min-w-full leading-normal ">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Nombre
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Fecha Creación
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Telefono
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Asunto
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Correo
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                                Estado
+                            </th>
+                            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-center text-sm uppercase font-normal">
+                                Mensaje
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {% for contact in page_obj %}
+                        <tr>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ contact.name }}
+                                </p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ contact.created | date:'Y-m-d ' }}
+                                </p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                        {% if contact.phone == '' %}
+                                        ---------
+                                        {% else %}
+                                        {{ contact.phone }}
+                                        {% endif %}
+                                </p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ contact.subject }}
+                                </p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ contact.from_email }}
+                                </p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                {% if contact.state == True %}
+                                <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                    <span aria-hidden="true" class="absolute inset-0 bg-red-200 opacity-50 rounded-full">
+                                    </span>
+                                    <span class="relative">
+                                        Sin leer
+                                    </span>
+                                </span>
+                                {% else %}
+                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
+                                    </span>
+                                    <span class="relative">
+                                        Leido
+                                    </span>
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                <div x-cloak  x-data="{ open: false }" >
+                                    <button type="button">
+                                    <svg @click="open = true" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
+                                    </svg>
+                                    </button>
+                                    
+                                
+                                    <div x-show="open"  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                
+                                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                                    
+                                        <div class="fixed z-10 inset-0 overflow-y-auto">
+                                        <div class="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
+                                            
+                                            <div @click.away="open = false" class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
+                                                <div
+                                                class="modal-content rounded-2xl border border-blue-100 bg-white p-8 shadow-lg"
+                                                role="alert"
+                                                >
+
+                                                <button 
+                                                    @click="open = false"
+                                                    class="absolute top-2 right-2 hover:bg-gray-200">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="flex-shrink-0 w-4 h-4">
+                                                        <polygon points="427.314 107.313 404.686 84.687 256 233.373 107.314 84.687 84.686 107.313 233.373 256 84.686 404.687 107.314 427.313 256 278.627 404.686 427.313 427.314 404.687 278.627 256 427.314 107.313"></polygon>
+                                                    </svg>
+                                                </button>
+
+                                                    <div class="modal-header items-center sm:flex ">
+                                                        <span
+                                                        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-400 text-white"
+                                                        >
+                                                        <svg
+                                                            class="h-3 w-3"
+                                                            fill="currentColor"
+                                                            viewbox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                            clip-rule="evenodd"
+                                                            d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z"
+                                                            fill-rule="evenodd"
+                                                            />
+                                                        </svg>
+                                                        </span>
+                            
+                                                        <p class=" text-lg font-medium mb-1 mt-3 sm:mt-0 sm:ml-3 sm:mr-2">
+                                                        Tienes un nuevo mensaje de 
+                                                        </p>
+                                                        <strong
+                                                        class="rounded border border-current px-3 py-1.5 text-[14px] font-medium lowercase text-blue-500"
+                                                        >
+                                                        {{ contact.from_email }}
+                                                        </strong>
+                                                    </div>
+                            
+                                                    <p class="modal-body mt-4 text-gray-500 break-words">
+                                                        {{ contact.message }}
+                                                    </p>
+                            
+                                                    <div class="modal-footer mt-6 sm:flex">
+                                                        <a
+                                                        class="inline-block w-full rounded-lg bg-blue-500 px-5 py-3 text-center text-sm font-semibold text-white sm:w-auto"
+                                                        href="mailto:{{ contact.from_email }}"
+                                                        >
+                                                        Responder
+                                                        </a>
+                                                        {% if contact.state == True %}
+                                                            <button
+                                                            hx-get="{% url 'pages:hx_contact_modal' contact.id page_obj.number %}"
+                                                            hx-target='#table-contact'
+                                                            hx-swap="innerHTML"
+                                                            @click="open = false" 
+                                                            class="mt-3 inline-block w-full rounded-lg bg-gray-50 px-5 py-3 text-center text-sm font-semibold text-gray-500 sm:mt-0 sm:ml-3 sm:w-auto"
+                                                            >
+                                                            Marcar como Leído
+                                                            </button>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td>
+                                <div id="modal-contact"></div>
+                            </td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Paginator -->
+                {% if 2 in  page_obj.paginator.page_range %}
+                    <div class="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
+                        <div class="flex items-center">
+
+
+                            {% if page_obj.has_previous %}
+                            <button 
+                            hx-get="{% url 'pages:hx_contact_table'  page_obj.previous_page_number  %}" 
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#table-contact'
+                            hx-swap="innerHTML"
+                            class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
+                                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
+                                    </path>
+                                </svg>
+                            </button>
+                            {% endif %}
+
+                            {% if 4 in page_obj.paginator.page_range %}
+
+                                {% if page_obj.number|add:"-1" >= 1 %}
+                                    <button 
+                                        hx-get="{% url 'pages:hx_contact_table'  page_obj.number|add:"-1" %}" 
+                                        hx-vals='{"q": "{{q}}"}'
+                                        hx-target='#table-contact'
+                                        hx-swap="innerHTML"
+                                        href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
+                                    </button> 
+                                {% endif %}
+
+                                <button 
+                                    hx-get="{% url 'pages:hx_contact_table'  page_obj.number %}" 
+                                    hx-vals='{"q": "{{q}}"}'
+                                    hx-target='#table-contact'
+                                    hx-swap="innerHTML"
+                                    class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
+                                </button> 
+
+
+                                {% if page_obj.number|add:"1" in page_obj.paginator.page_range %}
+                                    <button
+                                        hx-get="{% url 'pages:hx_contact_table'  page_obj.number|add:"1" %}" 
+                                        hx-vals='{"q": "{{q}}"}'
+                                        hx-target='#table-contact'
+                                        hx-swap="innerHTML" 
+                                        class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
+                                    </button> 
+                                {% endif %}
+
+                            {% else %}
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if i == page_obj.number %}
+                                        <button
+                                            hx-get="{% url 'pages:hx_contact_table'  i %}" 
+                                            hx-vals='{"q": "{{q}}"}'
+                                            hx-target='#table-contact'
+                                            hx-swap="innerHTML" 
+                                            class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
+                                        </button> 
+                                    {% else %}
+                                        <button
+                                            hx-get="{% url 'pages:hx_contact_table'  i %}" 
+                                            hx-vals='{"q": "{{q}}"}'
+                                            hx-target='#table-contact'
+                                            hx-swap="innerHTML" 
+                                            class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
+                                        </button> 
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% endif %}
+                            
+                        
+
+                            {% if page_obj.has_next %}
+                            <button 
+                            hx-get="{% url 'pages:hx_contact_table'  page_obj.next_page_number  %}" 
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#table-contact'
+                            hx-swap="innerHTML"
+                            class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
+                                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
+                                    </path>
+                                </svg>
+                            </button>
+                            {% endif %}
+                            {{ q }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not page_obj.object_list %}
+                <div class="pt-10 pb-16 sm:pt-24 sm:pb-36 lg:pt-40 lg:pb-56 text-center" style="">
+                <svg width="96" height="96" fill="none" class="mx-auto mb-6 text-gray-900">
+                    <path d="M36 28.024A18.05 18.05 0 0025.022 39M59.999 28.024A18.05 18.05 0 0170.975 39" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="37.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><ellipse cx="58.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><path d="M24.673 75.42a9.003 9.003 0 008.879 5.563m-8.88-5.562A8.973 8.973 0 0124 72c0-7.97 9-18 9-18s9 10.03 9 18a9 9 0 01-8.448 8.983m-8.88-5.562C16.919 68.817 12 58.983 12 48c0-19.882 16.118-36 36-36s36 16.118 36 36-16.118 36-36 36a35.877 35.877 0 01-14.448-3.017" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M41.997 71.75A14.94 14.94 0 0148 70.5c2.399 0 4.658.56 6.661 1.556a3 3 0 003.999-4.066 12 12 0 00-10.662-6.49 11.955 11.955 0 00-7.974 3.032c1.11 2.37 1.917 4.876 1.972 7.217z" fill="currentColor"></path>
+                </svg>
+                <p class="text-lg leading-5 font-medium text-gray-900 mb-3">Lo siento! No hay coincidencias con lo que buscas.</p>
+                <!-- <p>Si quieres intenta con otros parametros</a>. -->
+                </p>
+                </div>
+                {% endif %}
+
+                {% endblock table_list %}
+            </div>
+        </div>
+
+{% endblock content_sidebar %}

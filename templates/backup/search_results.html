@@ -1,0 +1,17 @@
+<!-- {% if results %}
+    <datalist id="communes" class="">
+        {% for commune in results %}
+            <option value="{{ commune.get_commune_region  }}"></option>
+        {% endfor %}
+    </datalist>
+{% endif %} -->
+<!-- <div x-ref="textAlgo">sadsada</div> -->
+{% if results %}
+    <ul class="mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        {% for commune in results %}
+            <li class="text-gray-900 relative select-none py-2 pl-3 pr-9 hover:bg-gray-200">
+                <button type="button" x-text="'{{ commune.get_commune_region }}'" @click="$refs.textAlgo.value='{{ commune.get_commune_region }}'" ></button>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

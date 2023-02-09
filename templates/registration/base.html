@@ -1,0 +1,33 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <!-- logo -->
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}"> 
+    <!-- Static CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- tailwind -->
+    {% tailwind_css %}
+    <title>{% block title %} {% endblock title %}</title>
+  </head>
+  <body class="h-full">
+    <div class="wrapper">
+      <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+          {% block content %} {% endblock content %}
+      </div>
+    </div>
+
+     <!-- JS -->
+     <script src="{% static 'js/script.js' %}"></script>
+      <!-- Alpine Mask -->
+      <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+      <!-- Alpine Core-->
+      <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
+  </body>
+</html>

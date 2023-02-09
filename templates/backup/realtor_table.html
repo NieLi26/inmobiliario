@@ -1,0 +1,234 @@
+<!-- Table  -->
+<table class="min-w-full leading-normal ">
+    <thead>
+        <tr>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Nombre
+            </th>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Fecha Creación
+            </th>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Telefono 1
+            </th>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Telefono 2
+            </th>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                Correo
+            </th>
+            <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-sm uppercase font-normal">
+                Estado
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+        {% for realtor in object_list %}
+        <tr>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                        {{ realtor.first_name }} {{ realtor.last_name }}
+                </p>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                    {{ realtor.created | date:'Y-m-d ' }}
+                </p>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                        {% if realtor.phone1 == '' %}
+                        ---------
+                        {% else %}
+                        {{ realtor.phone1 }}
+                        {% endif %}
+                </p>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                        {% if realtor.phone2 == '' %}
+                        ---------
+                        {% else %}
+                        {{ realtor.phone2 }}
+                        {% endif %}
+                </p>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                <p class="text-gray-900 whitespace-no-wrap">
+                    {{ realtor.email }}
+                </p>
+            </td> 
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                <div class="flex item-center justify-center">
+                    <a href="{% url 'properties:realtor_update' realtor.id %}" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </a>
+                    
+                      <div  x-data="{ open: false }">
+
+                        <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                      </div>
+
+                          <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                          
+                              <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                            
+                              <div class="fixed z-10 inset-0 overflow-y-auto">
+                                <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+                          
+                                  <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
+                                    <div class="w-full h-full text-center">
+                                        <div class="flex h-full flex-col justify-between">
+                                            <svg width="40" height="40" class="mt-4 w-12 h-12 m-auto text-red-500" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z">
+                                                </path>
+                                            </svg>
+                                            <p class="text-gray-800  text-xl font-bold mt-4">
+                                                Eliminar Corredor
+                                            </p>
+                                            <p class="text-gray-600  text-xs py-2 px-6">
+                                                Estas seguro de eliminar este corredor ?
+                                            </p>
+                                            <div class="flex items-center justify-between gap-4 w-full mt-8">          
+                                                  <div class='inline-flex'>
+                                                      <button 
+                                                    hx-get="{% url 'properties:realtor_delete' realtor.id page_obj.number %}"
+                                                      hx-target="#realtor_table"
+                                                      @click="open = false" type="button" class="py-2 px-4 mx-3 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                                          Eliminar
+                                                      </button>
+                      
+                                                      <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                                          Cancelar
+                                                      </button>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                    </div>
+                      
+                </div>
+            </td>
+            <!-- <td>
+                <div id="modal-contact"></div>
+            </td> -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Paginator -->
+{% if 2 in  page_obj.paginator.page_range %}
+    <div class="px-5 py-5 flex flex-col xs:flex-row items-center xs:justify-between bg-white">
+        <div class="flex items-center">
+
+
+            {% if page_obj.has_previous %}
+            <button 
+                hx-get="{% url 'properties:table_realtor'  page_obj.previous_page_number  %}" 
+            hx-vals='{"q": "{{q}}"}'
+            hx-target='#realtor_table'
+            hx-swap="innerHTML"
+           class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
+                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
+                    </path>
+                </svg>
+            </button>
+            {% endif %}
+
+            {% if 4 in page_obj.paginator.page_range %}
+
+                {% if page_obj.number|add:"-1" >= 1 %}
+                    <button 
+                        hx-get="{% url 'properties:table_realtor'  page_obj.number|add:"-1" %}" 
+                        hx-vals='{"q": "{{q}}"}'
+                        hx-target='#realtor_table'
+                        hx-swap="innerHTML"
+                        class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
+                    </button> 
+                {% endif %}
+
+                <button 
+                    hx-get="{% url 'properties:table_realtor'  page_obj.number %}" 
+                    hx-vals='{"q": "{{q}}"}'
+                    hx-target='#realtor_table'
+                    hx-swap="innerHTML"
+                    class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
+                </button> 
+
+
+                {% if page_obj.number|add:"1" in page_obj.paginator.page_range %}
+                    <button
+                        hx-get="{% url 'properties:table_realtor'  page_obj.number|add:"1" %}" 
+                        hx-vals='{"q": "{{q}}"}'
+                        hx-target='#realtor_table'
+                        hx-swap="innerHTML" 
+                        class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
+                    </button> 
+                {% endif %}
+
+            {% else %}
+                {% for i in page_obj.paginator.page_range %}
+                    {% if i == page_obj.number %}
+                        <button
+                            hx-get="{% url 'properties:table_realtor'  i %}" 
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#realtor_table'
+                            hx-swap="innerHTML" 
+                            class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
+                        </button> 
+                    {% else %}
+                        <button
+                            hx-get="{% url 'properties:table_realtor'  i %}" 
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#realtor_table'
+                            hx-swap="innerHTML" 
+                            class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
+                        </button> 
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+            
+
+
+            {% if page_obj.has_next %}
+            <button 
+            hx-get="{% url 'properties:table_realtor'  page_obj.next_page_number  %}" 
+            hx-vals='{"q": "{{q}}"}'
+            hx-target='#realtor_table'
+            hx-swap="innerHTML"
+            class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
+                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
+                    </path>
+                </svg>
+            </button>
+            {% endif %}
+   
+        </div>
+    </div>
+{% endif %}
+
+<!-- Empty Page -->
+{% if not page_obj.object_list %}
+<div class="pt-10 pb-16 sm:pt-24 sm:pb-36 lg:pt-40 lg:pb-56 text-center" style="">
+  <svg width="96" height="96" fill="none" class="mx-auto mb-6 text-gray-900">
+    <path d="M36 28.024A18.05 18.05 0 0025.022 39M59.999 28.024A18.05 18.05 0 0170.975 39" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="37.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><ellipse cx="58.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><path d="M24.673 75.42a9.003 9.003 0 008.879 5.563m-8.88-5.562A8.973 8.973 0 0124 72c0-7.97 9-18 9-18s9 10.03 9 18a9 9 0 01-8.448 8.983m-8.88-5.562C16.919 68.817 12 58.983 12 48c0-19.882 16.118-36 36-36s36 16.118 36 36-16.118 36-36 36a35.877 35.877 0 01-14.448-3.017" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M41.997 71.75A14.94 14.94 0 0148 70.5c2.399 0 4.658.56 6.661 1.556a3 3 0 003.999-4.066 12 12 0 00-10.662-6.49 11.955 11.955 0 00-7.974 3.032c1.11 2.37 1.917 4.876 1.972 7.217z" fill="currentColor"></path>
+  </svg>
+  <p class="text-lg leading-5 font-medium text-gray-900 mb-3">Lo siento! No hay coincidencias con lo que buscas.</p>
+  <!-- <p>Si quieres intenta con otros parametros</a>. -->
+  </p>
+</div>
+{% endif %}
+

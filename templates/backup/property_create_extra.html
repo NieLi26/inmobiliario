@@ -1,0 +1,136 @@
+{% load crispy_forms_tags %}
+<div class="mt-5 md:mt-0 md:col-span-2 shadow-xl">
+    <h2 class="px-6 py-4 text-xl font-semibold bg-gray-100 rounded-t-md">Información adicional</h2>
+  
+        <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 bg-white sm:p-6">
+            {% if form.property_type.value == 'ca' %}
+            <div class="grid grid-cols-6 gap-6"> 
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_cellars" class="block text-sm font-medium text-gray-700">{{ form_extra.builded_surface.label }}</label> -->
+                {{ form_extra.builded_surface | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_rooms" class="block text-sm font-medium text-gray-700">{{ form_extra.num_rooms.label }}</label> -->
+                {{ form_extra.num_rooms | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_bathrooms" class="block text-sm font-medium text-gray-700">{{ form_extra.num_bathrooms.label }}</label> -->
+                {{ form_extra.num_bathrooms | as_crispy_field }}
+              </div>
+              
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="common_expenses" class="block text-sm font-medium text-gray-700">{{ form_extra.common_expenses.label }}</label> -->
+                {{ form_extra.common_expenses | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="builded_year" class="block text-sm font-medium text-gray-700">{{ form_extra.builded_year.label }}</label> -->
+                {{ form_extra.builded_year | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_parkings" class="block text-sm font-medium text-gray-700">{{ form_extra.num_parkings.label }}</label> -->
+                {{ form_extra.num_parkings | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_cellars" class="block text-sm font-medium text-gray-700">{{ form_extra.num_cellars.label }}</label> -->
+                {{ form_extra.num_cellars | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="num_floors" class="block text-sm font-medium text-gray-700">{{ form_extra.num_floors.label }}</label> -->
+                {{ form_extra.num_floors | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                <!-- <label for="house_number" class="block text-sm font-medium text-gray-700">{{ form_extra.num_house.label }}</label> -->
+                {{ form_extra.num_house | as_crispy_field }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                {{ form_extra.service }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                {{ form_extra.distribution   }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                {{ form_extra.kitchen  }}
+              </div>
+
+              <div class="col-span-6 sm:col-span-2">
+                {{ form_extra.other  }}
+              </div>
+            </div>
+            {% elif form.property_type.value == 'de' %}
+            <div class="grid grid-cols-6 gap-6"> 
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_cellars" class="block text-sm font-medium text-gray-700">{{ form_extra.builded_surface.label }}</label> -->
+                  {{ form_extra.builded_surface | as_crispy_field }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_rooms" class="block text-sm font-medium text-gray-700">{{ form_extra.num_rooms.label }}</label> -->
+                  {{ form_extra.num_rooms | as_crispy_field }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_bathrooms" class="block text-sm font-medium text-gray-700">{{ form_extra.num_bathrooms.label }}</label> -->
+                  {{ form_extra.num_bathrooms | as_crispy_field }}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                    <!-- <label for="common_expenses" class="block text-sm font-medium text-gray-700">{{ form_extra.common_expenses.label }}</label> -->
+                    {{ form_extra.common_expenses | as_crispy_field }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="builded_year" class="block text-sm font-medium text-gray-700">{{ form_extra.builded_year.label }}</label> -->
+                  {{ form_extra.builded_year | as_crispy_field }}
+                </div>
+                  
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_parkings" class="block text-sm font-medium text-gray-700">{{ form_extra.num_parkings.label }}</label> -->
+                  {{ form_extra.num_parkings | as_crispy_field }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_cellars" class="block text-sm font-medium text-gray-700">{{ form_extra.num_cellars.label }}</label> -->
+                  {{ form_extra.num_cellars | as_crispy_field }}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <!-- <label for="num_floors" class="block text-sm font-medium text-gray-700">{{ form_extra.num_floors.label }}</label> -->
+                  {{ form_extra.num_floors | as_crispy_field }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                    <!-- <label for="num_apartment" class="block text-sm font-medium text-gray-700">{{ form_extra.num_apartment.label }}</label> -->
+                    {{ form_extra.num_apartment | as_crispy_field }}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  {{ form_extra.service }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  {{ form_extra.distribution   }}
+                </div>
+  
+                <div class="col-span-6 sm:col-span-2">
+                  {{ form_extra.kitchen  }}
+                </div>
+                
+                <div class="col-span-6 sm:col-span-2">
+                  {{ form_extra.other  }}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+  </div>

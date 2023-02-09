@@ -1,0 +1,32 @@
+{% load crispy_forms_tags %}
+<form 
+id="contact-form"
+class="flex flex-wrap">
+    <div class="md:w-1/2 w-full px-2">
+        {{ form.name | as_crispy_field }}
+    </div>
+
+    <div class="md:w-1/2 w-full px-2">
+        {{ form.phone | as_crispy_field }}
+    </div>
+
+    <div class="md:w-1/2 w-full px-2">
+        {{ form.from_email | as_crispy_field }}
+    </div>
+
+    <div class="md:w-1/2 w-full px-2">
+        {{ form.subject | as_crispy_field }}
+    </div>
+
+    <div class="w-full px-2">
+        {{ form.message | as_crispy_field }}
+    </div>
+
+    <div class="w-full">
+    <button 
+    hx-post="." 
+    hx-swap="outerHTML"
+    hx-target="#contact-form"
+    type="submit" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Enviar</button>
+    </div>
+</form>

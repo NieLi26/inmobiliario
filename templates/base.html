@@ -1,0 +1,67 @@
+{% load static %}
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <!-- logo -->
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}"> 
+    <!-- Static CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- tailwind -->
+    {% tailwind_css %}
+    <!-- box icon -->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>{% block title %} {% endblock title %}</title>
+
+    {% block head %}
+      
+    {% endblock head %}
+      
+
+  </head>
+
+  <body class="h-full" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >    
+
+    <div class="wrapper overflow-hidden">
+      {% block navbar %}
+        {% include 'navigation/_navbar.html' %}
+      {% endblock navbar %}
+
+
+      
+    {% include 'components/custom_sidealert.html' %}
+
+        
+    {% block content %} {% endblock content %}
+
+    </div>
+    
+    {% block footer %}
+      {% include 'navigation/_footer.html' %}
+    {% endblock footer %}
+
+    <!-- JS -->
+    <script src="{% static 'js/script.js' %}"></script>
+    <!-- HTMX -->
+    <script defer src="{% static 'lib/htmx-1.8/htmx.min.js' %}"></script>
+    <!-- Alpine Mask -->
+    <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine Core-->
+    <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
+    <!-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
+    <!-- HTMX -->
+    <!-- <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>  -->
+
+    {% block js %}
+    {% endblock js %}
+
+  </body>
+</html>
+
+

@@ -1,0 +1,252 @@
+{% load humanize %}
+<table class="w-full table-auto mt-2 bg-white" >
+    <thead>
+        <tr class="border-b text-gray-400 uppercase text-xs leading-normal">
+            <th class="py-3 px-6 text-left">Tipo</th>
+            <th class="py-3 px-6 text-left">Código</th>
+            <th class="py-3 px-6 text-left">Comuna</th>
+            <th class="py-3 px-6 text-center">Valor referencial</th>
+            <th class="py-3 px-6 text-center">Estado</th>
+            <th class="py-3 px-6 text-center">Destacada</th>
+            <th class="py-3 px-6 text-center">Fecha de publicación</th>
+            <th class="py-3 px-6 text-center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody class="text-gray-600 text-sm font-light">
+        {% for property in page_obj  %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left whitespace-nowrap">
+                <a href="{{ property.get_absolute_url }}">
+                <div class="flex items-center">
+                    <span class="font-medium">{{ property.get_property_type_display }} {{ property.get_publish_type_display }}</span>
+                </div>
+                </a>
+            </td>
+            <td class="py-3 px-6 text-left">
+                <a href="{{ property.get_absolute_url }}">
+                <div class="flex items-center">
+                    <span>{{ property.uuid }}</span>
+                </div>
+                </a>
+            </td>
+            <td class="py-3 px-6">
+                <a href="{{ property.get_absolute_url }}">
+                <div class="flex items-center ">
+                    <span> {{ property.commune | title }}</span>
+                </div>
+                </a>
+            </td>
+            <td class="py-3 px-6">
+                <a href="{{ property.get_absolute_url }}">
+                <div class="flex items-center justify-center">
+                {% if property.type_price == 'uf' %} UF {{ property.price | intcomma }} {% else %} $ {{ property.price | intcomma }} {% endif %}
+                </div>
+                </a>
+            </td>
+            <td class="py-3 px-6 text-center">
+                <a href="{{ property.get_absolute_url }}">
+                {% if property.state == False %}
+                <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                    <span aria-hidden="true" class="absolute inset-0 bg-red-200 opacity-50 rounded-full">
+                    </span>
+                    <span class="relative">
+                        Despublicada
+                    </span>
+                </span>
+                {% else %}
+                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                    <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
+                    </span>
+                    <span class="relative">
+                        Publicada
+                    </span>
+                </span>
+                {% endif %}
+                </a>
+            </td>
+            <td class="py-3 px-6 text-center">
+                <a href="{{ property.get_absolute_url }}">
+                {% if property.is_featured == False %}
+                <span class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-red-700 w-6 h-6">
+                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+                      </svg>                          
+                </span>
+                {% else %}
+                <span class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-green-700 w-6 h-6">
+                        <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                      </svg>
+                </span>
+                {% endif %}
+                </a>
+            </td>
+            <td class="py-3 px-6 text-center">
+                <a href="{{ property.get_absolute_url }}">
+                <div class="flex items-center justify-center">
+                    {{ property.created | date:'Y-m-d '  }}
+                </div>
+                </a>
+            </td>
+            <td class="py-3 px-6 text-center">
+                <div class="flex item-center justify-between">
+                    {% if property.state == False %}
+                        {% include 'properties/partials/button_draft.html' %}
+                    {% else %}
+                        {% include 'properties/partials/button_publish.html' %}
+                    {% endif %}
+                    
+                    {% if property.is_featured == False %}
+                        {% include 'properties/partials/button_normal.html' %}
+                    {% else %}
+                        {% include 'properties/partials/button_featured.html' %}   
+                    {% endif %}
+
+                    {% include 'properties/partials/button_edit.html' %}
+                    {% include 'properties/partials/button_delete.html' %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- {{ request.path }} -->
+<!-- {{ request.resolver_match.url_name }} -->
+
+<!-- Paginator BEGIN -->
+{% if 2 in  page_obj.paginator.page_range %}
+    <div class="px-5 py-5 flex flex-col xs:flex-row items-center xs:justify-between bg-white">
+        <div class="flex items-center">
+
+
+            {% if page_obj.has_previous %}
+            <button 
+            {% if url_option == 'custom_table' %}
+                hx-get="{% url 'properties:custom_table'  page_obj.previous_page_number  %}" 
+            {% elif url_option == 'table_draft' %}
+                hx-get="{% url 'properties:table_draft'  page_obj.previous_page_number  %}" 
+            {% endif %}
+            hx-vals='{"q": "{{q}}"}'
+            hx-target='#custom_table'
+            hx-swap="innerHTML"
+            href="#" class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
+                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
+                    </path>
+                </svg>
+            </button>
+            {% endif %}
+
+            {% if 4 in page_obj.paginator.page_range %}
+
+                {% if page_obj.number|add:"-1" >= 1 %}
+                    <button 
+                    {% if url_option == 'custom_table' %}
+                        hx-get="{% url 'properties:custom_table'  page_obj.number|add:"-1" %}" 
+                    {% elif url_option == 'table_draft' %}
+                        hx-get="{% url 'properties:table_draft'  page_obj.number|add:"-1" %}" 
+                    {% endif %}
+                        hx-vals='{"q": "{{q}}"}'
+                        hx-target='#custom_table'
+                        hx-swap="innerHTML"
+                        href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
+                    </button> 
+                {% endif %}
+
+                <button 
+                {% if url_option == 'custom_table' %}
+                    hx-get="{% url 'properties:custom_table'  page_obj.number %}" 
+                {% elif url_option == 'table_draft' %}
+                    hx-get="{% url 'properties:table_draft'  page_obj.number %}" 
+                {% endif %}
+                    hx-vals='{"q": "{{q}}"}'
+                    hx-target='#custom_table'
+                    hx-swap="innerHTML"
+                    href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
+                </button> 
+
+
+                {% if page_obj.number|add:"1" in page_obj.paginator.page_range %}
+                    <button
+                    {% if url_option == 'custom_table' %}
+                        hx-get="{% url 'properties:custom_table'  page_obj.number|add:"1" %}" 
+                    {% elif url_option == 'table_draft' %}
+                        hx-get="{% url 'properties:table_draft'  page_obj.number|add:"1" %}" 
+                    {% endif %}
+                        hx-vals='{"q": "{{q}}"}'
+                        hx-target='#custom_table'
+                        hx-swap="innerHTML" 
+                        href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
+                    </button> 
+                {% endif %}
+
+            {% else %}
+                {% for i in page_obj.paginator.page_range %}
+                    {% if i == page_obj.number %}
+                        <button
+                        {% if url_option == 'custom_table' %}
+                            hx-get="{% url 'properties:custom_table'  i %}" 
+                        {% elif url_option == 'table_draft' %}
+                            hx-get="{% url 'properties:table_draft'  i %}" 
+                        {% endif %}
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#custom_table'
+                            hx-swap="innerHTML" 
+                            href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
+                        </button> 
+                    {% else %}
+                        <button
+                        {% if url_option == 'custom_table' %}
+                            hx-get="{% url 'properties:custom_table'  i %}" 
+                        {% elif url_option == 'table_draft' %}
+                            hx-get="{% url 'properties:table_draft'  i %}" 
+                        {% endif %}
+                            hx-vals='{"q": "{{q}}"}'
+                            hx-target='#custom_table'
+                            hx-swap="innerHTML" 
+                            href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
+                        </button> 
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+            
+
+
+            {% if page_obj.has_next %}
+            <button 
+            {% if url_option == 'custom_table' %}
+                hx-get="{% url 'properties:custom_table'  page_obj.next_page_number  %}" 
+            {% elif url_option == 'table_draft' %}
+                hx-get="{% url 'properties:table_draft'  page_obj.next_page_number %}" 
+            {% endif %}
+            hx-vals='{"q": "{{q}}"}'
+            hx-target='#custom_table'
+            hx-headers = 
+            hx-swap="innerHTML"
+            class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
+                <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
+                    </path>
+                </svg>
+            </button>
+            {% endif %}
+   
+        </div>
+    </div>
+{% endif %}
+<!-- Paginator END -->
+
+
+{% if not page_obj.object_list %}
+<div class="pt-10 pb-16 sm:pt-24 sm:pb-36 lg:pt-40 lg:pb-56 text-center">
+  <svg width="96" height="96" fill="none" class="mx-auto mb-6 text-gray-900">
+    <path d="M36 28.024A18.05 18.05 0 0025.022 39M59.999 28.024A18.05 18.05 0 0170.975 39" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><ellipse cx="37.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><ellipse cx="58.5" cy="43.5" rx="4.5" ry="7.5" fill="currentColor"></ellipse><path d="M24.673 75.42a9.003 9.003 0 008.879 5.563m-8.88-5.562A8.973 8.973 0 0124 72c0-7.97 9-18 9-18s9 10.03 9 18a9 9 0 01-8.448 8.983m-8.88-5.562C16.919 68.817 12 58.983 12 48c0-19.882 16.118-36 36-36s36 16.118 36 36-16.118 36-36 36a35.877 35.877 0 01-14.448-3.017" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M41.997 71.75A14.94 14.94 0 0148 70.5c2.399 0 4.658.56 6.661 1.556a3 3 0 003.999-4.066 12 12 0 00-10.662-6.49 11.955 11.955 0 00-7.974 3.032c1.11 2.37 1.917 4.876 1.972 7.217z" fill="currentColor"></path>
+  </svg>
+  <p class="text-lg leading-5 font-medium text-gray-900 mb-3">Lo siento! No hay coincidencias con lo que buscas.</p>
+  <!-- <p>Si quieres intenta con otros parametros</a>. -->
+  </p>
+</div>
+{% endif %}
+

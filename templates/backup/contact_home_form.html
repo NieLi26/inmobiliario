@@ -1,0 +1,30 @@
+<!-- {% load crispy_forms_tags %}
+<form
+  id="contact-home-form"
+  class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
+>
+  <div>{{ form.name | as_crispy_field }}</div>
+  <div>{{ form.phone | as_crispy_field }}</div>
+  <div>{{ form.from_email | as_crispy_field }}</div>
+  <div>{{ form.subject | as_crispy_field }}</div>
+  <div class="sm:col-span-2">{{ form.message | as_crispy_field }}</div>
+  <div class="sm:col-span-2 sm:flex sm:justify-end sm:space-x-2">
+    <button
+      @click="open = false"
+      type="button"
+      class="mt-2 w-full inline-flex items-center justify-center px-3 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto"
+    >
+      Cancelar
+    </button>
+
+    <button
+      hx-post="{% url 'pages:hx_contact_home_form' %}"
+      hx-swap="outerHTML"
+      hx-target="#contact-home-form"
+      type="submit"
+      class="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto"
+    >
+      Enviar
+    </button>
+  </div>
+</form> -->

@@ -31,7 +31,7 @@ urlpatterns = [
 
     ## PROPERTY
     path('<str:publish_type>/<str:property_type>/<str:location_slug>/<slug:slug>/<uuid:uuid>/', views.property_detail, name='property_detail'),
-    path('<str:property_type>/create/', views.property_create, name='property_create'),
+    path('<str:property_type>/<str:publish_type>/create/', views.property_create, name='property_create'),
     path('<slug:slug>/<uuid:uuid>/update/', views.property_update, name='property_update'),
     path('select/', views.property_select, name='property_select'),
     

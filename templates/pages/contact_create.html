@@ -4,6 +4,12 @@
 
 
 {% block content %}
+<!-- <div class="htmx-indicator fixed h-full w-full flex items-center justify-center bg-opacity-50 bg-gray-700 " id="spinner">
+  <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin h-64 w-64" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+    <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+    </path>
+</svg>
+</div> -->
 
   <div class="max-w-7xl mx-auto py-8 px-4 sm:py-10 sm:px-6 lg:px-8">
     <div class="text-center">
@@ -34,25 +40,86 @@
         {% block contact_form %}
 
         <form class="flex flex-wrap">
-          <div class="md:w-1/2 w-full px-2">
-            {{ form.name | as_crispy_field }}
+          <div class="md:w-2/3 w-full px-2">
+            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.name.label }}<span class="asteriskField">*</span>
+            </label>
+
+            <div class="mb-3">
+              {{ form.name }}
+            </div>
+
+            {% if form.errors.name %}
+              {% for error in form.errors.name %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
           </div>
 
           <div class="md:w-1/2 w-full px-2">
-            {{ form.phone | as_crispy_field }}
+            <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.phone.label }}
+            </label>
+
+            <div class="mb-3">
+              {{ form.phone }}
+            </div>
+
+            {% if form.errors.phone %}
+              {% for error in form.errors.phone %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
           </div>
 
           <div class="md:w-1/2 w-full px-2">
-            {{ form.from_email | as_crispy_field }}
+            <label for="from_email" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.from_email.label }}<span class="asteriskField">*</span>
+            </label>
+
+            <div class="mb-3">
+              {{ form.from_email }}
+            </div>
+
+            {% if form.errors.from_email %}
+              {% for error in form.errors.from_email %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
           </div>
 
+          <div class="md:w-1/2 w-full px-2">
+            <label for="category" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.category.label }}<span class="asteriskField">*</span>
+            </label>
+
+            <div class="mb-3">
+              {{ form.category }}
+            </div>
+
+            {% if form.errors.category %}
+              {% for error in form.errors.category %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <!-- {{ subjects }} -->
           <div class="md:w-1/2 w-full px-2">
             <label for="subject" class="block text-gray-700 text-sm font-bold mb-2">
               {{ form.subject.label }}<span class="asteriskField">*</span>
             </label>
 
-            <div class="mb-3">
-              {{ form.subject }}
+            <div id="subjects" class="mb-3">
+              {% block subject %}
+              <select {{ disabled }} name="subject" id="id_subject" class="bg-white focus:outline-none border {% if form.errors.subject %} border-red-500 {% else %} border-gray-300  {% endif %} rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700 disabled:bg-gray-200 " required autocomplete="off">
+                <!-- <option value="" >Seleccione una opción</option> -->
+                {% for value, name in subjects %}
+                    <option value="{{ value }}"  {% if value == subject_selected %} selected {% endif %} >{{ name }}</option>
+                {% endfor %}
+              </select>    
+              <!-- {{ form.subject }} -->
+              {% endblock subject %}
             </div>
 
             {% if form.errors.subject %}
@@ -62,16 +129,34 @@
             {% endif %}
           </div>
 
-          <div class="w-full px-2">{{ form.message | as_crispy_field }}</div>
+          <div class="w-full px-2">
+            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.message.label }}<span class="asteriskField">*</span>
+            </label>
+
+            <div class="mb-3">
+              {{ form.message }}
+            </div>
+
+            {% if form.errors.message %}
+              {% for error in form.errors.message %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
 
 
-          <button type="button" class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+          <!-- <button type="button" class="py-2 px-4 flex justify-center items-center  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
             <svg width="20" height="20" fill="currentColor" class="mr-2 animate-spin" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
                 <path d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
                 </path>
             </svg>
-            <!-- loading -->
-          </button>
+        
+          </button>  -->
+
+
+  
+
           <div class="w-full">
             <button
               hx-post="."
@@ -120,8 +205,6 @@
       </div> -->
     
 
-      
-
       <!-- Additional Information BEGIN -->
       <div class="p-2 w-full pt-8 my-10 border-t border-gray-300 text-center">
         <p><b>Ubicación:</b></p>
@@ -143,3 +226,5 @@
 </section>
 
 {% endblock content %}
+
+

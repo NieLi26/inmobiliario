@@ -28,8 +28,20 @@ from django.views.decorators.cache import cache_control
 
 from .filters import PropertyFilter
 
-from .models import Commune, PropertyImage, Property, House,  Apartment, PropertyContact, Realtor, Owner, PropertyManager
-from .forms import PropertyForm, HouseForm, ApartmentForm, PropertyContactForm, RealtorForm, OwnerForm
+from .models import (
+    Commune, PropertyImage, Property, House,  
+    Apartment, PropertyContact, Realtor, 
+    Owner, PropertyManager, Office, UrbanSite, 
+    Parcel, Cellar, Industrial, Shop
+)
+
+from .forms import (
+    PropertyForm, HouseForm, ApartmentForm,
+    PropertyContactForm, RealtorForm, OwnerForm,
+    OfficeForm, UrbanSiteForm, ParcelForm,
+    CellarForm, IndustrialForm, ShopForm,
+    PropertyRentForm
+)
 
 
 def property_create_test(request, property_type):
@@ -193,7 +205,8 @@ class ManagmentDeleteView(View):
 
 class RealtorCreateView(CreateView):
     model = Realtor
-    fields = ['first_name', 'last_name', 'phone1', 'phone2', 'email']
+    # fields = ['first_name', 'last_name', 'phone1', 'phone2', 'email']
+    form_class = RealtorForm
     template_name = 'properties/realtor_create.html'
     success_url = reverse_lazy('properties:realtor_list')
 
@@ -315,7 +328,6 @@ class OwnerListView(PaginationMixin, ListView):
 class TableOwnerView(View):
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
-        print('hola')
         owners = Owner.objects.filter(state=True)
         owners = owners.filter(Q(name__icontains=q) | Q(rut__icontains=q))
         paginator = Paginator(owners, 1)
@@ -323,7 +335,7 @@ class TableOwnerView(View):
         print(owners_data.object_list)
         context = {
             'object_list': owners_data.object_list, 
-            'page_obj': owners_data, 
+            'page_obj': owners_data,
             'q': q
         }
         html = render_block_to_string('properties/owner_list.html', 'table_list', context)
@@ -335,7 +347,6 @@ class OwnerDeleteView(View):
         owner = Owner.objects.get(id=kwargs['pk'])
         owner.state = False
         owner.save()
-        print('feo')
         owners = Owner.objects.filter(state=True)
         paginator = Paginator(owners, 1)
         owners_data = paginator.get_page(kwargs['page_number'])
@@ -394,7 +405,9 @@ class ModalContactView(View):
 
 
 def contact_detail_form(request, publish_type, property_type, location_slug, slug, uuid):
+    form = PropertyContactForm(request.POST or None) # no se puede asignar valor  de inicio a un elemento excluido
     property = Property.objects.get(uuid=uuid, commune__location_slug=location_slug, slug=slug, publish_type=publish_type, property_type=property_type)
+
     if property_type == 'ca':
         property_especific = get_object_or_404(House, property=property)
         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.houses.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
@@ -403,7 +416,33 @@ def contact_detail_form(request, publish_type, property_type, location_slug, slu
         property_especific = get_object_or_404(Apartment, property=property)
         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.apartments.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
 
-    form = PropertyContactForm(request.POST or None, initial={'message': message}) # no se puede asignar valor  de inicio a un elemento excluido
+    elif property_type == 'of':
+        property_especific = get_object_or_404(Office, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.offices.first().num_offices} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    
+    elif property_type == 'su':
+        property_especific = get_object_or_404(UrbanSite, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.urban_sites.first().num_lot} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    
+    elif property_type == 'pa':
+        property_especific = get_object_or_404(Parcel, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.parcels.first().num_lot} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    
+    elif property_type == 'bo':
+        property_especific = get_object_or_404(Cellar, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.cellars.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'in':
+        property_especific = get_object_or_404(Industrial, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.industrials.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'lc':
+        property_especific = get_object_or_404(Shop, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.shops.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+
+    form.initial['message'] = message
+    
     if form.is_valid():
         form.instance.property = property
         form.save() 
@@ -413,7 +452,7 @@ def contact_detail_form(request, publish_type, property_type, location_slug, slu
             'property': property_especific
         }
         html = render_block_to_string('properties/property_detail.html', 'contact_detail', context)
-        response =  HttpResponse(html)
+        response = HttpResponse(html)
         response['HX-Trigger'] = 'modal-contact-button'
         return response
 
@@ -1243,31 +1282,69 @@ class PropertySuccessDetailView(DetailView):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def property_detail(request, publish_type, property_type, location_slug, slug, uuid):
-        property = Property.objects.get(uuid=uuid, commune__location_slug=location_slug, slug=slug, publish_type=publish_type, property_type=property_type)
-        if property_type == 'ca':
-            property_especific = get_object_or_404(House, property=property)
-            message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.houses.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    form = PropertyContactForm(request.POST or None) # no se puede asignar valor  de inicio a un elemento excluido
+    message = None
 
-        elif property_type == 'de':
-            property_especific = get_object_or_404(Apartment, property=property)
-            message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.apartments.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    property = Property.objects.get(uuid=uuid, commune__location_slug=location_slug, slug=slug, publish_type=publish_type, property_type=property_type)
+    if property_type == 'ca':
+        property_especific = get_object_or_404(House, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.houses.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
 
-        form = PropertyContactForm(request.POST or None, initial={'message': message}) # no se puede asignar valor  de inicio a un elemento excluido
-        context = {
-            'property': property_especific,
-            'property_image': property.properties.all(),
-            'form': form,
-            'wa_message': property.title,
-            'wa_number': '56950092733'
-        }
-        return render(request, 'properties/property_detail.html', context)
+    elif property_type == 'de':
+        property_especific = get_object_or_404(Apartment, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.apartments.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'of':
+        property_especific = get_object_or_404(Office, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.offices.first().num_offices} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    
+    elif property_type == 'su':
+        property_especific = get_object_or_404(UrbanSite, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.urban_sites.first().num_lot} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+         
+    elif property_type == 'pa':
+        property_especific = get_object_or_404(Parcel, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.parcels.first().num_lot} Lotes En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'bo':
+        property_especific = get_object_or_404(Cellar, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.cellars.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'in':
+        property_especific = get_object_or_404(Industrial, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.industrials.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+
+    elif property_type == 'lc':
+        property_especific = get_object_or_404(Shop, property=property)
+        message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.shops.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
+    
+    form.initial['message'] = message
+
+    context = {
+        'property': property_especific,
+        'property_image': property.properties.all(),
+        'form': form,
+        'wa_message': property.title,
+        'wa_number': '56950092733'
+    }
+    return render(request, 'properties/property_detail.html', context)
+
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def property_create(request, property_type):
-    # form = PropertyForm(request.POST or None, request.FILES or None, initial={'property_type': property_type})
-    # form = PropertyForm(request.POST or None, request.FILES or None, property_type=property_type) # forma mas robusta pasandosela al form y ahi asignandola
-    form = PropertyForm(request.POST or None, request.FILES or None, user=request.user, property_type=property_type) # forma mas robusta pasandosela al form y ahi asignandola
+def property_create(request, property_type, publish_type):
+    if publish_type == 'ar' or publish_type == 'at':
+        form = PropertyRentForm(
+            request.POST or None, request.FILES or None,
+            user=request.user, property_type=property_type,
+            publish_type=publish_type
+        )  # forma mas robusta pasandosela al form y ahi asignandola
+    else:
+        form = PropertyForm(
+            request.POST or None, request.FILES or None,
+            user=request.user, property_type=property_type,
+            publish_type=publish_type
+        )  # forma mas robusta pasandosela al form y ahi asignandola
 
     communes = Commune.objects.all()
     commune = ''
@@ -1277,7 +1354,6 @@ def property_create(request, property_type):
         communes = communes.filter(region=request.POST.get('region'))
         disabled = ''
 
-
     if request.POST.get('commune'):
         commune = communes.get(id=request.POST.get('commune'))
         disabled = ''
@@ -1286,9 +1362,20 @@ def property_create(request, property_type):
         form_extra = HouseForm(request.POST or None)
     elif property_type == 'de':
         form_extra = ApartmentForm(request.POST or None)
+    elif property_type == 'of':
+        form_extra = OfficeForm(request.POST or None)
+    elif property_type == 'su':
+        form_extra = UrbanSiteForm(request.POST or None)
+    elif property_type == 'pa':
+        form_extra = ParcelForm(request.POST or None)
+    elif property_type == 'bo':
+        form_extra = CellarForm(request.POST or None)
+    elif property_type == 'in':
+        form_extra = IndustrialForm(request.POST or None)
+    elif property_type == 'lc':
+        form_extra = ShopForm(request.POST or None)
     else:
         return redirect('pages:home')
-
 
     try:
         if form.is_valid() and form_extra.is_valid():
@@ -1301,9 +1388,9 @@ def property_create(request, property_type):
                 # for i in images:
                 #     PropertyImage.objects.create(property=instance, image=i)
                 return redirect(reverse('properties:property_galery', args=[instance.slug, instance.uuid]))
-        # else:
+        else:
             # form.initial['commune'] = commune
-            # print(form.errors)
+            print(form.errors)
             # messages.error(request, form_extra.errors)
             # messages.error(request, form.errors)
     except Exception as e:
@@ -1332,8 +1419,24 @@ def property_create(request, property_type):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def property_update(request, slug, uuid):
     property = Property.objects.get(uuid=uuid, slug=slug)
-    form = PropertyForm(request.POST or None, request.FILES or None, instance=property)
-    # form = PropertyForm(request.POST or None, request.FILES or None, request=request, property_type=property.property_type)
+
+    if property.publish_type == 'ar' or property.publish_type == 'at':
+        form = PropertyRentForm(
+            request.POST or None, request.FILES or None,
+            instance=property
+        )  # forma mas robusta pasandosela al form y ahi asignandola
+    else:
+        form = PropertyForm(
+            request.POST or None, request.FILES or None,
+            instance=property
+        )  # forma mas robusta pasandosela al form y ahi asignandola
+
+    
+
+    # form = PropertyForm(
+    #     request.POST or None, request.FILES or None,
+    #     instance=property
+    # )
 
     communes = Commune.objects.all()
 
@@ -1347,16 +1450,32 @@ def property_update(request, slug, uuid):
     else:
         commune = property.commune
 
-
     if property.property_type == 'ca':
         house = House.objects.get(property=property)
         form_extra = HouseForm(request.POST or None, instance=house)
     elif property.property_type == 'de':
         apartment = Apartment.objects.get(property=property.id)
         form_extra = ApartmentForm(request.POST or None, instance=apartment)
+    elif property.property_type == 'of':
+        office = Office.objects.get(property=property.id)
+        form_extra = OfficeForm(request.POST or None, instance=office)
+    elif property.property_type == 'su':
+        urban_site = UrbanSite.objects.get(property=property.id)
+        form_extra = UrbanSiteForm(request.POST or None, instance=urban_site)
+    elif property.property_type == 'pa':
+        parcel = Parcel.objects.get(property=property.id)
+        form_extra = ParcelForm(request.POST or None, instance=parcel)
+    elif property.property_type == 'bo':
+        cellar = Cellar.objects.get(property=property.id)
+        form_extra = CellarForm(request.POST or None, instance=cellar)
+    elif property.property_type == 'in':
+        industrial = Industrial.objects.get(property=property.id)
+        form_extra = IndustrialForm(request.POST or None, instance=industrial)
+    elif property.property_type == 'lc':
+        shop = Shop.objects.get(property=property.id)
+        form_extra = ShopForm(request.POST or None, instance=shop)
     else:
-        return redirect('home')
-
+        return redirect('pages:home')
 
     try:
         if form.is_valid() and form_extra.is_valid():

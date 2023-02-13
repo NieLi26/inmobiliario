@@ -92,9 +92,8 @@ class Property(TimeStampedModel):
     PROPERTY_PARCEL = 'pa'
     PROPERTY_INDUSTRIAL = 'in'
     PROPERTY_CELLAR = 'bo'
-    PROPERTY_PARKING = 'es'
-    PROPERTY_VACATION = 'va'
-
+    # PROPERTY_PARKING = 'es'
+    # PROPERTY_VACATION = 'va'
 
     PROPERTY_CHOICES = (
         (PROPERTY_APARTMENT, 'Departamento'),
@@ -105,8 +104,8 @@ class Property(TimeStampedModel):
         (PROPERTY_PARCEL, 'Parcela'),
         (PROPERTY_INDUSTRIAL, 'Industrial'),
         (PROPERTY_CELLAR, 'Bodega'),
-        (PROPERTY_PARKING, 'Estacionamiento'),
-        (PROPERTY_VACATION, 'Vacacional'),
+        # (PROPERTY_PARKING, 'Estacionamiento'),
+        # (PROPERTY_VACATION, 'Vacacional'),
     )
 
     PUBLISH_BUY = 've'
@@ -124,9 +123,9 @@ class Property(TimeStampedModel):
 
     TYPE_PRICE_CHOICES = (
         ('', 'Seleccione un tipo'),
-         ('uf', 'UF'),
-         ('usd', 'USD'),
-         ('clp', 'CLP'),
+        ('uf', 'UF'),
+        ('usd', 'USD'),
+        ('clp', 'CLP'),
     )
 
     class Status(models.TextChoices):
@@ -136,7 +135,6 @@ class Property(TimeStampedModel):
         RENT = 're', 'Arrendado'
         RENTAL_SEASON = 'res', 'Arrendado por Temporada'
         EXCHANGE = 'ex', 'Permutado'
-
 
     # General
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='properties_user')
@@ -149,9 +147,10 @@ class Property(TimeStampedModel):
     description = models.TextField("Descripción")
     type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)
     price = models.PositiveIntegerField('Precio Publicación')
-    appraisal_value = models.PositiveIntegerField('Valor Tasación')
-    commission_percentage = models.DecimalField('Porcentaje Comisión', decimal_places=2, max_digits=4)
-    commission_value = models.PositiveIntegerField('Valor Comisión')
+    appraisal_value = models.PositiveIntegerField('Valor Tasación', null=True, blank=True)
+    commission_percentage = models.DecimalField('Porcentaje Comisión', null=True, blank=True, decimal_places=2, max_digits=4)
+    commission_value = models.PositiveIntegerField('Monto Comisión')
+    common_expenses = models.PositiveIntegerField('Gastos comunes', blank=True, null=True)
 
     # url externas
     google_url = models.TextField('Ubicación en Google Maps', blank=True, null=True)
@@ -169,13 +168,15 @@ class Property(TimeStampedModel):
     region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Región', related_name='properties')
     commune = models.ForeignKey('Commune', on_delete=models.CASCADE, verbose_name='Comuna', related_name='properties')
     street_address = models.CharField("Calle", max_length=50)
+    street_number = models.CharField("Numero Calle", max_length=50)
 
+    # SII
+    num_roll = models.CharField('Numero de Rol(SII)', max_length=50)
 
     # extras for urls
     slug = models.SlugField(unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     
-
     class Meta:
         '''Meta definition for Property.'''
 
@@ -187,13 +188,11 @@ class Property(TimeStampedModel):
     #         self.state = False
     #     return super().save(*args, **kwargs)
 
-
     def save(self, *args, **kwargs):
         # Generamos un slug único para el objeto
         create_unique_slug(self, 'slug')
         # Guardamos el objeto en la base de datos
         super().save(*args, **kwargs)
-
 
     def __str__(self):
         return f"{self.get_property_type_display()} - {self.title}"
@@ -275,9 +274,8 @@ class House(TimeStampedModel):
         JACUZZI = 'Jacuzzi', 'Jacuzzi'
         SWIMMING_POOL = 'Piscina', 'Piscina'
 
-
     class AdditionalSpaces(models.TextChoices):
-        BATHROOM_VISIT= 'Baño Visita', 'Baño Visita'
+        BATHROOM_VISIT = 'Baño Visita', 'Baño Visita'
         HALL = 'Hall', 'Hall'
         GARDEN_SUEDE = 'Antejardin', 'Antejardin'
         SERVICE_YARD = 'Patio de Servicio', 'Patio de Servicio'
@@ -292,7 +290,6 @@ class House(TimeStampedModel):
         MANSARD = 'Mansarda', 'Mansarda'
         TERRACE = 'Terraza', 'Terraza'
 
-
     class Services(models.TextChoices):
         INTERNET = 'Internet', 'Internet'
         LIGHT = 'Luz', 'Luz'
@@ -306,10 +303,10 @@ class House(TimeStampedModel):
         CHIMNEY = 'Chimenea', 'Chimenea'
         HEATING = 'Calefaccion', 'Calefaccion'
         AIR_CONDITIONING = 'Aire Acondicionado', 'Aire Acondicionado'
-        
+  
     class Kitchens(models.TextChoices):
         DAILY_DINING_ROOM = 'Comedor Diario', 'Comedor Diario'
-        EQUIPPED_KITCHEN  = 'Cocina Equipada', 'Cocina Equipada'
+        EQUIPPED_KITCHEN = 'Cocina Equipada', 'Cocina Equipada'
         FURNISHED_KITCHEN = 'Cocina Amoblada', 'Cocina Amoblada'
 
     class Quantitys(models.TextChoices):
@@ -332,8 +329,8 @@ class House(TimeStampedModel):
         VALUE_15 = '15', '15'
 
     class QuantityFloors(models.TextChoices):
-        VALUE = '','Selecione una opción'
-        VALUE_1 = '1','1'
+        VALUE = '', 'Selecione una opción'
+        VALUE_1 = '1', '1'
         VALUE_2 = '2', '2'
         VALUE_3 = '3', '3'
 
@@ -349,7 +346,6 @@ class House(TimeStampedModel):
     num_floors = models.CharField('Pisos', choices=QuantityFloors.choices, blank=True, null=True, max_length=2)
     num_house = models.CharField("Número Casa", blank=True, max_length=20)
     builded_year = models.PositiveIntegerField('Año de Construcción', blank=True, null=True)
-    common_expenses = models.PositiveIntegerField('Gastos comunes', blank=True, null=True)
 
     distribution = MultiSelectField('Espacios Adicionales', choices=AdditionalSpaces.choices, max_length=250, default="", blank=True)
     service = MultiSelectField('Servicios', choices=Services.choices, max_length=250, default="", blank=True)
@@ -433,7 +429,7 @@ class Apartment(TimeStampedModel):
         VALUE_14 = '14', '14'
         VALUE_15 = '15', '15'
 
-    '''Model definition for House.'''
+    '''Model definition for Apartment.'''
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='apartments', blank=True, null=True)
     land_surface = models.PositiveIntegerField("Superficie terreno (m²)", blank=True, null=True)
     builded_surface = models.PositiveIntegerField("Superficie construida (m²)")
@@ -442,16 +438,14 @@ class Apartment(TimeStampedModel):
     num_parkings = models.CharField('Estacionamientos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
     num_apartment = models.CharField("Número Depto", blank=True, max_length=20)
     builded_year = models.PositiveIntegerField('Año de Construcción', blank=True, null=True)
-    common_expenses = models.PositiveIntegerField('Gastos comunes', blank=True, null=True)
 
     distribution = MultiSelectField('Espacios Adicionales', choices=AdditionalSpaces.choices, max_length=250, default="", blank=True)
     service = MultiSelectField('Servicios', choices=Services.choices, max_length=250, default="", blank=True)
     kitchen = MultiSelectField('Cocina',choices=Kitchens.choices , max_length=250, default="", blank=True)
     other = MultiSelectField('Otros',choices=Others.choices , max_length=250, default="", blank=True)
 
-
     class Meta:
-        '''Meta definition for House.'''
+        '''Meta definition for Apartment.'''
 
         ordering = ('-created',)
         verbose_name = 'Apartment'
@@ -459,6 +453,310 @@ class Apartment(TimeStampedModel):
 
     def __str__(self):
         return self.property.title
+
+
+class Office(TimeStampedModel):
+
+    class AdditionalSpaces(models.TextChoices):
+        HALL = 'Hall', 'Hall'
+        SERVICE_YARD = 'Patio de Servicio', 'Patio de Servicio'
+        GARDEN = 'Jardin', 'Jardin'
+        LIVING_ROOM = 'Sala Estar', 'Sala Estar'
+
+    class Services(models.TextChoices):
+        INTERNET = 'Internet', 'Internet'
+        LIGHT = 'Luz', 'Luz'
+        DRINKING_WATER = 'Agua Potable', 'Agua Potable'
+        SEWER_SYSTEM = 'Alcantarillado', 'Alcantarillado'
+        ALARM = 'Alarma', 'Alarma'
+        PHONE = 'Telefono', 'Telefono'
+        AUTOMATIC_IRRIGATION = 'Riego Automatico', 'Riego Automatico'
+        AUTOMATIC_DOOR = 'Porton Automatico', 'Porton Automatico'
+        AUTOMATIC_BLIND = 'Persianas Automaticas', 'Persianas Automaticas'
+        HEATING = 'Calefaccion', 'Calefaccion'
+        AIR_CONDITIONING = 'Aire Acondicionado', 'Aire Acondicionado'
+        
+    class Kitchens(models.TextChoices):
+        DAILY_DINING_ROOM = 'Comedor Diario', 'Comedor Diario'
+        EQUIPPED_KITCHEN  = 'Cocina Equipada', 'Cocina Equipada'
+        FURNISHED_KITCHEN = 'Cocina Amoblada', 'Cocina Amoblada'
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    '''Model definition for Office.'''
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='offices', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)", blank=True, null=True)
+    builded_surface = models.PositiveIntegerField("Superficie construida (m²)")
+    num_offices = models.CharField('Oficinas', choices=Quantitys.choices, max_length=2)
+    num_bathrooms = models.CharField('Baños', choices=Quantitys.choices, max_length=2)
+    num_parkings = models.CharField('Estacionamientos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
+    num_cellars = models.CharField('Bodegas/Recintos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
+    num_floors = models.CharField('Pisos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
+    num_local = models.CharField("Número de Local", blank=True, max_length=20)
+    builded_year = models.PositiveIntegerField('Año de Construcción', blank=True, null=True)
+
+    distribution = MultiSelectField('Espacios Adicionales', choices=AdditionalSpaces.choices, max_length=250, default="", blank=True)
+    service = MultiSelectField('Servicios', choices=Services.choices, max_length=250, default="", blank=True)
+    kitchen = MultiSelectField('Cocina',choices=Kitchens.choices , max_length=250, default="", blank=True)
+
+    class Meta:
+        '''Meta definition for Office.'''
+
+        ordering = ('-created',)
+        verbose_name = 'Office'
+        verbose_name_plural = 'Offices'
+
+    def __str__(self):
+        return self.property.title
+
+
+class Shop(TimeStampedModel):
+    '''Model definition for Shop.'''
+    class Services(models.TextChoices):
+        INTERNET = 'Internet', 'Internet'
+        LIGHT = 'Luz', 'Luz'
+        DRINKING_WATER = 'Agua Potable', 'Agua Potable'
+        SEWER_SYSTEM = 'Alcantarillado', 'Alcantarillado'
+        ALARM = 'Alarma', 'Alarma'
+        PHONE = 'Telefono', 'Telefono'
+        TV = 'TV Cable', 'TV Cable'
+        CHIMNEY = 'Chimenea', 'Chimenea'
+        HEATING = 'Calefaccion', 'Calefaccion'
+        AIR_CONDITIONING = 'Aire Acondicionado', 'Aire Acondicionado'
+
+    class Kitchens(models.TextChoices):
+        DAILY_DINING_ROOM = 'Comedor Diario', 'Comedor Diario'
+        EQUIPPED_KITCHEN = 'Cocina Equipada', 'Cocina Equipada'
+        FURNISHED_KITCHEN = 'Cocina Amoblada', 'Cocina Amoblada'
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='shops', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)")
+    builded_surface = models.PositiveIntegerField("Superficie construida (m²)")
+    num_bathrooms = models.CharField('Baños', choices=Quantitys.choices, max_length=2)
+    num_local = models.CharField("Número de Local", blank=True, max_length=20)
+    builded_year = models.PositiveIntegerField('Año de Construcción', blank=True, null=True)
+
+    service = MultiSelectField('Servicios', choices=Services.choices, max_length=250, default="", blank=True)
+    kitchen = MultiSelectField('Cocina',choices=Kitchens.choices , max_length=250, default="", blank=True)
+
+    class Meta:
+        '''Meta definition for Shop.'''
+
+        verbose_name = 'Shop'
+        verbose_name_plural = 'Shops'
+
+    def __str__(self):
+        return self.title
+
+
+class Cellar(TimeStampedModel):
+    '''Model definition for Cellar.'''
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='cellars', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)")
+    builded_surface = models.PositiveIntegerField("Superficie construida (m²)")
+    num_enclosures = models.CharField('Recintos', choices=Quantitys.choices,  max_length=2)
+    num_bathrooms = models.CharField('Baños', choices=Quantitys.choices, max_length=2)
+    num_offices = models.CharField('Oficinas', choices=Quantitys.choices, max_length=2)
+    num_local = models.CharField("Número de Local", blank=True, max_length=20)
+
+    class Meta:
+        '''Meta definition for Cellar.'''
+
+        verbose_name = 'Cellar'
+        verbose_name_plural = 'Cellars'
+
+    def __str__(self):
+        return self.title
+
+
+class Industrial(TimeStampedModel):
+    '''Model definition for Industrial.'''
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='industrials', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)")
+    builded_surface = models.PositiveIntegerField("Superficie construida (m²)")
+    num_cellars = models.CharField('Bodegas', choices=Quantitys.choices,  max_length=2)
+    num_bathrooms = models.CharField('Baños', choices=Quantitys.choices, max_length=2)
+    num_offices = models.CharField('Oficinas', choices=Quantitys.choices, max_length=2)
+    num_local = models.CharField("Número de Local", blank=True, max_length=20)
+
+    class Meta:
+        '''Meta definition for Industrial.'''
+
+        verbose_name = 'Industrial'
+        verbose_name_plural = 'Industrials'
+
+    def __str__(self):
+        return self.title
+
+
+class UrbanSite(TimeStampedModel):
+    '''Model definition for UrbanSite.'''
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    class YesOrNo(models.TextChoices):
+        YES = 'si', 'Si'
+        NO = 'no', 'No'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='urban_sites', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)")
+    num_cellars = models.CharField('Bodegas/Recintos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
+    num_lot = models.CharField("Número de Lote", max_length=20)
+    sector = models.CharField("Sector", max_length=250)
+    water_feasibility = models.CharField('Factibilidad Agua', choices=YesOrNo.choices, max_length=2)
+    electricity_feasibility = models.CharField('Factibilidad Electricidad', choices=YesOrNo.choices, max_length=2)
+    sewer_feasibility = models.CharField('Factibilidad Alcantarillado', choices=YesOrNo.choices, max_length=2)
+    gas_feasibility = models.CharField('Factibilidad Gas', choices=YesOrNo.choices, max_length=2)
+    feasibility = models.TextField(verbose_name="Factibilidad")
+
+    class Meta:
+        '''Meta definition for UrbanSite.'''
+
+        verbose_name = 'UrbanSite'
+        verbose_name_plural = 'UrbanSites'
+
+    def __str__(self):
+        return self.title
+
+
+class Parcel(TimeStampedModel):
+    '''Model definition for Parcel.'''
+
+    class Quantitys(models.TextChoices):
+        VALUE = '', 'Selecione una opción'
+        VALUE_0 = '0', '0'
+        VALUE_1 = '1', '1'
+        VALUE_2 = '2', '2'
+        VALUE_3 = '3', '3'
+        VALUE_4 = '4', '4'
+        VALUE_5 = '5', '5'
+        VALUE_6 = '6', '6'
+        VALUE_7 = '7', '7'
+        VALUE_8 = '8', '8'
+        VALUE_9 = '9', '9'
+        VALUE_10 = '10', '10'
+        VALUE_11 = '11', '11'
+        VALUE_12 = '12', '12'
+        VALUE_13 = '13', '13'
+        VALUE_14 = '14', '14'
+        VALUE_15 = '15', '15'
+
+    class YesOrNo(models.TextChoices):
+        YES = 'si', 'Si'
+        NO = 'no', 'No'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='parcels', blank=True, null=True)
+    land_surface = models.PositiveIntegerField("Superficie terreno (m²)")
+    num_cellars = models.CharField('Bodegas/Recintos', choices=Quantitys.choices, blank=True, null=True, max_length=2)
+    num_lot = models.CharField("Número de Lote", max_length=20)
+    sector = models.CharField("Sector", max_length=250)
+    water_feasibility = models.CharField('Factibilidad Agua', choices=YesOrNo.choices, max_length=2)
+    electricity_feasibility = models.CharField('Factibilidad Electricidad', choices=YesOrNo.choices, max_length=2)
+    sewer_feasibility = models.CharField('Factibilidad Alcantarillado', choices=YesOrNo.choices, max_length=2)
+    gas_feasibility = models.CharField('Factibilidad Gas', choices=YesOrNo.choices, max_length=2)
+    feasibility = models.TextField(verbose_name="Factibilidad")
+
+    class Meta:
+        '''Meta definition for Parcel.'''
+
+        verbose_name = 'Parcel'
+        verbose_name_plural = 'Parcels'
+
+    def __str__(self):
+        return self.title
 
 
 class Region(TimeStampedModel):
@@ -501,6 +799,7 @@ class PropertyContact(TimeStampedModel):
     from_email = models.EmailField('Email', max_length=50)
     phone = models.CharField('Télefono(opcional)', max_length=9, blank=True)
     message = models.TextField('Mensaje')
+
     class Meta:
         '''Meta definition for PropertyContact.'''
 

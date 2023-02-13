@@ -184,19 +184,63 @@ def hx_search_location(request):
 class ContactPageView(View):
     def get(self, request, *args, **kwargs):
         form = ContactForm()
+        SUBJECTS = (
+            ('', 'Seleccione una opción'),
+        )
+        subject = ''
+        disabled = 'disabled'
         context = {
-            'form': form
+            'form': form,
+            'subjects': SUBJECTS,
+            'subject_selected': subject,
+            'disabled': disabled,
         }
         return render(request, 'pages/contact_create.html', context)
          
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
+        SUBJECTS = (
+            ('', 'Seleccione una opción'),
+        )
+        subject = request.POST.get('subject', '')
+        disabled = 'disabled'
+        category = request.POST.get('category')
+        if category:
+            if category == 'propietario':
+                SUBJECTS = (
+                    ('', 'Seleccione una opción'),
+                    ('Quiero arrendar mi propiedad', 'Quiero arrendar mi propiedad'),
+                    ('Quiero vender mi propiedad', 'Quiero vender mi propiedad'),
+                )
+                disabled = ''
+            elif category == 'arrendatario':
+                SUBJECTS = (
+                    ('', 'Seleccione una opción'),
+                    ('Quiero arrendar por temporada', 'Quiero arrendar por temporada'),
+                    ('Quiero arrendar por año corrido', 'Quiero arrendar por año corrido'),
+                )
+                disabled = ''
+            elif category == 'comprador':
+                SUBJECTS = (
+                    ('', 'Seleccione una opción'),
+                    ('Quiero comprar una propiedad', 'Quiero comprar una propiedad'),
+                    ('Quiero visitar una propiedad', 'Quiero visitar una propiedad'),
+                    ('Necesito permutar un propiedad', 'Necesito permutar un propiedad'),
+                )
+                disabled = ''
+
         context = {
-            'form': form
+            'form': form,
+            'subjects': SUBJECTS,
+            'disabled': disabled,
+            'subject_selected': subject,
         }
+
         if form.is_valid():
             form.save()
             context['form'] = ContactForm()
+            context['disabled'] = 'disabled'
+            context['subject_selected'] = ''
             context['success'] = {'Mensaje enviado correctamente'}
             html = render_block_to_string(
                 'pages/contact_create.html',
@@ -231,6 +275,45 @@ class ContactListView(View):
 
 
 # partials
+def hx_subject_select(request):
+
+    category = request.GET.get('category', '')
+    print(category)
+    SUBJECTS = (
+            ('', 'Seleccione una opción'),
+    )
+    disabled = ''
+    if category:
+        if category == 'propietario':
+            SUBJECTS = (
+                ('', 'Seleccione una opción'),
+                ('Quiero arrendar mi propiedad', 'Quiero arrendar mi propiedad'),
+                ('Quiero vender mi propiedad', 'Quiero vender mi propiedad'),
+            )
+        elif category == 'arrendatario':
+            SUBJECTS = (
+                ('', 'Seleccione una opción'),
+                ('Quiero arrendar por temporada', 'Quiero arrendar por temporada'),
+                ('Quiero arrendar por año corrido', 'Quiero arrendar por año corrido'),
+            )
+        elif category == 'comprador':
+            SUBJECTS = (
+                ('', 'Seleccione una opción'),
+                ('Quiero comprar una propiedad', 'Quiero comprar una propiedad'),
+                ('Quiero visitar una propiedad', 'Quiero visitar una propiedad'),
+                ('Necesito permutar un propiedad', 'Necesito permutar un propiedad'),
+            )
+    else:
+        disabled = 'disabled'
+
+    context = {
+        'subjects': SUBJECTS,
+        'disabled': disabled,
+    }
+    html = render_block_to_string('pages/contact_create.html', 'subject', context)
+    return HttpResponse(html)
+
+
 def hx_contact_home_form(request):
     form = OwnerContactForm(request.POST or None)
     if form.is_valid():

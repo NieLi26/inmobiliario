@@ -28,21 +28,17 @@
       <div class="shadow overflow-hidden sm:rounded-md">
         <div class="px-4 py-5 bg-white sm:p-6 space-y-3">
           <div class="sm:grid sm:grid-cols-2 sm:gap-2">
-            <!-- <div class="col-span-6 sm:col-span-3"> -->
-   
-            <!-- </div> -->
-
             <div>
-              <label for="publish_type" class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.publish_type.label }}<span class="asteriskField">*</span>
+              <label for="num_roll" class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.num_roll.label }}<span class="asteriskField">*</span>
               </label>
 
               <div class="mb-3">
-                {{ form.publish_type }}
+                {{ form.num_roll }}
               </div>
 
-              {% if form.errors.publish_type %}
-                {% for error in form.errors.publish_type %}
+              {% if form.errors.num_roll %}
+                {% for error in form.errors.num_roll %}
                   <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
                 {% endfor %}
               {% endif %}
@@ -113,6 +109,7 @@
             {% endif %}
           </div>
         
+          {% if form.appraisal_value and form.commission_percentage %}
           <div class="sm:grid sm:grid-cols-3 sm:gap-3">
               <div>
                 <label for="type_price" class="block text-gray-700 text-sm font-bold mb-2">
@@ -130,7 +127,7 @@
               {% endif %}
             
               </div>
-  
+      
               <div>
                 <label for="appraisal_value" class="block text-gray-700 text-sm font-bold mb-2">
                   {{ form.appraisal_value.label }}<span class="asteriskField">*</span>
@@ -145,23 +142,23 @@
                   <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
                 {% endfor %}
               {% endif %}
-            </div>
-
-            <div>
-              <label for="price" class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.price.label }}<span class="asteriskField">*</span>
-              </label>
-
-              <div class="mb-3">
-                {{ form.price }}
               </div>
-              <!-- <p> {{ form.price.help_text | safe }}</p> -->
-              {% if form.errors.price %}
-              {% for error in form.errors.price %}
-                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
-              {% endfor %}
-            {% endif %}
-            </div>
+
+              <div>
+                <label for="price" class="block text-gray-700 text-sm font-bold mb-2">
+                  {{ form.price.label }}<span class="asteriskField">*</span>
+                </label>
+
+                <div class="mb-3">
+                  {{ form.price }}
+                </div>
+                <!-- <p> {{ form.price.help_text | safe }}</p> -->
+                {% if form.errors.price %}
+                {% for error in form.errors.price %}
+                  <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                {% endfor %}
+              {% endif %}
+              </div>
 
           </div>
 
@@ -214,6 +211,78 @@
               {% endif %}
             </div>
           </div>
+          {% else %}
+
+          <div>
+            <label for="is_iva" class="block text-gray-700 text-sm font-bold mb-2">
+              {{ form.is_iva.label }}
+            </label>
+
+            <div class="mb-3">
+              {{ form.is_iva }}
+            </div>
+            
+            {% if form.errors.is_iva %}
+            {% for error in form.errors.is_iva %}
+              <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+            {% endfor %}
+          {% endif %}
+          </div>
+
+          <div class="sm:grid sm:grid-cols-3 sm:gap-3">
+            <div>
+              <label for="type_price" class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.type_price.label }}<span class="asteriskField">*</span>
+              </label>
+
+              <div class="mb-3">
+                {{ form.type_price }}
+              </div>
+
+              {% if form.errors.type_price %}
+              {% for error in form.errors.type_price %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
+          
+            </div>
+    
+
+            <div>
+              <label for="price" class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.price.label }}<span class="asteriskField">*</span>
+              </label>
+
+              <div class="mb-3">
+                {{ form.price }}
+              </div>
+              <!-- <p> {{ form.price.help_text | safe }}</p> -->
+              {% if form.errors.price %}
+              {% for error in form.errors.price %}
+                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+              {% endfor %}
+            {% endif %}
+            </div>
+
+            <div>
+              <label for="commission_value" class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.commission_value.label }}<span class="asteriskField">*</span>
+              </label>
+
+              <div class="mb-3">
+                {{ form.commission_value }}
+              </div>
+
+              {% if form.errors.commission_value %}
+                {% for error in form.errors.commission_value %}
+                  <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+          </div>
+
+          {% endif %}
         </div>
       </div>
     </div>
@@ -269,7 +338,7 @@
                   {% endif %}
                 </div>
           
-                <div class="col-span-6 sm:col-span-3">
+                <div class="col-span-6 sm:col-span-2">
                   <label for="street_address" class="block text-gray-700 text-sm font-bold mb-2">
                     {{ form.street_address.label }}<span class="asteriskField">*</span>
                   </label>
@@ -284,8 +353,24 @@
                       {% endfor %}
                   {% endif %}
                 </div>
+          
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="street_number" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.street_number.label }}<span class="asteriskField">*</span>
+                  </label>
 
-                <div class="col-span-6 sm:col-span-3">
+                  <div class="mb-3">
+                    {{ form.street_number }}
+                  </div>
+
+                  {% if form.errors.street_number %}
+                      {% for error in form.errors.street_number %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                      {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
                   {% if property_type == 'ca' %}
                     <label for="num_house" class="block text-gray-700 text-sm font-bold mb-2">
                       {{ form_extra.num_house.label }}
@@ -311,6 +396,104 @@
 
                     {% if form_extra.errors.num_apartment %}
                         {% for error in form_extra.errors.num_apartment %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'of' %}
+                    <label for="num_local" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_local.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_local }}
+                    </div>
+
+                    {% if form_extra.errors.num_local %}
+                        {% for error in form_extra.errors.num_local %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'su' %}
+                    <label for="num_lot" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_lot.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_lot }}
+                    </div>
+
+                    {% if form_extra.errors.num_lot %}
+                        {% for error in form_extra.errors.num_lot %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'pa' %}
+                    <label for="num_lot" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_lot.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_lot }}
+                    </div>
+
+                    {% if form_extra.errors.num_lot %}
+                        {% for error in form_extra.errors.num_lot %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'lc' %}
+                    <label for="num_local" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_local.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_local }}
+                    </div>
+
+                    {% if form_extra.errors.num_local %}
+                        {% for error in form_extra.errors.num_local %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'lc' %}
+                    <label for="num_local" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_local.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_local }}
+                    </div>
+
+                    {% if form_extra.errors.num_local %}
+                        {% for error in form_extra.errors.num_local %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'bo' %}
+                    <label for="num_local" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_local.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_local }}
+                    </div>
+
+                    {% if form_extra.errors.num_local %}
+                        {% for error in form_extra.errors.num_local %}
+                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                        {% endfor %}
+                    {% endif %}
+                  {% elif property_type == 'in' %}
+                    <label for="num_local" class="block text-gray-700 text-sm font-bold mb-2">
+                      {{ form_extra.num_local.label }}
+                    </label>
+
+                    <div class="mb-3">
+                      {{ form_extra.num_local }}
+                    </div>
+
+                    {% if form_extra.errors.num_local %}
+                        {% for error in form_extra.errors.num_local %}
                         <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
                         {% endfor %}
                     {% endif %}
@@ -416,15 +599,15 @@
 
                 <div class="col-span-6 sm:col-span-2">
                   <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
-                    {{ form_extra.common_expenses.label }}
+                    {{ form.common_expenses.label }}
                   </label>
 
                   <div class="mb-3">
-                    {{ form_extra.common_expenses }}
+                    {{ form.common_expenses }}
                   </div>
 
-                  {% if form_extra.errors.common_expenses %}
-                    {% for error in form_extra.errors.common_expenses %}
+                  {% if form.errors.common_expenses %}
+                    {% for error in form.errors.common_expenses %}
                       <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
                     {% endfor %}
                   {% endif %}
@@ -682,15 +865,15 @@
     
                   <div class="col-span-6 sm:col-span-2">
                     <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
-                      {{ form_extra.common_expenses.label }}
+                      {{ form.common_expenses.label }}
                     </label>
     
                     <div class="mb-3">
-                      {{ form_extra.common_expenses }}
+                      {{ form.common_expenses }}
                     </div>
     
-                    {% if form_extra.errors.common_expenses %}
-                      {% for error in form_extra.errors.common_expenses %}
+                    {% if form.errors.common_expenses %}
+                      {% for error in form.errors.common_expenses %}
                         <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
                       {% endfor %}
                     {% endif %}
@@ -869,6 +1052,939 @@
 
         
                   </div>
+
+              </div>
+              {% elif property_type == 'of' %}
+              <div class="grid grid-cols-6 gap-6"> 
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_surface.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_surface }}
+                  </div>
+
+                  {% if form_extra.errors.builded_surface %}
+                    {% for error in form_extra.errors.builded_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_year" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_year.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_year }}
+                  </div>
+
+                  {% if form_extra.errors.builded_year %}
+                    {% for error in form_extra.errors.builded_year %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_offices" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_offices.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_offices }}
+                  </div>
+
+                  {% if form_extra.errors.num_offices %}
+                    {% for error in form_extra.errors.num_offices %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_bathrooms" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_bathrooms.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_bathrooms }}
+                  </div>
+
+                  {% if form_extra.errors.num_bathrooms %}
+                  {% for error in form_extra.errors.num_bathrooms %}
+                    <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                  {% endfor %}
+                {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_parkings" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_parkings.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_parkings }}
+                  </div>
+
+                  {% if form_extra.errors.num_parkings %}
+                  {% for error in form.form_extra.num_parkings %}
+                    <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                  {% endfor %}
+                {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_cellars" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_cellars.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_cellars }}
+                  </div>
+
+                  {% if form_extra.errors.num_cellars %}
+                    {% for error in form.form_extra.num_cellars %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_floors" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_floors.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_floors }}
+                  </div>
+
+                  {% if form_extra.errors.num_floors %}
+                    {% for error in form.form_extra.num_floors %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6">
+              
+                    <details
+                    class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+                  >
+                    <summary
+                      class="flex items-center justify-between gap-2 p-4 text-gray-900 transition cursor-pointer"
+                    >
+                      <span class="text-sm font-medium"> Otros </span>
+        
+                      <span class="transition group-open:-rotate-180">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="w-4 h-4"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </span>
+                    </summary>
+        
+                    <div class="bg-white border-t border-gray-200">
+                      <section class="text-gray-600 body-font">
+                        <div class="container px-5 py-5 ">
+                          <div class="sm:grid sm:grid-cols-4 sm:gap-4 sm:mb-2 -mx-2">
+                            <div class="">
+                              <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ form_extra.service.label }}
+                              </label>
+              
+                              <div class="mb-3">
+                                {{ form_extra.service   }}
+                              </div>
+              
+                                {% if form.errors %}
+                                  {% for field in form_extra %}
+                                    {% if field.label == 'Servicios' %}
+                                      {% for error in field.errors %} 
+                                      <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                      {% endfor %}
+                                  {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                            </div>
+              
+                            <div class="">
+                              <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ form_extra.distribution.label }}
+                              </label>
+              
+                              <div class="mb-3">
+                                {{ form_extra.distribution   }}
+                              </div>
+              
+                                {% if form.errors %}
+                                  {% for field in form_extra %}
+                                    {% if field.label == 'Espacios Adicionales' %}
+                                      {% for error in field.errors %} 
+                                      <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                      {% endfor %}
+                                  {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                            </div>
+              
+                            <div class="">
+                              <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ form_extra.kitchen.label }}
+                              </label>
+              
+                              <div class="mb-3">
+                                {{ form_extra.kitchen   }}
+                              </div>
+              
+                                {% if form.errors %}
+                                  {% for field in form_extra %}
+                                    {% if field.label == 'Cocina' %}
+                                      {% for error in field.errors %} 
+                                      <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                      {% endfor %}
+                                  {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                            </div>
+              
+                            <div class="">
+                              <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                                {{ form_extra.other.label }}
+                              </label>
+              
+                              <div class="mb-3">
+                                {{ form_extra.other   }}
+                              </div>
+              
+                                {% if form.errors %}
+                                  {% for field in form_extra %}
+                                    {% if field.label == 'Otros' %}
+                                      {% for error in field.errors %} 
+                                      <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                      {% endfor %}
+                                  {% endif %}
+                                  {% endfor %}
+                                {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                    </details>
+
+                </div>
+        
+              </div>
+              {% elif property_type == 'su' %}
+              <div class="grid grid-cols-6 gap-6"> 
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+   
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_cellars" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_cellars.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_cellars }}
+                  </div>
+
+                  {% if form_extra.errors.num_cellars %}
+                    {% for error in form.form_extra.num_cellars %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-3">
+                  <label for="sector" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.sector.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.sector }}
+                  </div>
+
+                  {% if form_extra.errors.sector %}
+                    {% for error in form_extra.errors.sector %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-3"></div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="water_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.water_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.water_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.water_feasibility %}
+                    {% for error in form_extra.errors.water_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="electricity_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.electricity_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.electricity_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.electricity_feasibility %}
+                    {% for error in form_extra.errors.electricity_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="sewer_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.sewer_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.sewer_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.sewer_feasibility %}
+                    {% for error in form_extra.errors.sewer_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="gas_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.gas_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.gas_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.gas_feasibility %}
+                    {% for error in form_extra.errors.gas_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+ 
+                <div class="col-span-6">
+                  <label for="feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.feasibility.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.feasibility %}
+                    {% for error in form.form_extra.feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+              </div>
+              {% elif property_type == 'pa' %}
+              <div class="grid grid-cols-6 gap-6"> 
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+   
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_cellars" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_cellars.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_cellars }}
+                  </div>
+
+                  {% if form_extra.errors.num_cellars %}
+                    {% for error in form.form_extra.num_cellars %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-3">
+                  <label for="sector" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.sector.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.sector }}
+                  </div>
+
+                  {% if form_extra.errors.sector %}
+                    {% for error in form_extra.errors.sector %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+ 
+
+                <div class="col-span-6 sm:col-span-3"></div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="water_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.water_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.water_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.water_feasibility %}
+                    {% for error in form_extra.errors.water_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="electricity_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.electricity_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.electricity_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.electricity_feasibility %}
+                    {% for error in form_extra.errors.electricity_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="sewer_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.sewer_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.sewer_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.sewer_feasibility %}
+                    {% for error in form_extra.errors.sewer_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="gas_feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.gas_feasibility.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.gas_feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.gas_feasibility %}
+                    {% for error in form_extra.errors.gas_feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+ 
+
+                <div class="col-span-6">
+                  <label for="feasibility" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.feasibility.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.feasibility }}
+                  </div>
+
+                  {% if form_extra.errors.feasibility %}
+                    {% for error in form.form_extra.feasibility %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+              </div>
+              {% elif property_type == 'lc' %}
+              <div class="grid grid-cols-6 gap-6"> 
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_surface }}
+                  </div>
+
+                  {% if form_extra.errors.builded_surface %}
+                    {% for error in form_extra.errors.builded_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+   
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_year" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_year.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_year }}
+                  </div>
+
+                  {% if form_extra.errors.builded_year %}
+                    {% for error in form_extra.errors.builded_year %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_bathrooms" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_bathrooms.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_bathrooms }}
+                  </div>
+
+                  {% if form_extra.errors.num_bathrooms %}
+                    {% for error in form_extra.errors.num_bathrooms %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+ 
+                <div class="col-span-6">
+              
+                  <details
+                  class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+                >
+                  <summary
+                    class="flex items-center justify-between gap-2 p-4 text-gray-900 transition cursor-pointer"
+                  >
+                    <span class="text-sm font-medium"> Otros </span>
+      
+                    <span class="transition group-open:-rotate-180">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-4 h-4"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                        />
+                      </svg>
+                    </span>
+                  </summary>
+      
+                  <div class="bg-white border-t border-gray-200">
+                    <section class="text-gray-600 body-font">
+                      <div class="container px-5 py-5 ">
+                        <div class="sm:grid sm:grid-cols-4 sm:gap-4 sm:mb-2 -mx-2">
+                          <div class="">
+                            <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                              {{ form_extra.service.label }}
+                            </label>
+            
+                            <div class="mb-3">
+                              {{ form_extra.service   }}
+                            </div>
+            
+                              {% if form.errors %}
+                                {% for field in form_extra %}
+                                  {% if field.label == 'Servicios' %}
+                                    {% for error in field.errors %} 
+                                    <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                          </div>
+            
+                          <div class="">
+                            <label for="" class="block text-gray-700 text-sm font-bold mb-2">
+                              {{ form_extra.kitchen.label }}
+                            </label>
+            
+                            <div class="mb-3">
+                              {{ form_extra.kitchen   }}
+                            </div>
+            
+                              {% if form.errors %}
+                                {% for field in form_extra %}
+                                  {% if field.label == 'Cocina' %}
+                                    {% for error in field.errors %} 
+                                    <p class="text-red-500 text-xs italic"><strong>{{ error|escape }}</strong></p>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                          </div>
+            
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  </details>
+
+      
+                </div>
+
+              </div>
+              {% elif property_type == 'bo' %}
+              <div class="grid grid-cols-6 gap-6"> 
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_surface }}
+                  </div>
+
+                  {% if form_extra.errors.builded_surface %}
+                    {% for error in form_extra.errors.builded_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+   
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_enclosures" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_enclosures.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_enclosures }}
+                  </div>
+
+                  {% if form_extra.errors.num_enclosures %}
+                    {% for error in form.form_extra.num_enclosures %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_offices" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_offices.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_offices }}
+                  </div>
+
+                  {% if form_extra.errors.num_offices %}
+                    {% for error in form.form_extra.num_offices %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_bathrooms" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_bathrooms.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_bathrooms }}
+                  </div>
+
+                  {% if form_extra.errors.num_bathrooms %}
+                    {% for error in form_extra.errors.num_bathrooms %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+              </div>
+              {% elif property_type == 'in' %}
+              <div class="grid grid-cols-6 gap-6"> 
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="land_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.land_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.land_surface }}
+                  </div>
+
+                  {% if form_extra.errors.land_surface %}
+                    {% for error in form_extra.errors.land_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="builded_surface" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.builded_surface.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.builded_surface }}
+                  </div>
+
+                  {% if form_extra.errors.builded_surface %}
+                    {% for error in form_extra.errors.builded_surface %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+   
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="common_expenses" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form.common_expenses.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form.common_expenses }}
+                  </div>
+
+                  {% if form.errors.common_expenses %}
+                    {% for error in form_extra.errors.common_expenses %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_cellars" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_cellars.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_cellars }}
+                  </div>
+
+                  {% if form_extra.errors.num_cellars %}
+                    {% for error in form.form_extra.num_cellars %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_offices" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_offices.label }}
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_offices }}
+                  </div>
+
+                  {% if form_extra.errors.num_offices %}
+                    {% for error in form.form_extra.num_offices %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+
+                <div class="col-span-6 sm:col-span-2">
+                  <label for="num_bathrooms" class="block text-gray-700 text-sm font-bold mb-2">
+                    {{ form_extra.num_bathrooms.label }}<span class="asteriskField">*</span>
+                  </label>
+
+                  <div class="mb-3">
+                    {{ form_extra.num_bathrooms }}
+                  </div>
+
+                  {% if form_extra.errors.num_bathrooms %}
+                    {% for error in form_extra.errors.num_bathrooms %}
+                      <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
 
               </div>
               {% endif %}
@@ -1204,7 +2320,12 @@
     </div>
 
     <div class="mt-5 px-4 pb-8 text-right sm:px-6">
-      <button type="submit" form="form-general" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white hover:bg-gradient-to-tl bg-gradient-to-tr from-orange-400 via-red-500 to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2">
+      <a 
+      href="{% url 'properties:property_select' %}"
+      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-gray-600 hover:text-gray-900 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
+        Volver
+      </a>
+      <button type="submit" form="form-general" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-white hover:bg-gradient-to-tl bg-gradient-to-tr from-orange-400 via-red-500 to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2">
         Guardar y Continuar
       </button>
     </div>

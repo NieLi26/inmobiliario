@@ -17,6 +17,8 @@ urlpatterns = [
 
 
 hxpatterns = [
+    # CONTACT FORM
+    path('subject-select', views.hx_subject_select, name='subject_select'),
     # CONTACT LIST
     path('hx_contact_table/<int:page_number>/', views.hx_contact_table, name='hx_contact_table'),
     path('hx_contact_modal/<int:pk>/<int:page_number>/', views.hx_contact_modal, name='hx_contact_modal'),

@@ -8,48 +8,28 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from apps.accounts.rut_chile import is_valid_rut
 
-from .models import House, Property, Apartment, Commune, Region, PropertyContact, Realtor, Owner
-
-
-# Every letter to LowerCase(charfield)
-class LowerCase(forms.CharField):
-    def to_python(self, value):
-        return value.lower()
-
-
-# Every letter to UpperCase(charfield)
-class UpperCase(forms.CharField):
-    def to_python(self, value):
-        return value.upper()
-
-
-# Every letter to Capitalize(charfield)
-class Capitalize(forms.CharField):
-    def to_python(self, value):
-        return value.capitalize()
-
-
-number_validator = RegexValidator(
-    regex=r'^[1-9]\d*$',
-    message=[
-        'Este campo solo debe contener números.',
-        'Debe ser mayor a 0.'
-    ]
+from .models import (
+    House, Property, Apartment,
+    Commune, Region, PropertyContact,
+    Realtor, Owner, Office, UrbanSite, 
+    Parcel, Industrial, Cellar, Shop
 )
 
-number_decimal_validator = RegexValidator(
-    regex=r'^([1-9]\d*(\.\d+)?|0\.\d+)$',
-    message=[
-        'Este campo solo debe contener números.',
-        'Debe ser mayor a 0.'
-    ]
+from .validators import (
+    LowerCase,
+    UpperCase,
+    Capitalize,
+    number_validator,
+    number_decimal_validator,
+    email_validator,
+    attrs_class,
+    attrs_class_error,
 )
 
-attrs_class = 'focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700'
-attrs_class_error = 'focus:outline-none border border-red-500 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700'
+# ========== BASE PROPERTY, PROPERTY RENT ========== |
 
 
-class PropertyForm(forms.ModelForm):
+class PropertyBaseForm(forms.ModelForm):
     # se le puede poner cualquier nombre, y cualquier texto, y se llama con el nombre del contexto como pasaste el form.nombre de la variable(ej. form.required_css_class)
     required_css_class = 'focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700' 
 
@@ -62,16 +42,8 @@ class PropertyForm(forms.ModelForm):
         error_messages={'required': 'Este campo no puede estar vacio.'},
         help_text='Este es un texto de ayuda! ir a <a href="/">Home<a/>'
     )
-    appraisal_value = forms.CharField(
-        label='Valor Tasación',
-        validators=[number_validator]
-    )
-    commission_percentage = forms.CharField(
-        label='Porcentaje Comision',
-        validators=[number_decimal_validator]
-    )
     commission_value = forms.CharField(
-        label='Valor Comision',
+        label='Monto Comision',
         validators=[number_validator]
     )
     google_url = forms.CharField(
@@ -93,11 +65,45 @@ class PropertyForm(forms.ModelForm):
     # ------------------------------------------------ SUPER FUNCTION ------------------------------------------------ |
 
     def __init__(self, *args, **kwargs):
-        # property_type=kwargs.pop('property_type', None)  # forma 1
-        self.property_type = kwargs.pop('property_type', None)  # forma 2
+        self.publish_type = kwargs.pop('publish_type', None) 
+        self.property_type = kwargs.pop('property_type', None) 
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
+
+       # ========== BASIC CONTROL PANEL (single <inputs>) ========== |
+
+        # ERROR MESSAGES
+        # self.fields['description'].error_messages.update({'required': 'No puede estar sin nada'})
+
+        self.fields['description'].widget.attrs['rows'] = '3'
+
+        # form 1
+        # self.fields['property_type'].widget.attrs['style'] = 'display:none'
+        # self.fields['property_type'].widget.attrs.update(style='display:none')
+        # self.fields['property_type'].initial = property_type
+
+        self.fields['price'].widget.attrs['x-mask:dynamic'] = '$money($input)' # no funciona en todos
+        # self.fields['price'].validators = [RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')]
+
+        if self.publish_type != 'ar' and self.publish_type != 'at':
+            self.fields['commission_value'].widget.attrs['readonly'] = 'true'
+
+      
+        # self.fields['commission_value'].widget.attrs['class'] += ' bg-gray-200' # si se quiere usar atributos extra sin alterar lo que ya esta, se debe hacer asi, con el update no se puede
+ 
+        region_data = {
+            'hx-get': '/properties/commune-select',
+            'hx-trigger': 'change delay:500ms',
+            'hx-target': '#communes',
+        }
+        self.fields['region'].widget.attrs.update(region_data)
+
+        self.fields['video_url'].widget.attrs['class'] = 'focus:outline-none border border-gray-300 rounded-r-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700'
+
+        # self.fields['commune'].initial = commune
+        # self.fields['commune'].widget.attrs['class'] += ' bg-gray-200'
+        # self.fields['commune'].widget.attrs['disabled'] = '{% if disabled %}true{% else %}false{% endif %}'
 
         # ========== ADVANCE CONTROL PANEL (multiple <inputs>) ========== |
         
@@ -121,36 +127,7 @@ class PropertyForm(forms.ModelForm):
             self.fields[selects].widget.attrs['form'] = 'form-general'
 
 
-        # ========== BASIC CONTROL PANEL (single <inputs>) ========== |
-
-        # ERROR MESSAGES
-        # self.fields['description'].error_messages.update({'required': 'No puede estar sin nada'})
-
-        self.fields['description'].widget.attrs['rows'] = '3'
-
-        # form 1
-        # self.fields['property_type'].widget.attrs['style'] = 'display:none'
-        # self.fields['property_type'].widget.attrs.update(style='display:none')
-        # self.fields['property_type'].initial = property_type
-
-        self.fields['price'].widget.attrs['x-mask:dynamic'] = '$money($input)' # no funciona en todos
-        # self.fields['price'].validators = [RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')]
-
-        self.fields['commission_value'].widget.attrs['readonly'] = 'true'
-        # self.fields['commission_value'].widget.attrs['class'] += ' bg-gray-200' # si se quiere usar atributos extra sin alterar lo que ya esta, se debe hacer asi, con el update no se puede
  
-        region_data = {
-            'hx-get': '/properties/commune-select',
-            'hx-trigger': 'change delay:500ms',
-            'hx-target': '#communes',
-        }
-        self.fields['region'].widget.attrs.update(region_data)
-
-        self.fields['video_url'].widget.attrs['class'] = 'focus:outline-none border border-gray-300 rounded-r-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700'
-
-        # self.fields['commune'].initial = commune
-        # self.fields['commune'].widget.attrs['class'] += ' bg-gray-200'
-        # self.fields['commune'].widget.attrs['disabled'] = '{% if disabled %}true{% else %}false{% endif %}'
 
         # ------------------------------------------------ SUPER FUNCTION END ------------------------------------------------ |
 
@@ -171,7 +148,6 @@ class PropertyForm(forms.ModelForm):
         # si se quiere asignar valor en formulario debe estar en fields, pero esto te obliga a poner el input en el template o modificarlo en el metodo clean
         # sino lo pasas en el fields debes pasarlo como argumento del formulario, asigarlo a alguna variable que tu puedes crear por ejmplo 'sef.lo_que_sea', luego lo asignas donde quieras
         fields = ( 
-            'publish_type',
             'title',
             'description',
             'type_price',
@@ -184,11 +160,14 @@ class PropertyForm(forms.ModelForm):
             'region',
             'commune',
             'street_address',
+            'street_number',
             'realtor',
             'owner',
-            'appraisal_value',
-            'commission_percentage',
-            'commission_value'
+            'appraisal_value',  # null(valor tasacion)
+            'commission_percentage',  # null(porcentaje comision)
+            'commission_value',
+            'common_expenses',
+            'num_roll'
         )
 
         # OUTSIDE WIDGETS        
@@ -230,15 +209,71 @@ class PropertyForm(forms.ModelForm):
         if not instance.pk:
             instance.user = self.user
             instance.property_type = self.property_type
+            instance.publish_type = self.publish_type
         if commit:
             instance.save()
         return instance
 
 
-class HouseForm(forms.ModelForm):
+class PropertyForm(PropertyBaseForm):
+    appraisal_value = forms.CharField(
+        label='Valor Tasación',
+        validators=[number_validator]
+    )
+    commission_percentage = forms.CharField(
+        label='Porcentaje Comision',
+        validators=[number_decimal_validator]
+    )
+
+
+class PropertyRentForm(PropertyBaseForm):
+    class Meta:
+        model = Property
+        fields = ( 
+            'title',
+            'description',
+            'type_price',
+            'price',
+            'google_url',
+            'video_url',
+            'is_featured',
+            'is_new',
+            'is_iva',
+            'region',
+            'commune',
+            'street_address',
+            'street_number',
+            'realtor',
+            'owner',
+            'commission_value',
+            'common_expenses',
+            'num_roll'
+        )
+
+# ========== BASE HOUSE, APARTMENT, OFFICE ========== |
+
+
+class HAOBaseForm(forms.ModelForm):
+    land_surface = forms.IntegerField(
+        label='Superficie terreno (m²)',
+        validators=[number_validator],
+        required=False,
+        widget=forms.TextInput()
+    )
+    builded_surface = forms.IntegerField(
+        label='Superficie construida (m²)',
+        validators=[number_validator],
+        widget=forms.TextInput()
+    )
+    builded_year = forms.IntegerField(
+        label='Año de Construcción',
+        validators=[number_validator],
+        required=False,
+        widget=forms.TextInput()
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['land_surface'].validators = [RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')]
         for field in self.fields:
             if field != 'distribution' and field != 'service' and field != 'kitchen' and field != 'other':
                 self.fields[field].widget.attrs['class'] = attrs_class
@@ -248,6 +283,32 @@ class HouseForm(forms.ModelForm):
     # VALIDATIONS
     # la "r" significa que la cadena string sera tratada como un "raw string" lo que no procesara las combinaciones especiales con backslash "\" 
     # land_surface = forms.IntegerField(label='Superficie de terreno', validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')], required=False)
+
+    def clean_builded_year(self):
+        builded_year = self.cleaned_data.get('builded_year')
+        if builded_year and int(builded_year) > date.today().year:
+            msg = 'El año de construcción debe ser igual o inferior al actual'
+            raise forms.ValidationError(msg)
+        return builded_year
+
+    # def clean(self):
+    #     cleaned_data = self.cleaned_data
+    #     builded_year = cleaned_data.get('builded_year')
+    #     builded_surface = cleaned_data.get('builded_surface')
+    #     land_surface = cleaned_data.get('land_surface')
+    #     if builded_year is not None and builded_year > date.today().year:
+    #         msg = 'El año de construcción debe ser igual o inferior al actual'
+    #         self.add_error('builded_year', msg)
+    #     if builded_surface is not None and builded_surface <= 0:
+    #         msg = 'Superficie construida debe ser mayor a cero'
+    #         self.add_error('builded_surface', msg)
+    #     if land_surface is not None and land_surface <= 0:
+    #         msg = 'Superficie de terreno debe ser mayor a cero'
+    #         self.add_error('land_surface', msg)
+
+
+class HouseForm(HAOBaseForm):
+
     class Meta:
         model = House
         fields = (
@@ -261,39 +322,14 @@ class HouseForm(forms.ModelForm):
             'num_floors',
             'num_house',
             'builded_year',
-            'common_expenses',
             'distribution',
             'service',
             'kitchen',
             'other'
         )
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        builded_year = cleaned_data.get('builded_year')
-        builded_surface = cleaned_data.get('builded_surface')
-        land_surface = cleaned_data.get('land_surface')
-        if builded_year is not None and builded_year > date.today().year:
-            msg = 'El año de construcción debe ser igual o inferior al actual'
-            self.add_error('builded_year', msg)
-        if builded_surface is not None and builded_surface <= 0:
-            msg = 'Superficie construida debe ser mayor a cero'
-            self.add_error('builded_surface', msg)
-        if land_surface is not None and land_surface <= 0:
-            msg = 'Superficie de terreno debe ser mayor a cero'
-            self.add_error('land_surface', msg)
 
-
-class ApartmentForm(forms.ModelForm):
-    builded_surface = forms.CharField(label='Superficie construida', validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')])
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if field != 'distribution' and field != 'service' and field != 'kitchen' and field != 'other':
-                self.fields[field].widget.attrs['class'] = attrs_class
-            if self.errors.get(field):
-                self.fields[field].widget.attrs['class'] = attrs_class_error
+class ApartmentForm(HAOBaseForm):
 
     class Meta:
         model = Apartment
@@ -306,7 +342,6 @@ class ApartmentForm(forms.ModelForm):
             'num_parkings',
             'num_apartment',
             'builded_year',
-            'common_expenses',
             'distribution',
             'service',
             'kitchen',
@@ -314,29 +349,174 @@ class ApartmentForm(forms.ModelForm):
         )
 
 
-    def clean_builded_year(self):
-        builded_year = self.cleaned_data['builded_year']
-        if builded_year:
-            if builded_year > date.today().year:
-                msg = 'El año de construcción debe ser igual o inferior al actual'
-                raise forms.ValidationError(_(msg), code='invalid') # buena practica el "_" para habilitar la traducción y el code para indicar info extra, no es obligatorio usarlo
-            return builded_year
+class OfficeForm(HAOBaseForm):
 
-    def clean_builded_surface(self):
-        builded_surface = self.cleaned_data['builded_surface']
-        if builded_surface:
-            if int(builded_surface) <= 0:
-                msg = ['Superficie construida debe ser mayor a cero', 'Intentalo nuevamente']
-                raise forms.ValidationError(msg) # para mostrar mas de un error a la vez en ese input
-        return builded_surface
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field in self.fields:
+    #         if field != 'distribution' and field != 'service' and field != 'kitchen':
+    #             self.fields[field].widget.attrs['class'] = attrs_class
+    #         if self.errors.get(field):
+    #             self.fields[field].widget.attrs['class'] = attrs_class_error
 
-    def clean_land_surface(self):
-        land_surface = self.cleaned_data['land_surface']
-        if land_surface:
-            if land_surface <= 0:
-                msg = 'Superficie de terreno debe ser mayor a cero'
-                raise forms.ValidationError(msg) 
-        return land_surface
+    class Meta:
+        model = Office
+        fields = (
+            'property',
+            'land_surface',
+            'builded_surface',
+            'num_offices',
+            'num_bathrooms',
+            'num_parkings',
+            'num_cellars',
+            'num_floors',
+            'num_local',
+            'builded_year',
+            'distribution',
+            'service',
+            'kitchen'
+        )
+
+
+class ShopForm(HAOBaseForm):
+    land_surface = forms.CharField(
+        label='Superficie terreno (m²)',
+        validators=[number_validator],
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != 'service' and field != 'kitchen':
+                self.fields[field].widget.attrs['class'] = attrs_class
+            if self.errors.get(field):
+                self.fields[field].widget.attrs['class'] = attrs_class_error
+
+    class Meta:
+        model = Shop
+        fields = (
+            'property',
+            'land_surface',
+            'builded_surface',
+            'num_bathrooms',
+            'num_local',
+            'builded_year',
+            'service',
+            'kitchen',
+        )
+
+# ========== BASE CELLAR, INDUSTRIAL ========== |
+
+
+class CIBaseForm(forms.ModelForm):
+    land_surface = forms.CharField(
+        label='Superficie terreno (m²)',
+        validators=[number_validator],
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != 'distribution' and field != 'service' and field != 'kitchen':
+                self.fields[field].widget.attrs['class'] = attrs_class
+            if self.errors.get(field):
+                self.fields[field].widget.attrs['class'] = attrs_class_error
+
+
+class CellarForm(CIBaseForm):
+    class Meta:
+        model = Cellar
+        fields = (
+            'property',
+            'land_surface',
+            'builded_surface',
+            'num_bathrooms',
+            'num_offices',
+            'num_local',
+            'num_enclosures'
+        )
+
+
+class IndustrialForm(CIBaseForm):
+    class Meta:
+        model = Industrial
+        fields = (
+            'property',
+            'land_surface',
+            'builded_surface',
+            'num_bathrooms',
+            'num_offices',
+            'num_local',
+            'num_cellars'
+        )
+
+
+# ========== BASE URBAN SITE, PARCEL ========== |
+
+
+class UPBaseForm(forms.ModelForm):
+
+    Yes_Or_No = (
+        ('si', 'Si'),
+        ('no', 'No')
+    )
+
+    land_surface = forms.CharField(
+        label='Superficie terreno (m²)',
+        validators=[number_validator]
+    )
+    water_feasibility = forms.CharField(label='Factibilidad Agua', widget=forms.RadioSelect(choices=Yes_Or_No))
+    electricity_feasibility = forms.CharField(label='Factibilidad Electricidad', widget=forms.RadioSelect(choices=Yes_Or_No))
+    sewer_feasibility = forms.CharField(label='Factibilidad Alcantarillado', widget=forms.RadioSelect(choices=Yes_Or_No))
+    gas_feasibility = forms.CharField(label='Factibilidad Gas', widget=forms.RadioSelect(choices=Yes_Or_No))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != 'distribution' and field != 'service' and field != 'kitchen' and field != 'water_feasibility' and field != 'electricity_feasibility' and field != 'sewer_feasibility' and field != 'gas_feasibility':
+                self.fields[field].widget.attrs['class'] = attrs_class
+            if self.errors.get(field):
+                if field != 'water_feasibility' and field != 'electricity_feasibility' and field != 'sewer_feasibility' and field != 'gas_feasibility':
+                    self.fields[field].widget.attrs['class'] = attrs_class_error
+                
+        self.fields['feasibility'].widget.attrs['rows'] = '3'
+
+
+class UrbanSiteForm(UPBaseForm):
+
+    class Meta:
+        model = UrbanSite
+        fields = (
+            'property',
+            'land_surface',
+            'num_cellars',
+            'num_lot',
+            'sector',
+            'feasibility',
+            'water_feasibility',
+            'electricity_feasibility',
+            'sewer_feasibility',
+            'gas_feasibility'
+        )
+
+
+class ParcelForm(UPBaseForm):
+    class Meta:
+        model = Parcel
+        fields = (
+            'property',
+            'land_surface',
+            'num_cellars',
+            'num_lot',
+            'sector',
+            'feasibility',
+            'water_feasibility',
+            'electricity_feasibility',
+            'sewer_feasibility',
+            'gas_feasibility'
+        )
+
+# ========== OTHERS ========== |
 
 
 class PropertyContactForm(forms.ModelForm):
@@ -349,12 +529,17 @@ class PropertyContactForm(forms.ModelForm):
         phone = self.cleaned_data['phone']
         patron = '^[0-9]+$'
         print(re.search(patron, phone))
-        if re.search(patron, phone) == None and phone != '' :
+        if re.search(patron, phone) == None and phone != '':
             raise forms.ValidationError('Solo debe ingresar numeros')
         return phone
 
 
 class RealtorForm(forms.ModelForm):
+    email = LowerCase(
+        label='Correo Electronico',
+        validators=[email_validator]
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
@@ -368,11 +553,16 @@ class RealtorForm(forms.ModelForm):
 
 
 class OwnerForm(forms.ModelForm):
+
+    email = LowerCase(
+        label='Correo Electronico',
+        validators=[email_validator]
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = attrs_class
-
             if self.errors.get(field):
                 self.fields[field].widget.attrs['class'] = attrs_class_error
 

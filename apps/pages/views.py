@@ -27,16 +27,6 @@ from apps.properties.models import (
 )
 
 
-def get_client_ip():
-    # x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    # if x_forwarded_for:
-    #     user_ip = x_forwarded_for.split(',')[0]
-    # else:
-    #     user_ip = request.META.get('REMOTE_ADDR')
-    hostname = socket.gethostname()
-    return socket.gethostbyname(hostname)
-
-
 def custom_alert(message, tag):
     alert = []
     context = {
@@ -83,7 +73,7 @@ class TestTemplateView(TemplateView):
     #     return context
 
 
-# GENERAL
+# ========== GENERAL ========== |
 class DashboardTemplateView(TemplateView):
     """ Se despligan los graficos y tablas """
     template_name = 'pages/dashboard.html'
@@ -118,14 +108,14 @@ class HomePageView(View):
     def post(self, request, *args, **kwargs):
         form = OwnerContactForm(request.POST)
 
-        houses = House.objects.filter(property__state=True, property__is_featured=True)[0:20]
-        apartments = Apartment.objects.filter(property__state=True, property__is_featured=True)[0:20]
+        houses = House.objects.filter(property__state=True, property__is_featured=True, property__status=Property.Status.PUBLISH)[0:20]
+        apartments = Apartment.objects.filter(property__state=True, property__is_featured=True, property__status=Property.Status.PUBLISH)[0:20]
 
         publish_type = request.POST.get('q_publish', '')
         property_type = request.POST.get('q_property', '')
         search_location = request.POST.get('search_location', '')
 
-        if publish_type != '' and property_type !='' :
+        if publish_type != '' and property_type !='':
             if search_location != '':
                 communes = Commune.objects.all()
                 location_slug = [commune for commune in communes if commune.get_commune_region() == search_location]
@@ -179,7 +169,7 @@ def hx_search_location(request):
     return HttpResponse(html)
 
 
-# CONTACT
+# ========== CONTACT ========== |
 @method_decorator(never_cache, name='dispatch')
 class ContactPageView(View):
     def get(self, request, *args, **kwargs):
@@ -380,7 +370,7 @@ def hx_contact_notify(request):
     # return render(request, 'components/contact_notify.html')
 
 
-# OWNER CONTACT
+# ========== OWNER CONTACT ========== |
 class OwnerContactListView(ListView):
     model = OwnerContact
     template_name = 'pages/contact_owner_list.html'

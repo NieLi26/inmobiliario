@@ -62,7 +62,7 @@ hxpatterns = [
     
     ## PUBLISH
     path('publish/<uuid:uuid>/<int:page_number>/delete', views.publish_delete, name='publish_delete'),
-    path('publish/<int:pk>/<str:action>/<str:page_number>/status', views.publish_status, name='publish_status'),
+    path('publish/<int:pk>/<str:action>/<str:page_number>/status/', views.publish_status, name='publish_status'),
     path('publish/<int:pk>/<str:action>/<str:page_number>/fatured', views.publish_featured, name='publish_featured'),
     path('publish/<int:page_number>/table', views.table_publish, name='table_publish'),
 

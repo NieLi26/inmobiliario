@@ -76,6 +76,7 @@
                                 </div>
                                 </a>
                             </td>
+
                             <td class="py-3 px-6 text-left">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center">
@@ -83,6 +84,7 @@
                                 </div>
                                 </a>
                             </td>
+
                             <td class="py-3 px-6">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center ">
@@ -90,6 +92,7 @@
                                 </div>
                                 </a>
                             </td>
+
                             <td class="py-3 px-6">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center justify-center">
@@ -97,32 +100,27 @@
                                 </div>
                                 </a>
                             </td>
+
                             <td class="py-3 px-6 text-center">
                                 
                             <div x-data="{isOpen: false}" class="md:relative inline-block text-left">
                                 <div>
                                     <button @click="isOpen = !isOpen" type="button" class=" border border-gray-300 
-                                    {% if property.status == 'pu' %}
-                                    bg-green-300
-                                    hover:bg-green-200 
-                                    {% elif property.status == 'dr' %}
-                                    bg-red-300 
-                                    hover:bg-red-200
-                                    {% elif property.status == 'bu' %}
+                                    {% if property.publish_type == 've' %}
                                     bg-blue-300 
                                     hover:bg-blue-200
-                                    {% elif property.status == 're' %}
+                                    {% elif property.publish_type == 'ar' %}
                                     bg-yellow-300 
                                     hover:bg-yellow-200
-                                    {% elif property.status == 'res' %}
+                                    {% elif property.publish_type == 'at' %}
                                     bg-orange-300 
                                     hover:bg-orange-200
-                                    {% elif property.status == 'ex' %}
+                                    {% elif property.publish_type == 'pe' %}
                                     bg-teal-300 
                                     hover:bg-teal-200
                                     {% endif %}
                                     shadow-sm flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-semibold text-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500" id="options-menu">
-                                        {{ property.get_status_display }}
+                                        {{ property.get_publish_type_display }}
                                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z">
                                             </path>
@@ -132,7 +130,7 @@
                                 <div x-cloak x-show = 'isOpen' @click.away="isOpen = false" class="absolute z-10 right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg  ring-1 ring-black ring-opacity-5">
                                     <div class="py-1 space-y-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
 
-                                        {% if property.status == 'pu' %}
+                                        <!-- {% if property.status == 'pu' %}
                                             {% for status in property.Status  %}
                                                 {% if status != property.status %}
                                                     <button 
@@ -178,253 +176,188 @@
                                                     </button>
                                                 {% endif %}
                                             {% endfor %}
+                                        {% endif %} -->
 
-                                        {% elif property.status == 'dr' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
+                                        {% if url_option == "table_publish" %}
+                                            {% for value, name in property.PUBLISH_CHOICES %}
+                                                {% if value != property.publish_type and value != '' %}
                                                     <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'draft' page_obj.number %}"
+                                                    hx-get="{% url 'properties:publish_status' property.id value page_obj.number %}"
                                                     hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:draft_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
                                                     class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
+                                                    {% if value == 'ar' %}
                                                     bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
+                                                    {% elif value == 'at' %}
                                                     bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
+                                                    {% elif value == 'pe' %}
                                                     bg-teal-300 hover:bg-teal-200
+                                                    {% elif value == 've' %}
+                                                    bg-blue-300 hover:bg-blue-200
                                                     {% endif %}
                                                     hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
+                                                    {{ name }}
                                                     </button>
                                                 {% endif %}
                                             {% endfor %}
-
-                                        {% elif property.status == 'bu' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
+                                        {% elif url_option == "table_draft" %}
+                                            {% for value, name in property.PUBLISH_CHOICES %}
+                                                {% if value != property.publish_type and value != '' %}
                                                     <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'draft' page_obj.number %}"
+                                                    hx-get="{% url 'properties:draft_status' property.id value page_obj.number %}"
                                                     hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:buy_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
                                                     class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
+                                                    {% if value == 'ar' %}
                                                     bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
+                                                    {% elif value == 'at' %}
                                                     bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
+                                                    {% elif value == 'pe' %}
                                                     bg-teal-300 hover:bg-teal-200
+                                                    {% elif value == 've' %}
+                                                    bg-blue-300 hover:bg-blue-200
                                                     {% endif %}
                                                     hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
+                                                    {{ name }}
                                                     </button>
                                                 {% endif %}
                                             {% endfor %}
-
-
-                                        {% elif property.status == 're' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
-                                                    <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'draft' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:rent_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-            
-                                    
-
-                                        {% elif property.status == 'res' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
-                                                    <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'draft' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:rental_season_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-
-
-                                        {% elif property.status == 'ex' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
-                                                    <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'draft' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:exchange_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
+                                        {% elif url_option == "table_buy" %}
+                                            <button
+                                            hx-get="{% url 'properties:buy_status' property.id 'ar' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
+                                            >
+                                            Arriendo
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:buy_status' property.id 'at' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
+                                            >
+                                            Arriendo Temporada
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:buy_status' property.id 'pe' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
+                                            >
+                                            Permuta
+                                            </button>
+                                        {% elif url_option == "table_rent" %}
+                                            <button
+                                            hx-get="{% url 'properties:rent_status' property.id 've' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
+                                            >
+                                            Venta
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:rent_status' property.id 'at' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
+                                            >
+                                            Arriendo Temporada
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:rent_status' property.id 'pe' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
+                                            >
+                                            Permuta
+                                            </button>
+                                        {% elif url_option == "table_rental_season" %}
+                                            <button
+                                            hx-get="{% url 'properties:rental_season_status' property.id 've' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
+                                            >
+                                            Venta
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:rental_season_status' property.id 'ar' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
+                                            >
+                                            Arriendo
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:rental_season_status' property.id 'pe' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
+                                            >
+                                            Permuta
+                                            </button>
+                                        {% elif url_option == "table_exchange" %}
+                                            <button
+                                            hx-get="{% url 'properties:exchange_status' property.id 've' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
+                                            >
+                                            Venta
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:exchange_status' property.id 'ar' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
+                                            >
+                                            Arriendo
+                                            </button>
+                                            <button
+                                            hx-get="{% url 'properties:exchange_status' property.id 'at' page_obj.number %}"
+                                            hx-target="#custom_table"
+                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
+                                            >
+                                            Arriendo Temporada
+                                            </button>
                                         {% endif %}
-                                    
-                                    
+
+                                        <!-- <button 
+                                        {% if property.publish_type == 've' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'draft' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% elif status == 'pu' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'publish' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% elif status == 'bu' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'buy' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% elif status == 're' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'rent' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% elif status == 'res' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'rental_season' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% elif status == 'ex' %}
+                                        hx-get="{% url 'properties:publish_status' property.id 'exchange' page_obj.number %}"
+                                        hx-target="#custom_table"
+                                        {% endif %}
+                                        class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
+                                        {% if status == 'pu' %}
+                                        bg-green-300 hover:bg-green-200
+                                        {% elif status == 'dr' %}
+                                        bg-red-300 hover:bg-red-200
+                                        {% elif status == 'bu' %}
+                                        bg-blue-300 hover:bg-blue-200
+                                        {% elif status == 're' %}
+                                        bg-yellow-300 hover:bg-yellow-200
+                                        {% elif status == 'res' %}
+                                        bg-orange-300 hover:bg-orange-200
+                                        {% elif status == 'ex' %}
+                                        bg-teal-300 hover:bg-teal-200
+                                        {% endif %}
+                                        hover:text-gray-900" role="menuitem">
+                                            <span class="flex flex-col">
+                                                <span>
+                                                    {{ status.label }}
+                                                </span>
+                                            </span>
+                                        </button> -->
+
                                     </div>
                                 </div>
                             </div>
 
                             </td>
+
                             <td class="py-3 px-6 text-center">
                                 <a href="{{ property.get_absolute_url }}">
                                 {% if property.is_featured == False %}
@@ -442,6 +375,7 @@
                                 {% endif %}
                                 </a>
                             </td>
+
                             <td class="py-3 px-6 text-center">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center justify-center">
@@ -449,9 +383,10 @@
                                 </div>
                                 </a>
                             </td>
+
                             <td class="py-3 px-6 text-center">
                                 <div class="flex item-center justify-between">
-                                    <!-- {% if property.status == 'dr' %}
+                                    {% if property.status == 'dr' %}
                                         <div x-data="{ open: false }">
 
                                             <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
@@ -592,7 +527,7 @@
                                         </div>
                                         </div>
                                         </div>
-                                    {% endif %} -->
+                                    {% endif %}
                                     
                                     {% if property.is_featured == False %}
                                         <div x-data="{ open: false }">

@@ -13,6 +13,17 @@ from django.template.loader import get_template
 from .models import Property, Commune
 
 
+def get_ip(request):
+    # obtener ip de cuando se aloja en servidor proxy
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    else:
+        # obtenerlo cuando se aloja ne servidor local
+        return request.META.get('REMOTE_ADDR')
+    # devuelve la dirección IP de la máquina en la que se está ejecutando el código
+    # hostname = socket.gethostname()
+    # return socket.gethostbyname(hostname)
 
 
 # def can_property(request, property_type=None):

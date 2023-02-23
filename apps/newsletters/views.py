@@ -20,7 +20,7 @@ from .forms import NewsletterUserForm
 # Create your views here.
 @method_decorator(never_cache, name='dispatch')
 class NewsletterUserView(View):
-    
+
     def post(self, request, *args, **kwargs):
         form = NewsletterUserForm(request.POST)
         if form.is_valid():
@@ -59,3 +59,21 @@ class NewsletterUserView(View):
         #     except Exception as e:
         #         print(str(e))      
         return HttpResponseRedirect(reverse_lazy('pages:home'))
+    
+
+class NewsLetterUnsunscribe(View):
+
+    def post(self, request, *args, **kwargs):
+        form = NewsletterUserForm(request.POST or None)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            try:
+                user = NewsletterUser.objects.get(email=instance.email)
+                user.delete()
+                messages.success(request, f'El correo {instance.email} ha sido eliminado')
+            except NewsletterUser.DoesNotExist:
+                messages.warning(request, 'Correo no encontrado.')
+        context = {
+            'form': form,
+        }
+        return render(request, 'unsubscribe.html', context)

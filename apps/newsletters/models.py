@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 # Create your models here.
 
+
 class TimeStampedModel(models.Model):
     '''Model definition for Base.'''
     created = models.DateTimeField('Fecha de Creación', auto_now_add=True)
@@ -11,6 +12,7 @@ class TimeStampedModel(models.Model):
         '''Meta definition for Base.'''
 
         abstract = True
+
 
 class NewsletterUser(TimeStampedModel):
     """Model definition for NewsletterUser."""
@@ -28,10 +30,11 @@ class NewsletterUser(TimeStampedModel):
         """Unicode representation of NewsletterUser."""
         return str(self.email)
 
+
 class Newsletter(TimeStampedModel):
     """Model definition for Newsletter."""
 
-    EMAIL_STATUS_CHOICES=(
+    EMAIL_STATUS_CHOICES = (
         ('Draft', 'Draft'),
         ('Published', 'Published'),
     )
@@ -60,3 +63,4 @@ class Newsletter(TimeStampedModel):
 
     # def get_absolute_url(self):
     #     return reverse('dashboard:detail,', args=[str(self.id)])
+

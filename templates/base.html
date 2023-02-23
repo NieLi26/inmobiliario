@@ -33,13 +33,9 @@
         {% include 'navigation/_navbar.html' %}
       {% endblock navbar %}
 
-
-      
-    {% include 'components/custom_sidealert.html' %}
-
-        
-    {% block content %} {% endblock content %}
-
+      {% include 'components/sidealert.html' %}
+  
+      {% block content %} {% endblock content %}
     </div>
     
     {% block footer %}
@@ -54,12 +50,8 @@
     <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
     <!-- Alpine Core-->
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
-    <!-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
-    <!-- HTMX -->
-    <!-- <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>  -->
 
-    {% block js %}
-    {% endblock js %}
+    {% block js %} {% endblock js %}
 
   </body>
 </html>

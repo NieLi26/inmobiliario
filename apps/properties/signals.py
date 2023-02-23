@@ -21,7 +21,7 @@ def property_post_save(sender, instance, created, **kwargs):
     if instance.status != 'pu' and instance.status != 'dr':
 
         iva = ''
-        if instance.is_iva == True:
+        if instance.is_iva:
             iva = 'con IVA'
         else:
             iva = 'sin IVA'

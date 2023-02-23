@@ -592,7 +592,13 @@
             
 
               <div class="flex items-center justify-between py-6">
-                
+                <button
+                onclick="resetInputs()"
+                type="button"
+              class="inline-block rounded border border-current px-4 py-1.5 text-sm font-medium text-indigo-600 transition hover:rotate-2 hover:scale-110 focus:outline-none focus:ring active:text-indigo-500"
+              >
+              Limpiar filtros
+              </button>
               <!-- <button
               hx-get="{% url 'properties:property_list'  page_obj.number publish_type property_type location_slug  %}" 
               class="inline-block rounded border border-current px-4 py-1.5 text-sm font-medium text-indigo-600 transition hover:rotate-2 hover:scale-110 focus:outline-none focus:ring active:text-indigo-500"
@@ -647,29 +653,44 @@
                                 </p>
                                 <hr class='my-2'>
                                 <p class="text-gray-900 text-sm">
+                                  {% if property.property_type == 'ca' %}
+                                  Casa en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %} 
+                                  {% elif property.property_type == 'de' %}
+                                  Departamento en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'of' %}
+                                  Oficina en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'lc' %}
+                                  Local comercial en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'bo' %}
+                                  Bodega en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'in' %}
+                                  Bodega industrial en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'su' %}
+                                  Sitio Urbano en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% elif property.property_type == 'pa' %}
+                                  Parcela en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% elif property.publish_type == 'pe' %} Permuta {% endif %}
+                                  {% endif %}
+                              </p>
+                              <div class="flex items-center">
+                                {% if property.property_type == 'ca' or property.property_type == 'de' %}
+                                  <svg class="w-4 h-4 mr-1 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                      <path d="M0 16L3 5V1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4l3 11v5a1 1 0 0 1-1 1v2h-1v-2H2v2H1v-2a1 1 0 0 1-1-1v-5zM19 5h1V1H4v4h1V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1zm0 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V6h-2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6H3.76L1.04 16h21.92L20.24 6H19zM1 17v4h22v-4H1zM6 4v4h4V4H6zm8 0v4h4V4h-4z">
+                                      </path>
+                                  </svg>
+                                  <span class="text-gray-500 mr-2">
                                     {% if property.property_type == 'ca' %}
-                                    Casa en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% endif %} 
-                                    {% elif property.property_type == 'de' %}
-                                    Departamento en {% if property.publish_type == 've' %} Venta {% elif property.publish_type == 'ar' %} Arriendo {% elif property.publish_type == 'at' %} Arriendo temporada {% endif %}
-                                    {% endif %}
-                                </p>
-                                <div class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                        <path d="M0 16L3 5V1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4l3 11v5a1 1 0 0 1-1 1v2h-1v-2H2v2H1v-2a1 1 0 0 1-1-1v-5zM19 5h1V1H4v4h1V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1zm0 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V6h-2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6H3.76L1.04 16h21.92L20.24 6H19zM1 17v4h22v-4H1zM6 4v4h4V4H6zm8 0v4h4V4h-4z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-gray-500 mr-2">
-                                      {% if property.property_type == 'ca' %}
-                                      {% for house in property.houses.all %}
-                                          {{ house.num_rooms }}
-                                      {% endfor %}
-                                      {% elif property.property_type == 'de' %}
-                                      {% for apartment in property.apartments.all %}
-                                          {{ apartment.num_rooms }}
-                                      {% endfor %}
+                                      {% if property.houses.first.num_rooms %}
+                                          {{ property.houses.first.num_rooms  }}
                                       {% endif %}
-                                    </span>
+                                    {% elif property.property_type == 'de' %}
+                                      {% if property.apartments.first.num_rooms %}
+                                          {{ property.apartments.first.num_rooms }}
+                                      {% endif %}
+                                    {% endif %}
+                                  </span>
+                                  {% endif %}
 
+                                  {% if property.property_type == 'ca' or property.property_type == 'de' or property.property_type == 'of' or property.property_type == 'lc' or property.property_type == 'bo' or property.property_type == 'in' %}
                                     <svg class="w-4 h-4 mr-1 text-gray-600 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M17.03 21H7.97a4 4 0 0 1-1.3-.22l-1.22 2.44-.9-.44 1.22-2.44a4 4 0 0 1-1.38-1.55L.5 11h7.56a4 4 0 0 1 1.78.42l2.32 1.16a4 4 0 0 0 1.78.42h9.56l-2.9 5.79a4 4 0 0 1-1.37 1.55l1.22 2.44-.9.44-1.22-2.44a4 4 0 0 1-1.3.22zM21 11h2.5a.5.5 0 1 1 0 1h-9.06a4.5 4.5 0 0 1-2-.48l-2.32-1.15A3.5 3.5 0 0 0 8.56 10H.5a.5.5 0 0 1 0-1h8.06c.7 0 1.38.16 2 .48l2.32 1.15a3.5 3.5 0 0 0 1.56.37H20V2a1 1 0 0 0-1.74-.67c.64.97.53 2.29-.32 3.14l-.35.36-3.54-3.54.35-.35a2.5 2.5 0 0 1 3.15-.32A2 2 0 0 1 21 2v9zm-5.48-9.65l2 2a1.5 1.5 0 0 0-2-2zm-10.23 17A3 3 0 0 0 7.97 20h9.06a3 3 0 0 0 2.68-1.66L21.88 14h-7.94a5 5 0 0 1-2.23-.53L9.4 12.32A3 3 0 0 0 8.06 12H2.12l3.17 6.34z">
                                         </path>
@@ -683,26 +704,96 @@
                                       {% for apartment in property.apartments.all %}
                                           {{ apartment.num_bathrooms }}
                                       {% endfor %}
+                                      {% elif property.property_type == 'of' %}
+                                      {% for office in property.offices.all %}
+                                          {{ office.num_bathrooms }}
+                                      {% endfor %}
+                                      {% elif property.property_type == 'lc' %}
+                                      {% for shop in property.shops.all %}
+                                          {{ shop.num_bathrooms }}
+                                      {% endfor %}
+                                      {% elif property.property_type == 'bo' %}
+                                      {% for cellar in property.cellars.all %}
+                                          {{ cellar.num_bathrooms }}
+                                      {% endfor %}
+                                      {% elif property.property_type == 'in' %}
+                                      {% for industrial in property.industrials.all %}
+                                          {{ industrial.num_bathrooms }}
+                                      {% endfor %}
                                       {% endif %}
                                     </span>
-
+                                  {% endif %}
+                                  
+                                  {% if property.property_type == 'ca' or property.property_type == 'de' or property.property_type == 'of' or property.property_type == 'lc' or property.property_type == 'bo' or property.property_type == 'in' %}
                                     <span class='mx-2'>|</span>
                                     <span class="text-gray-500 ">
                                       {% if property.property_type == 'ca' %}
-                                      {% for house in property.houses.all %}
-                                          {{ house.builded_surface | intcomma }}
-                                      {% endfor %}
+                                        {% if property.houses.first.builded_surface %}
+                                          {{ property.houses.first.builded_surface | intcomma }}
+                                        {% endif %}
                                       {% elif property.property_type == 'de' %}
-                                      {% for apartment in property.apartments.all %}
-                                          {{ apartment.builded_surface | intcomma }}
-                                      {% endfor %}
+                                        {% if property.apartments.first.builded_surface %}
+                                          {{ property.apartments.first.builded_surface | intcomma }}
+                                        {% endif %}
+                                      {% elif property.property_type == 'of' %}
+                                      {% if property.offices.first.builded_surface %}
+                                        {{ property.offices.first.builded_surface | intcomma }}
+                                      {% endif %}
+                                      {% elif property.property_type == 'lc' %}
+                                      {% if property.shops.first.builded_surface %}
+                                        {{ property.shops.first.builded_surface | intcomma }}
+                                      {% endif %}
+                                      {% elif property.property_type == 'bo' %}
+                                      {% if property.cellars.first.builded_surface %}
+                                        {{ property.cellars.first.builded_surface | intcomma }}
+                                      {% endif %}
+                                      {% elif property.property_type == 'in' %}
+                                      {% if property.industrials.first.builded_surface %}
+                                        {{ property.industrials.first.builded_surface | intcomma }}
+                                      {% endif %}
                                       {% endif %}
                                       m²
                                     </span>
-                                    
-                                    <span class='mx-2'>|</span>
-                                    <span class="text-gray-500">{{ property.land_surface | intcomma }} m²</span>
-                                </div>
+                                  {% endif %}
+                                  
+                                  <span class='mx-2'>|</span>
+                                  <span class="text-gray-500">
+                                    {% if property.property_type == 'ca' %}
+                                      {% if property.houses.first.land_surface %}
+                                          {{ property.houses.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'de' %}
+                                      {% if property.apartments.first.land_surface %}
+                                          {{ property.apartments.first.land_surface | intcomma }}
+                                        {% endif %}
+                                    {% elif property.property_type == 'of' %}
+                                      {% if property.offices.first.land_surface %}
+                                        {{ property.offices.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'lc' %}
+                                      {% if property.shops.first.land_surface %}
+                                        {{ property.shops.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'bo' %}
+                                      {% if property.cellars.first.land_surface %}
+                                        {{ property.cellars.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'in' %}
+                                      {% if property.industrials.first.land_surface %}
+                                        {{ property.industrials.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'su' %}
+                                      {% if property.urban_sites.first.land_surface %}
+                                        {{ property.urban_sites.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% elif property.property_type == 'pa' %}
+                                      {% if property.parcels.first.land_surface %}
+                                        {{ property.parcels.first.land_surface | intcomma }}
+                                      {% endif %}
+                                    {% endif %}
+                                    m²
+                                  </span>
+                              </div>
                             </div>
                         </div>
                         </a>
@@ -862,3 +953,13 @@
   </div>
 
   {% endblock content %}
+
+
+  {% block js %}
+    <script>
+      const resetInputs = () => {
+        location.reload(true);
+      }
+    </script>  
+
+  {% endblock js %}

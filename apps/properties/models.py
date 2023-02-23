@@ -44,6 +44,13 @@ def create_unique_slug(model_instance, slug_field_name):
     model_instance.slug = slug
 
 
+class IpVisitor(TimeStampedModel):
+    ip = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.ip
+
+
 class Realtor(TimeStampedModel):
     '''Model definition for Realtor.'''
     first_name = models.CharField('Nombre', max_length=200)
@@ -131,10 +138,10 @@ class Property(TimeStampedModel):
     class Status(models.TextChoices):
         PUBLISH = 'pu', 'Publicado' # green
         DRAFT = 'dr', 'No Publicado' # red
-        BUY = 'bu', 'Vendido' 
-        RENT = 're', 'Arrendado'
-        RENTAL_SEASON = 'res', 'Arrendado por Temporada'
-        EXCHANGE = 'ex', 'Permutado'
+        # BUY = 'bu', 'Vendido' 
+        # RENT = 're', 'Arrendado'
+        # RENTAL_SEASON = 'res', 'Arrendado por Temporada'
+        # EXCHANGE = 'ex', 'Permutado'
 
     # General
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='properties_user')
@@ -176,6 +183,9 @@ class Property(TimeStampedModel):
     # extras for urls
     slug = models.SlugField(unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    # get visitors
+    views = models.ManyToManyField(IpVisitor, related_name="property_ip_visitor")
     
     class Meta:
         '''Meta definition for Property.'''
@@ -204,10 +214,16 @@ class Property(TimeStampedModel):
     def get_absolute_url(self):
         return reverse("properties:property_detail", kwargs={"publish_type": self.publish_type, "property_type": self.property_type, 'location_slug': self.commune.location_slug,"slug": self.slug, 'uuid': self.uuid})
 
+    # actuca sobre la clase, considerando todas sus instancias
+    # El primer argumento de un método de clase debe ser la propia clase, que se pasa automáticamente como argumento(en este caso "cls").
     @classmethod
     def count_by_user(cls, user):
         return cls.objects.filter(user=user).count()
-
+    
+    @property
+    def get_views(self):
+        return self.views.count()
+    
 
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''

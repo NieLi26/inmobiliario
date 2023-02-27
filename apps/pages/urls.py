@@ -10,7 +10,6 @@ urlpatterns = [
     path('contact/create/', views.ContactPageView.as_view(), name='contact_create'),
     # CONTACT OWNER LIST
     path('contact-owner/', views.OwnerContactListView.as_view(), name='contact_owner_list'),
-    path('dashboard/', views.DashboardTemplateView.as_view(), name='dashboard'),
 
     path('test/', views.TestTemplateView.as_view(), name='test')
 ]

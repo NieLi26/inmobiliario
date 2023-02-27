@@ -2,9 +2,9 @@
 {% load humanize %}
 <div class="flex justify-center p-2 hover:scale-110 transition duration-300 ease-in-out">
     <div class="rounded-lg shadow-lg bg-white max-w-sm">
-      <a href="{{ property.property.get_absolute_url }}">
-        {% if property.property.properties.first %}
-        <img src="{{ property.property.properties.first.image.url }}" alt="property"  class="h-48 w-full object-cover " >
+      <a href="{{ property.property.publications.first.get_absolute_url }}">
+        {% if property.property.property_images.first %}
+        <img src="{{ property.property.property_images.first.image.url }}" alt="property"  class="h-48 w-full object-cover " >
         {% else %}
         <img src="{% static 'img/474x296.png' %}" alt="property" class="h-48 w-full object-cover"   >
         {% endif %}
@@ -12,7 +12,10 @@
       <div class="p-2">
         <span class='text-gray-900 text-sm'>desde</span>
         <h5 class="text-gray-900 text-2xl font-medium mb-2">
-          {% if property.property.type_price == 'uf' %} UF {{ property.property.price | intcomma}} {% else %} $ {{ property.property.price | intcomma }} {% endif %}
+          {% if property.property.publications.first.type_price  == 'uf' %} UF {{ property.property.publications.first.price | intcomma}} 
+          {% elif property.property.publications.first.type_price  == 'usd' %} USD {{ property.property.publications.first.price | intcomma }} 
+          {% elif property.property.publications.first.type_price == 'clp' %} CLP {{ property.property.publications.first.price | intcomma }} 
+          {% endif %}
         </h5>
         <p class="text-indigo-700 font-mono font-semibold text-xl ">
           {{ property.property.title | truncatechars:17}}

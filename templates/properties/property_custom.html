@@ -57,13 +57,15 @@
                 <thead>
                     <tr class="border-b text-gray-400 uppercase text-xs leading-normal">
                         <th class="py-3 px-6 text-left">Tipo</th>
-                        <th class="py-3 px-6 text-left">Código</th>
-                        <th class="py-3 px-6 text-left">Comuna</th>
+                        <th class="py-3 px-6 text-left">Propietario</th>
+                        <th class="py-3 px-6 text-left">Agente</th>
                         <th class="py-3 px-6 text-center">Valor referencial</th>
                         <th class="py-3 px-6 text-center">Estado</th>
                         <th class="py-3 px-6 text-center">Destacada</th>
                         <th class="py-3 px-6 text-center">Fecha de publicación</th>
+                        {% if property.operation == 'wa' %}
                         <th class="py-3 px-6 text-center">Acciones</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
@@ -72,7 +74,7 @@
                             <td class="py-3 px-6 text-left whitespace-nowrap">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center">
-                                    <span class="font-medium">{{ property.get_property_type_display }} {{ property.get_publish_type_display }}</span>
+                                    <span class="font-medium">{{ property.property.get_property_type_display }} {{ property.property.get_publish_type_display }}</span>
                                 </div>
                                 </a>
                             </td>
@@ -80,7 +82,7 @@
                             <td class="py-3 px-6 text-left">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center">
-                                    <span>{{ property.uuid }}</span>
+                                    <span>{{ property.owner }}</span>
                                 </div>
                                 </a>
                             </td>
@@ -88,7 +90,7 @@
                             <td class="py-3 px-6">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center ">
-                                    <span> {{ property.commune | title }}</span>
+                                    <span> {{ property.realtor | title }}</span>
                                 </div>
                                 </a>
                             </td>
@@ -96,266 +98,34 @@
                             <td class="py-3 px-6">
                                 <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center justify-center">
-                                {% if property.type_price == 'uf' %} UF {{ property.price | intcomma }} {% else %} $ {{ property.price | intcomma }} {% endif %}
+                                {% if property.type_price == 'uf' %} 
+                                    UF {{ property.price | intcomma }} 
+                                {% elif property.type_price == 'usd' %} 
+                                    USD {{ property.price | intcomma }} 
+                                {% else %} 
+                                    CLP {{ property.price | intcomma }} 
+                                {% endif %}
                                 </div>
                                 </a>
                             </td>
 
-                            <td class="py-3 px-6 text-center">
-                                
-                            <div x-data="{isOpen: false}" class="md:relative inline-block text-left">
-                                <div>
-                                    <button @click="isOpen = !isOpen" type="button" class=" border border-gray-300 
-                                    {% if property.publish_type == 've' %}
-                                    bg-blue-300 
-                                    hover:bg-blue-200
-                                    {% elif property.publish_type == 'ar' %}
-                                    bg-yellow-300 
-                                    hover:bg-yellow-200
-                                    {% elif property.publish_type == 'at' %}
-                                    bg-orange-300 
-                                    hover:bg-orange-200
-                                    {% elif property.publish_type == 'pe' %}
-                                    bg-teal-300 
-                                    hover:bg-teal-200
-                                    {% endif %}
-                                    shadow-sm flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-semibold text-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500" id="options-menu">
-                                        {{ property.get_publish_type_display }}
-                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z">
-                                            </path>
-                                        </svg>
+                            <td class="py-3 px-6 text-center">  
+                            
+                                    <button 
+                                    class="px-2 py-1  text-sm rounded-full
+                                    {% if property.operation == 'wa' %} 
+                                    text-yellow-600 border border-yellow-600 bg-yellow-300
+                                    {% elif property.operation == 'fi' %}
+                                    text-green-600 border border-green-600 bg-green-300 
+                                    {% else %}
+                                    text-gray-600 border border-gray-600 bg-gray-300 
+                                    {% endif %}  
+                                    ">
+                                        {{ property.get_operation_display }}
                                     </button>
-                                </div>
-                                <div x-cloak x-show = 'isOpen' @click.away="isOpen = false" class="absolute z-10 right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg  ring-1 ring-black ring-opacity-5">
-                                    <div class="py-1 space-y-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-
-                                        <!-- {% if property.status == 'pu' %}
-                                            {% for status in property.Status  %}
-                                                {% if status != property.status %}
-                                                    <button 
-                                                    {% if status == 'dr' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'draft' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'pu' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'publish' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'bu' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'buy' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 're' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'rent' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'res' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'rental_season' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% elif status == 'ex' %}
-                                                    hx-get="{% url 'properties:publish_status' property.id 'exchange' page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    {% endif %}
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if status == 'pu' %}
-                                                    bg-green-300 hover:bg-green-200
-                                                    {% elif status == 'dr' %}
-                                                    bg-red-300 hover:bg-red-200
-                                                    {% elif status == 'bu' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% elif status == 're' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif status == 'res' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif status == 'ex' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                        <span class="flex flex-col">
-                                                            <span>
-                                                                {{ status.label }}
-                                                            </span>
-                                                        </span>
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %} -->
-
-                                        {% if url_option == "table_publish" %}
-                                            {% for value, name in property.PUBLISH_CHOICES %}
-                                                {% if value != property.publish_type and value != '' %}
-                                                    <button 
-                                                    hx-get="{% url 'properties:publish_status' property.id value page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if value == 'ar' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif value == 'at' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif value == 'pe' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% elif value == 've' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                    {{ name }}
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% elif url_option == "table_draft" %}
-                                            {% for value, name in property.PUBLISH_CHOICES %}
-                                                {% if value != property.publish_type and value != '' %}
-                                                    <button 
-                                                    hx-get="{% url 'properties:draft_status' property.id value page_obj.number %}"
-                                                    hx-target="#custom_table"
-                                                    class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                                    {% if value == 'ar' %}
-                                                    bg-yellow-300 hover:bg-yellow-200
-                                                    {% elif value == 'at' %}
-                                                    bg-orange-300 hover:bg-orange-200
-                                                    {% elif value == 'pe' %}
-                                                    bg-teal-300 hover:bg-teal-200
-                                                    {% elif value == 've' %}
-                                                    bg-blue-300 hover:bg-blue-200
-                                                    {% endif %}
-                                                    hover:text-gray-900" role="menuitem">
-                                                    {{ name }}
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% elif url_option == "table_buy" %}
-                                            <button
-                                            hx-get="{% url 'properties:buy_status' property.id 'ar' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
-                                            >
-                                            Arriendo
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:buy_status' property.id 'at' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
-                                            >
-                                            Arriendo Temporada
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:buy_status' property.id 'pe' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
-                                            >
-                                            Permuta
-                                            </button>
-                                        {% elif url_option == "table_rent" %}
-                                            <button
-                                            hx-get="{% url 'properties:rent_status' property.id 've' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
-                                            >
-                                            Venta
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:rent_status' property.id 'at' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
-                                            >
-                                            Arriendo Temporada
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:rent_status' property.id 'pe' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
-                                            >
-                                            Permuta
-                                            </button>
-                                        {% elif url_option == "table_rental_season" %}
-                                            <button
-                                            hx-get="{% url 'properties:rental_season_status' property.id 've' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
-                                            >
-                                            Venta
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:rental_season_status' property.id 'ar' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
-                                            >
-                                            Arriendo
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:rental_season_status' property.id 'pe' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-teal-300 hover:bg-teal-200 hover:text-gray-900"
-                                            >
-                                            Permuta
-                                            </button>
-                                        {% elif url_option == "table_exchange" %}
-                                            <button
-                                            hx-get="{% url 'properties:exchange_status' property.id 've' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-blue-300 hover:bg-blue-200 hover:text-gray-900"
-                                            >
-                                            Venta
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:exchange_status' property.id 'ar' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-yellow-300 hover:bg-yellow-200 hover:text-gray-900"
-                                            >
-                                            Arriendo
-                                            </button>
-                                            <button
-                                            hx-get="{% url 'properties:exchange_status' property.id 'at' page_obj.number %}"
-                                            hx-target="#custom_table"
-                                            class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold bg-orange-300 hover:bg-orange-200 hover:text-gray-900"
-                                            >
-                                            Arriendo Temporada
-                                            </button>
-                                        {% endif %}
-
-                                        <!-- <button 
-                                        {% if property.publish_type == 've' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'draft' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% elif status == 'pu' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'publish' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% elif status == 'bu' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'buy' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% elif status == 're' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'rent' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% elif status == 'res' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'rental_season' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% elif status == 'ex' %}
-                                        hx-get="{% url 'properties:publish_status' property.id 'exchange' page_obj.number %}"
-                                        hx-target="#custom_table"
-                                        {% endif %}
-                                        class="text-left w-full px-4 py-2 text-md text-gray-700 font-semibold
-                                        {% if status == 'pu' %}
-                                        bg-green-300 hover:bg-green-200
-                                        {% elif status == 'dr' %}
-                                        bg-red-300 hover:bg-red-200
-                                        {% elif status == 'bu' %}
-                                        bg-blue-300 hover:bg-blue-200
-                                        {% elif status == 're' %}
-                                        bg-yellow-300 hover:bg-yellow-200
-                                        {% elif status == 'res' %}
-                                        bg-orange-300 hover:bg-orange-200
-                                        {% elif status == 'ex' %}
-                                        bg-teal-300 hover:bg-teal-200
-                                        {% endif %}
-                                        hover:text-gray-900" role="menuitem">
-                                            <span class="flex flex-col">
-                                                <span>
-                                                    {{ status.label }}
-                                                </span>
-                                            </span>
-                                        </button> -->
-
-                                    </div>
-                                </div>
-                            </div>
-
+                            
+                                    
+    
                             </td>
 
                             <td class="py-3 px-6 text-center">
@@ -364,13 +134,13 @@
                                 <span class="flex justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-red-700 w-6 h-6">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
-                                        </svg>                          
+                                    </svg>                          
                                 </span>
                                 {% else %}
                                 <span class="flex justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-green-700 w-6 h-6">
                                         <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-                                        </svg>
+                                    </svg>
                                 </span>
                                 {% endif %}
                                 </a>
@@ -384,8 +154,112 @@
                                 </a>
                             </td>
 
+                            {% if property.operation == 'wa' %}
                             <td class="py-3 px-6 text-center">
                                 <div class="flex item-center justify-between">
+                                            
+                                    {% if property.status == 'dr' %}
+                                        <div x-data="{ open: false }">
+
+                                            <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                    <path d="M12 12l0 .01"></path>
+                                                    <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                </svg>
+                                            </div>
+                                            
+                                            <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                            
+                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                                                
+                                                <div class="fixed z-10 inset-0 overflow-y-auto">
+                                                    <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+                                            
+                                                        <div @click.away="open = false"  class="relative flex flex-col items-center max-w-lg gap-4 p-6 rounded-md shadow-md sm:py-8 sm:px-12 bg-gray-50 text-gray-800">
+                                                            <button @click="open = false"  class="absolute top-2 right-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="flex-shrink-0 w-6 h-6">
+                                                                    <polygon points="427.314 107.313 404.686 84.687 256 233.373 107.314 84.687 84.686 107.313 233.373 256 84.686 404.687 107.314 427.313 256 278.627 404.686 427.313 427.314 404.687 278.627 256 427.314 107.313"></polygon>
+                                                                </svg>
+                                                            </button>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 text-blue-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                                <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                                <path d="M12 12l0 .01"></path>
+                                                                <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                            </svg>
+                                                            <h2 class="text-2xl font-semibold leading-tight tracking-wide">Estado de Operacion.</h2>
+                                                            <p class="flex-1 text-center text-gray-600">Esta seguro de cambiar el estado de la operacion?</p>
+                                                            <div class="flex items-center space-x-2">
+                                                                <button 
+                                                                hx-get="{% url 'properties:draft_change' property.id 'finished' page_obj.number %}"
+                                                                hx-target="#custom_table"
+                                                                type="button" class="px-8 py-3 font-semibold rounded-full bg-green-600 text-white">Concretada</button>
+                                                                <button 
+                                                                hx-get="{% url 'properties:draft_change' property.id 'annulled' page_obj.number %}"
+                                                                hx-target="#custom_table"
+                                                                type="button" class="px-8 py-3 font-semibold rounded-full bg-gray-600 text-white">No Concretada</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elif property.status == 'pu' %}
+                                        <div x-data="{ open: false }">
+
+                                            <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                    <path d="M12 12l0 .01"></path>
+                                                    <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                </svg>
+                                            </div>
+                                            
+                                            <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                            
+                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                                                
+                                                <div class="fixed z-10 inset-0 overflow-y-auto">
+                                                    <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+                                            
+                                                        <div @click.away="open = false"  class="relative flex flex-col items-center max-w-lg gap-4 p-6 rounded-md shadow-md sm:py-8 sm:px-12 bg-gray-50 text-gray-800">
+                                                            <button @click="open = false"  class="absolute top-2 right-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="flex-shrink-0 w-6 h-6">
+                                                                    <polygon points="427.314 107.313 404.686 84.687 256 233.373 107.314 84.687 84.686 107.313 233.373 256 84.686 404.687 107.314 427.313 256 278.627 404.686 427.313 427.314 404.687 278.627 256 427.314 107.313"></polygon>
+                                                                </svg>
+                                                            </button>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 text-blue-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                                <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                                <path d="M12 12l0 .01"></path>
+                                                                <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                            </svg>
+                                                            <h2 class="text-2xl font-semibold leading-tight tracking-wide">Estado de Operacion.</h2>
+                                                            <p class="flex-1 text-center text-gray-600">Esta seguro de cambiar el estado de la operacion?</p>
+                                                            <div class="flex items-center space-x-2">
+                                                                <button 
+                                                                hx-get="{% url 'properties:publish_change' property.id 'finished' page_obj.number %}"
+                                                                hx-target="#custom_table"
+                                                                type="button" class="px-8 py-3 font-semibold rounded-full bg-green-600 text-white">Concretada</button>
+                                                                <button 
+                                                                hx-get="{% url 'properties:publish_change' property.id 'annulled' page_obj.number %}"
+                                                                hx-target="#custom_table"
+                                                                type="button" class="px-8 py-3 font-semibold rounded-full bg-gray-600 text-white">No Concretada</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
                                     {% if property.status == 'dr' %}
                                         <div x-data="{ open: false }">
 
@@ -418,7 +292,7 @@
                                                                 </p>
                                                                 <div class="flex items-center justify-around w-full mt-8">
                                                                     <button 
-                                                                    hx-get="{% url 'properties:draft_status' property.id 'publish' page_obj.number %}"
+                                                                    hx-get="{% url 'properties:draft_change' property.id 'publish' page_obj.number %}"
                                         
                                                                     hx-target="#custom_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
@@ -426,7 +300,7 @@
                                                                     </button>
                                         
                                                                     <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                    Cancelar
+                                                                        Cancelar
                                                                 </button>
                                                                 </div>
                                                             </div>
@@ -503,7 +377,7 @@
                                                     </p>
                                                     <div class="flex items-center justify-around w-full mt-8">
                                                     <button
-                                                        hx-get="{% url 'properties:publish_status' property.id 'draft' page_obj.number %}"
+                                                        hx-get="{% url 'properties:publish_change' property.id 'draft' page_obj.number %}"
                                                         hx-target="#custom_table"
                                                         @click="open = false"
                                                         type="submit"
@@ -532,12 +406,9 @@
                                     {% if property.is_featured == False %}
                                         <div x-data="{ open: false }">
                                             <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" class="icon icon-tabler icon-tabler-home-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2"></path>
-                                                <path d="M19 13.488v-1.488h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h4.525"></path>
-                                                <path d="M15 19l2 2l4 -4"></path>
-                                            </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                                                    <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                                </svg>   
                                             </div>
                                             
                                             <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -550,12 +421,9 @@
                                                     <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
                                                         <div class="w-full h-full text-center">
                                                             <div class="flex h-full flex-col justify-between">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2"></path>
-                                                                <path d="M19 13.488v-1.488h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h4.525"></path>
-                                                                <path d="M15 19l2 2l4 -4"></path>
-                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-4 w-12 h-12 m-auto text-green-500">
+                                                                <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                                            </svg> 
                                                                 <p class="text-gray-800  text-xl font-bold mt-4">
                                                                     Destacar Propiedad
                                                                 </p>
@@ -565,17 +433,9 @@
                                                                 <div class="flex items-center justify-around w-full mt-8">
                                                                     <button 
                                                                     {% if url_option == 'table_publish' %}
-                                                                    hx-get="{% url 'properties:publish_featured' property.id 'featured' page_obj.number %}"
+                                                                    hx-get="{% url 'properties:publish_change' property.id 'featured' page_obj.number %}"
                                                                     {% elif url_option == 'table_draft' %}
-                                                                    hx-get="{% url 'properties:draft_featured' property.id 'featured' page_obj.number %}"
-                                                                    {% elif url_option == 'table_buy' %}
-                                                                    hx-get="{% url 'properties:buy_featured' property.id 'featured' page_obj.number %}"
-                                                                    {% elif url_option == 'table_rent' %}
-                                                                    hx-get="{% url 'properties:rent_featured' property.id 'featured' page_obj.number %}"
-                                                                    {% elif url_option == 'table_rental_season' %}
-                                                                    hx-get="{% url 'properties:rental_season_featured' property.id 'featured' page_obj.number %}"
-                                                                    {% elif url_option == 'table_exchange' %}
-                                                                    hx-get="{% url 'properties:exchange_featured' property.id 'featured' page_obj.number %}"
+                                                                    hx-get="{% url 'properties:draft_change' property.id 'featured' page_obj.number %}"
                                                                     {% endif %}
                                                                     hx-target="#custom_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
@@ -596,13 +456,9 @@
                                     {% else %}
                                         <div x-data="{ open: false }">
                                         <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" class="icon icon-tabler icon-tabler-home-cancel" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <circle cx="19" cy="19" r="3"></circle>
-                                                <path d="M17 21l4 -4"></path>
-                                                <path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"></path>
-                                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.58 0 1.103 .247 1.468 .642"></path>
-                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                                                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+                                            </svg>  
                                         </div>       
                                         
                                         <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -615,13 +471,9 @@
                                                 <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
                                                     <div class="w-full h-full text-center">
                                                         <div class="flex h-full flex-col justify-between">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" class="icon icon-tabler icon-tabler-home-cancel" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <circle cx="19" cy="19" r="3"></circle>
-                                                                <path d="M17 21l4 -4"></path>
-                                                                <path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"></path>
-                                                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.58 0 1.103 .247 1.468 .642"></path>
-                                                            </svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-4 w-12 h-12 m-auto text-yellow-500">
+                                                                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+                                                            </svg> 
                                                             <p class="text-gray-800  text-xl font-bold mt-4">
                                                                 Quitar Destacado
                                                             </p>
@@ -631,17 +483,9 @@
                                                             <div class="flex items-center justify-around w-full mt-8">
                                                                 <button 
                                                                 {% if url_option == 'table_publish' %}
-                                                                hx-get="{% url 'properties:publish_featured' property.id 'normal' page_obj.number %}"
+                                                                hx-get="{% url 'properties:publish_change' property.id 'normal' page_obj.number %}"
                                                                 {% elif url_option == 'table_draft' %}
-                                                                hx-get="{% url 'properties:draft_featured' property.id 'normal' page_obj.number %}"
-                                                                {% elif url_option == 'table_buy' %}
-                                                                hx-get="{% url 'properties:buy_featured' property.id 'normal' page_obj.number %}"
-                                                                {% elif url_option == 'table_rent' %}
-                                                                hx-get="{% url 'properties:rent_featured' property.id 'normal' page_obj.number %}"
-                                                                {% elif url_option == 'table_rental_season' %}
-                                                                hx-get="{% url 'properties:rental_season_featured' property.id 'normal' page_obj.number %}"
-                                                                {% elif url_option == 'table_exchange' %}
-                                                                hx-get="{% url 'properties:exchange_featured' property.id 'normal' page_obj.number %}"
+                                                                hx-get="{% url 'properties:draft_change' property.id 'normal' page_obj.number %}"
                                                                 {% endif %}
                                                                 hx-target="#custom_table"
                                                                 @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
@@ -660,12 +504,13 @@
                                         </div>
                                         </div>  
                                     {% endif %}
-                                    <a href="{% url 'properties:property_update' property.slug property.uuid %}" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+
+                                    <a href="{% url 'properties:publication_update' property.pk %}" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
-                                    </a>
-                                    
+                                    </a>                                     
+
                                     <div  x-data="{ open: false }">
                                         <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -698,17 +543,9 @@
                                                                 <div class='inline-flex'>
                                                                     <button
                                                                     {% if url_option == 'table_publish' %}
-                                                                        hx-delete="{% url 'properties:publish_delete' property.uuid page_obj.number %}"
+                                                                        hx-get="{% url 'properties:publish_delete' property.id page_obj.number %}"
                                                                     {% elif url_option == 'table_draft' %}
-                                                                        hx-delete="{% url 'properties:draft_delete' property.uuid page_obj.number %}"
-                                                                    {% elif url_option == 'table_buy' %}
-                                                                        hx-delete="{% url 'properties:buy_delete' property.uuid page_obj.number %}"
-                                                                    {% elif url_option == 'table_rent' %}
-                                                                        hx-delete="{% url 'properties:rent_delete' property.uuid page_obj.number %}"
-                                                                    {% elif url_option == 'table_rental_season' %}
-                                                                        hx-delete="{% url 'properties:rental_season_delete' property.uuid page_obj.number %}"
-                                                                    {% elif url_option == 'table_exchange' %}
-                                                                        hx-delete="{% url 'properties:exchange_delete' property.uuid page_obj.number %}"
+                                                                        hx-get="{% url 'properties:draft_delete' property.id page_obj.number %}"
                                                                     {% endif %}
                                                                     hx-target="#custom_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
@@ -727,8 +564,10 @@
                                             </div>
                                         </div>
                                     </div>     
+
                                 </div>
                             </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -744,16 +583,10 @@
                             <button 
                             {% if url_option == 'table_publish' %}
                                 hx-get="{% url 'properties:table_publish'  page_obj.previous_page_number  %}" 
+                            {% elif url_option == 'table_property' %}
+                                hx-get="{% url 'properties:table_property'  page_obj.previous_page_number  %}" 
                             {% elif url_option == 'table_draft' %}
                                 hx-get="{% url 'properties:table_draft'  page_obj.previous_page_number  %}" 
-                            {% elif url_option == 'table_buy' %}
-                                hx-get="{% url 'properties:table_buy'  page_obj.previous_page_number  %}" 
-                            {% elif url_option == 'table_rent' %}
-                                hx-get="{% url 'properties:table_rent'  page_obj.previous_page_number  %}" 
-                            {% elif url_option == 'table_rental_season' %}
-                                hx-get="{% url 'properties:table_rental_season'  page_obj.previous_page_number  %}" 
-                            {% elif url_option == 'table_exchange' %}
-                                hx-get="{% url 'properties:table_exchange'  page_obj.previous_page_number  %}" 
                             {% endif %}
                             hx-vals='{"q": "{{q}}"}'
                             hx-target='#custom_table'
@@ -772,16 +605,10 @@
                                     <button 
                                     {% if url_option == 'table_publish' %}
                                         hx-get="{% url 'properties:table_publish'  page_obj.number|add:"-1" %}" 
+                                    {% elif url_option == 'table_property' %}
+                                        hx-get="{% url 'properties:table_property'  page_obj.number|add:"-1" %}" 
                                     {% elif url_option == 'table_draft' %}
                                         hx-get="{% url 'properties:table_draft'  page_obj.number|add:"-1" %}" 
-                                    {% elif url_option == 'table_buy' %}
-                                        hx-get="{% url 'properties:table_buy'  page_obj.number|add:"-1"  %}" 
-                                    {% elif url_option == 'table_rent' %}
-                                        hx-get="{% url 'properties:table_rent'  page_obj.number|add:"-1"  %}" 
-                                    {% elif url_option == 'table_rental_season' %}
-                                        hx-get="{% url 'properties:table_rental_season'  page_obj.number|add:"-1"  %}" 
-                                    {% elif url_option == 'table_exchange' %}
-                                        hx-get="{% url 'properties:table_exchange'  page_obj.number|add:"-1"  %}" 
                                     {% endif %}
                                         hx-vals='{"q": "{{q}}"}'
                                         hx-target='#custom_table'
@@ -793,16 +620,10 @@
                                 <button 
                                 {% if url_option == 'table_publish' %}
                                     hx-get="{% url 'properties:table_publish'  page_obj.number %}" 
+                                {% elif url_option == 'table_property' %}
+                                    hx-get="{% url 'properties:table_property'  page_obj.number %}" 
                                 {% elif url_option == 'table_draft' %}
                                     hx-get="{% url 'properties:table_draft'  page_obj.number %}" 
-                                {% elif url_option == 'table_buy' %}
-                                    hx-get="{% url 'properties:table_buy'  page_obj.number  %}" 
-                                {% elif url_option == 'table_rent' %}
-                                    hx-get="{% url 'properties:table_rent'  page_obj.number  %}" 
-                                {% elif url_option == 'table_rental_season' %}
-                                    hx-get="{% url 'properties:table_rental_season'  page_obj.number  %}" 
-                                {% elif url_option == 'table_exchange' %}
-                                    hx-get="{% url 'properties:table_exchange'  page_obj.number  %}" 
                                 {% endif %}
                                     hx-vals='{"q": "{{q}}"}'
                                     hx-target='#custom_table'
@@ -815,16 +636,9 @@
                                     <button
                                     {% if url_option == 'table_publish' %}
                                         hx-get="{% url 'properties:table_publish'  page_obj.number|add:"1" %}" 
+                                    {% elif url_option == 'table_property' %}
+                                        hx-get="{% url 'properties:table_property'  page_obj.number|add:"1" %}" 
                                     {% elif url_option == 'table_draft' %}
-                                        hx-get="{% url 'properties:table_draft'  page_obj.number|add:"1" %}" 
-                                    {% elif url_option == 'table_buy' %}
-                                        hx-get="{% url 'properties:table_buy'  page_obj.number|add:"1"  %}" 
-                                    {% elif url_option == 'table_rent' %}
-                                        hx-get="{% url 'properties:table_rent'  page_obj.number|add:"1"  %}" 
-                                    {% elif url_option == 'table_rental_season' %}
-                                        hx-get="{% url 'properties:table_rental_season'  page_obj.number|add:"1"  %}" 
-                                    {% elif url_option == 'table_exchange' %}
-                                        hx-get="{% url 'properties:table_exchange'  page_obj.number|add:"1"  %}
                                     {% endif %}
                                         hx-vals='{"q": "{{q}}"}'
                                         hx-target='#custom_table'
@@ -839,16 +653,10 @@
                                         <button
                                         {% if url_option == 'table_publish' %}
                                             hx-get="{% url 'properties:table_publish'  i %}" 
+                                        {% elif url_option == 'table_property' %}
+                                            hx-get="{% url 'properties:table_property'  i %}" 
                                         {% elif url_option == 'table_draft' %}
                                             hx-get="{% url 'properties:table_draft'  i %}" 
-                                        {% elif url_option == 'table_buy' %}
-                                            hx-get="{% url 'properties:table_buy'  i  %}" 
-                                        {% elif url_option == 'table_rent' %}
-                                            hx-get="{% url 'properties:table_rent'  i  %}" 
-                                        {% elif url_option == 'table_rental_season' %}
-                                            hx-get="{% url 'properties:table_rental_season'  i  %}" 
-                                        {% elif url_option == 'table_exchange' %}
-                                            hx-get="{% url 'properties:table_exchange'  i  %}
                                         {% endif %}
                                             hx-vals='{"q": "{{q}}"}'
                                             hx-target='#custom_table'
@@ -859,16 +667,10 @@
                                         <button
                                         {% if url_option == 'table_publish' %}
                                             hx-get="{% url 'properties:table_publish'  i %}" 
+                                        {% elif url_option == 'table_property' %}
+                                            hx-get="{% url 'properties:table_property'  i %}" 
                                         {% elif url_option == 'table_draft' %}
                                             hx-get="{% url 'properties:table_draft'  i %}" 
-                                        {% elif url_option == 'table_buy' %}
-                                            hx-get="{% url 'properties:table_buy'  i  %}" 
-                                        {% elif url_option == 'table_rent' %}
-                                            hx-get="{% url 'properties:table_rent'  i  %}" 
-                                        {% elif url_option == 'table_rental_season' %}
-                                            hx-get="{% url 'properties:table_rental_season'  i  %}" 
-                                        {% elif url_option == 'table_exchange' %}
-                                            hx-get="{% url 'properties:table_exchange'  i  %}
                                         {% endif %}
                                             hx-vals='{"q": "{{q}}"}'
                                             hx-target='#custom_table'
@@ -886,16 +688,10 @@
                             <button 
                             {% if url_option == 'table_publish' %}
                                 hx-get="{% url 'properties:table_publish'  page_obj.next_page_number  %}" 
+                            {% elif url_option == 'table_property' %}
+                                hx-get="{% url 'properties:table_property'  page_obj.next_page_number %}" 
                             {% elif url_option == 'table_draft' %}
                                 hx-get="{% url 'properties:table_draft'  page_obj.next_page_number %}" 
-                            {% elif url_option == 'table_buy' %}
-                                hx-get="{% url 'properties:table_buy'  page_obj.next_page_number  %}" 
-                            {% elif url_option == 'table_rent' %}
-                                hx-get="{% url 'properties:table_rent'  page_obj.next_page_number  %}" 
-                            {% elif url_option == 'table_rental_season' %}
-                                hx-get="{% url 'properties:table_rental_season'  page_obj.next_page_number  %}" 
-                            {% elif url_option == 'table_exchange' %}
-                                hx-get="{% url 'properties:table_exchange'  page_obj.next_page_number  %}
                             {% endif %}
                             hx-vals='{"q": "{{q}}"}'
                             hx-target='#custom_table'

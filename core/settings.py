@@ -1,4 +1,3 @@
-# import os
 from pathlib import Path
 
 from environ import Env
@@ -19,14 +18,6 @@ SECRET_KEY = env.str("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 ALLOWED_HOSTS = ["*"]
 
-# DEBUG = 'RENDER' not in os.environ
-
-# RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-# if RENDER_EXTERNAL_HOSTNAME:
-#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-
-# Application definition
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -56,6 +47,7 @@ LOCAL_APPS = [
     'apps.pages.apps.PagesConfig',
     'apps.properties.apps.PropertiesConfig',
     'apps.newsletters.apps.NewslettersConfig',
+    'apps.reports.apps.ReportsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -176,6 +168,7 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
 # NPM_BIN_PATH = '/usr/bin/npm'
 NPM_BIN_PATH = r'C:\Program Files\nodejs\npm.cmd'
 

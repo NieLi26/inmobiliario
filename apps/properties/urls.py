@@ -7,16 +7,11 @@ urlpatterns = [
     # Test
     path('<str:property_type>/create/test/', views.property_create_test, name='property_create_test'),
     
-
     ## PANEL
     path('panel/publicaciones/', views.property_publish_list, name='property_custom_publish'), 
     path('panel/despublicaciones/', views.DraftListView.as_view(), name='property_custom_draft'), 
-    path('panel/vendidas/', views.BuyListView.as_view(), name='property_custom_buy'), 
-    path('panel/arrendadas/', views.RentListView.as_view(), name='property_custom_rent'), 
-    path('panel/arrendadas-temporada/', views.RentalSeasonListView.as_view(), name='property_custom_rental_season'), 
-    path('panel/permutadas/', views.ExchangeListView.as_view(), name='property_custom_exchange'), 
     path('panel/contacts/', views.PropertyContactListView.as_view(), name='contact_property_list'),
-    path('panel/gestion/', views.ManagmentListView.as_view(), name='managment_list'),
+    path('panel/propiedades/', views.PropertyListView.as_view(), name='property_custom_list'),
 
     ## REALTOR
     path('realtor/', views.RealtorListView.as_view(), name='realtor_list'),
@@ -30,10 +25,14 @@ urlpatterns = [
     path('owner/<int:pk>/update/', views.OwnerUpdateView.as_view(), name='owner_update'),
 
     ## PROPERTY
-    path('<str:publish_type>/<str:property_type>/<str:location_slug>/<slug:slug>/<uuid:uuid>/', views.property_detail, name='property_detail'),
     path('<str:property_type>/<str:publish_type>/create/', views.property_create, name='property_create'),
     path('<slug:slug>/<uuid:uuid>/update/', views.property_update, name='property_update'),
     path('select/', views.property_select, name='property_select'),
+
+    ## PUBLICATION
+    path('<int:pk>/', views.PublicationDetailView.as_view(), name='publication_detail'),
+    path('<slug:slug>/<uuid:uuid>/publication/create/', views.PublicationCreateView.as_view(), name='publication_create'),
+    path('<int:pk>/publication/update/', views.PublicationUpdateView.as_view(), name='publication_update'),
     
     ## GALERY
     path('galery/<slug:slug>/<uuid:uuid>/', views.PropertyGaleryView.as_view(), name='property_galery'),
@@ -55,46 +54,21 @@ urlpatterns = [
 ]
 
 hxpatterns = [
-    ## MANAGMENT
-    path('managment/<int:pk>/<int:page_number>/delete/', views.ManagmentDeleteView.as_view(), name='managment_delete'),
-    path('managment/<int:pk>/<str:action>/<str:page_number>/paid/', views.ManagmentPaidView.as_view(), name='managment_paid'),
-    path('managment/<int:page_number>/table', views.TableManagmentView.as_view(), name='table_managment'),
+    ## PROPERTY
+    path('property/<uuid:uuid>/<int:page_number>/delete/', views.PropertyDeleteView.as_view(), name='property_delete'),
+    path('property/<int:page_number>/table', views.TablePropertyView.as_view(), name='table_property'),
+    path('property/<int:pk>/<str:action>/<str:page_number>/active/', views.PropertyIsActiveView.as_view(), name='property_active'),
+
     
     ## PUBLISH
-    path('publish/<uuid:uuid>/<int:page_number>/delete', views.publish_delete, name='publish_delete'),
-    path('publish/<int:pk>/<str:action>/<str:page_number>/status/', views.publish_status, name='publish_status'),
-    path('publish/<int:pk>/<str:action>/<str:page_number>/fatured', views.publish_featured, name='publish_featured'),
+    path('publish/<int:pk>/<int:page_number>/delete', views.publish_delete, name='publish_delete'),
+    path('publish/<int:pk>/<str:action>/<str:page_number>/change/', views.publish_change, name='publish_change'),
     path('publish/<int:page_number>/table', views.table_publish, name='table_publish'),
 
     ## DRAFT
-    path('draft/<uuid:uuid>/<int:page_number>/delete/', views.DraftDeleteView.as_view(), name='draft_delete'),
-    path('draft/<int:pk>/<str:action>/<str:page_number>/status/', views.DraftStatusView.as_view(), name='draft_status'),
-    path('draft/<int:pk>/<str:action>/<str:page_number>/featured/', views.DraftFeaturedView.as_view(), name='draft_featured'),
+    path('draft/<int:pk>/<int:page_number>/delete/', views.DraftDeleteView.as_view(), name='draft_delete'),
+    path('draft/<int:pk>/<str:action>/<str:page_number>/change/', views.DraftChangeView.as_view(), name='draft_change'),
     path('draft/<int:page_number>/table', views.TableDraftView.as_view(), name='table_draft'),
-
-    ## BUY
-    path('buy/<uuid:uuid>/<int:page_number>/delete/', views.BuyDeleteView.as_view(), name='buy_delete'),
-    path('buy/<int:pk>/<str:action>/<str:page_number>/status/', views.BuyStatusView.as_view(), name='buy_status'),
-    path('buy/<int:pk>/<str:action>/<str:page_number>/featured/', views.BuyFeaturedView.as_view(), name='buy_featured'),
-    path('buy/<int:page_number>/table', views.TableBuyView.as_view(), name='table_buy'),
-
-    ## RENT
-    path('rent/<uuid:uuid>/<int:page_number>/delete/', views.RentDeleteView.as_view(), name='rent_delete'),
-    path('rent/<int:pk>/<str:action>/<str:page_number>/status/', views.RentStatusView.as_view(), name='rent_status'),
-    path('rent/<int:pk>/<str:action>/<str:page_number>/featured/', views.RentFeaturedView.as_view(), name='rent_featured'),
-    path('rent/<int:page_number>/table', views.TableRentView.as_view(), name='table_rent'),
-
-    ## RENTAL SEASON
-    path('rental-season/<uuid:uuid>/<int:page_number>/delete/', views.RentalSeasonDeleteView.as_view(), name='rental_season_delete'),
-    path('rental-season/<int:pk>/<str:action>/<str:page_number>/status/', views.RentalSeasonStatusView.as_view(), name='rental_season_status'),
-    path('rental-season/<int:pk>/<str:action>/<str:page_number>/featured/', views.RentalSeasonFeaturedView.as_view(), name='rental_season_featured'),
-    path('rental-season/<int:page_number>/table', views.TableRentalSeasonView.as_view(), name='table_rental_season'),
-
-    ## EXCHANGE
-    path('exchange/<uuid:uuid>/<int:page_number>/delete/', views.ExchangeDeleteView.as_view(), name='exchange_delete'),
-    path('exchange/<int:pk>/<str:action>/<str:page_number>/status/', views.ExchangeStatusView.as_view(), name='exchange_status'),
-    path('exchange/<int:pk>/<str:action>/<str:page_number>/featured/', views.ExchangeFeaturedView.as_view(), name='exchange_featured'),
-    path('exchange/<int:page_number>/table', views.TableExchangeView.as_view(), name='table_exchange'),
 
     ## CREATE AND UPDATE
     path('commune-select', views.commune_select, name='commune_select'),

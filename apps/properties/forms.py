@@ -11,8 +11,9 @@ from apps.accounts.rut_chile import is_valid_rut
 from .models import (
     House, Property, Apartment,
     Commune, Region, PropertyContact,
-    Realtor, Owner, Office, UrbanSite, 
-    Parcel, Industrial, Cellar, Shop
+    Realtor, Owner, Office, UrbanSite,
+    Parcel, Industrial, Cellar, Shop,
+    Publication
 )
 
 from .validators import (
@@ -26,16 +27,9 @@ from .validators import (
     attrs_class_error,
 )
 
-# ========== BASE PROPERTY, PROPERTY RENT ========== |
 
+class PublicationBaseForm(forms.ModelForm):
 
-class PropertyBaseForm(forms.ModelForm):
-    # se le puede poner cualquier nombre, y cualquier texto, y se llama con el nombre del contexto como pasaste el form.nombre de la variable(ej. form.required_css_class)
-    required_css_class = 'focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700' 
-
-    # INSIDE WIDGETS
-
-    # si no creara este atributo solo me denegaria automaticamente el valor que no es numero, y me diria siempre "el valor es requerido"
     price = forms.CharField(
         label='Precio Publicación',
         validators=[number_validator],
@@ -46,6 +40,98 @@ class PropertyBaseForm(forms.ModelForm):
         label='Monto Comision',
         validators=[number_validator]
     )
+
+    def __init__(self, *args, **kwargs):
+        self.publish_type = kwargs.pop('publish_type', None) 
+        self.user = kwargs.pop('user', None)
+        print(self.publish_type)
+        super().__init__(*args, **kwargs)
+
+        # ========== ADVANCE CONTROL PANEL (multiple <inputs>) ========== |
+
+        for field in self.fields:
+            attrs = {}
+            if field != 'is_featured' and field != 'is_new' and field != 'is_iva':
+                attrs['class'] = attrs_class
+            else:
+                attrs["class"] = "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+
+            if self.errors.get(field):
+                attrs['class'] = attrs_class_error
+            self.fields[field].widget.attrs.update(attrs)
+
+        selects = ['owner', 'realtor']
+        for select in selects:
+            self.fields[select].widget.attrs['form'] = 'form-general'
+
+       # ========== BASIC CONTROL PANEL (single <inputs>) ========== |
+
+        self.fields['owner'].queryset = Owner.objects.filter(state=True)
+        self.fields['realtor'].queryset = Realtor.objects.filter(state=True)
+
+        self.fields['price'].widget.attrs['x-mask:dynamic'] = '$money($input)' # no funciona en todos    
+        if self.publish_type != 'ar' and self.publish_type != 'at':
+            self.fields['commission_value'].widget.attrs['readonly'] = 'true'
+
+    # mas seguro y puedes restringir que no se pueda cambiar un valor, en este caso el usuario, ya que la instancia si se puede modificar
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if not instance.pk:
+            instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+
+
+class PublicationForm(PublicationBaseForm):
+
+    appraisal_value = forms.CharField(
+        label='Valor Tasación',
+        validators=[number_validator],
+        required=False
+    )
+    commission_percentage = forms.CharField(
+        label='Porcentaje Comisión',
+        validators=[number_decimal_validator],
+    )
+
+    class Meta:
+        model = Publication
+        fields = (
+            'owner',
+            'realtor',
+            'type_price',
+            'price',
+            'appraisal_value',
+            'commission_percentage',
+            'commission_value',
+            'is_iva',
+            'is_featured'
+        )
+
+
+class PublicationRentForm(PublicationBaseForm):
+    class Meta:
+        model = Publication
+        fields = (
+            'owner',
+            'realtor',
+            'type_price',
+            'price',
+            'commission_value',
+            'is_iva',
+            'is_featured'
+        )
+
+
+# ========== BASE PROPERTY, PROPERTY RENT ========== |
+class PropertyBaseForm(forms.ModelForm):
+    # se le puede poner cualquier nombre, y cualquier texto, y se llama con el nombre del contexto como pasaste el form.nombre de la variable(ej. form.required_css_class)
+    required_css_class = 'focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700' 
+
+    # INSIDE WIDGETS
+
+    # si no creara este atributo solo me denegaria automaticamente el valor que no es numero, y me diria siempre "el valor es requerido"
     google_url = forms.CharField(
         label='Google url',
         widget=forms.TextInput(attrs={
@@ -60,7 +146,6 @@ class PropertyBaseForm(forms.ModelForm):
             }
         )
     )
-    # price = forms.RegexField(regex=r'^[0-9]*$', error_messages={'invalid': 'Este campo solo debe contener números.', 'invalid_choice': 'Este campo solo debe contener números.'})
 
     # ------------------------------------------------ SUPER FUNCTION ------------------------------------------------ |
 
@@ -83,15 +168,6 @@ class PropertyBaseForm(forms.ModelForm):
         # self.fields['property_type'].widget.attrs.update(style='display:none')
         # self.fields['property_type'].initial = property_type
 
-        self.fields['price'].widget.attrs['x-mask:dynamic'] = '$money($input)' # no funciona en todos
-        # self.fields['price'].validators = [RegexValidator(r'^[0-9]*$', message='Solo numeros son permitidos')]
-
-        if self.publish_type != 'ar' and self.publish_type != 'at':
-            self.fields['commission_value'].widget.attrs['readonly'] = 'true'
-
-      
-        # self.fields['commission_value'].widget.attrs['class'] += ' bg-gray-200' # si se quiere usar atributos extra sin alterar lo que ya esta, se debe hacer asi, con el update no se puede
- 
         region_data = {
             'hx-get': '/properties/commune-select',
             'hx-trigger': 'change delay:500ms',
@@ -113,7 +189,7 @@ class PropertyBaseForm(forms.ModelForm):
         
         for field in self.fields:
             attrs = {}
-            if field != 'is_featured' and field != 'is_new' and field != 'is_iva':
+            if field != 'is_new':
                 attrs['class'] = attrs_class
             else:
                 attrs["class"] = "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
@@ -122,7 +198,7 @@ class PropertyBaseForm(forms.ModelForm):
                 attrs['class'] = attrs_class_error
             self.fields[field].widget.attrs.update(attrs)
 
-        selects = ['owner', 'realtor']
+        # selects = ['owner', 'realtor']
         for selects in self.fields:
             self.fields[selects].widget.attrs['form'] = 'form-general'
 
@@ -150,22 +226,23 @@ class PropertyBaseForm(forms.ModelForm):
         fields = ( 
             'title',
             'description',
-            'type_price',
-            'price',
+            # 'type_price',
+            # 'price',
             'google_url',
             'video_url',
-            'is_featured',
+            # 'is_featured',
             'is_new',
-            'is_iva',
+            # 'is_active',
+            # 'is_iva',
             'region',
             'commune',
             'street_address',
             'street_number',
-            'realtor',
-            'owner',
-            'appraisal_value',  # null(valor tasacion)
-            'commission_percentage',  # null(porcentaje comision)
-            'commission_value',
+            # 'realtor',
+            # 'owner',
+            # 'appraisal_value',  # null(valor tasacion)
+            # 'commission_percentage',  # null(porcentaje comision)
+            # 'commission_value',
             'common_expenses',
             'num_roll'
         )
@@ -216,14 +293,15 @@ class PropertyBaseForm(forms.ModelForm):
 
 
 class PropertyForm(PropertyBaseForm):
-    appraisal_value = forms.CharField(
-        label='Valor Tasación',
-        validators=[number_validator]
-    )
-    commission_percentage = forms.CharField(
-        label='Porcentaje Comision',
-        validators=[number_decimal_validator]
-    )
+    pass
+    # appraisal_value = forms.CharField(
+    #     label='Valor Tasación',
+    #     validators=[number_validator]
+    # )
+    # commission_percentage = forms.CharField(
+    #     label='Porcentaje Comision',
+    #     validators=[number_decimal_validator]
+    # )
 
 
 class PropertyRentForm(PropertyBaseForm):
@@ -232,20 +310,20 @@ class PropertyRentForm(PropertyBaseForm):
         fields = ( 
             'title',
             'description',
-            'type_price',
-            'price',
+            # 'type_price',
+            # 'price',
             'google_url',
             'video_url',
-            'is_featured',
+            # 'is_featured',
             'is_new',
-            'is_iva',
+            # 'is_iva',
             'region',
             'commune',
             'street_address',
             'street_number',
-            'realtor',
-            'owner',
-            'commission_value',
+            # 'realtor',
+            # 'owner',
+            # 'commission_value',
             'common_expenses',
             'num_roll'
         )

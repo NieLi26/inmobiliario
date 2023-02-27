@@ -22,7 +22,7 @@ from apps.base.models import TimeStampedModel
 #     return 'property/{0}/{1}'.format(instance.uuid, filename)
 
 
-def property_images_directory_path(instance,filename):
+def property_images_directory_path(instance, filename):
     return 'property_images/{0}/{1}'.format(instance.property.uuid, filename)
 
 
@@ -58,6 +58,7 @@ class Realtor(TimeStampedModel):
     phone1 = models.CharField('Telefono 1', max_length=9)
     phone2 = models.CharField('Telefono 2', max_length=9, blank=True)
     email = models.EmailField('Correo', max_length=150)
+
     class Meta:
         '''Meta definition for Realtor.'''
 
@@ -128,35 +129,12 @@ class Property(TimeStampedModel):
         (PUBLISH_EXCHANGE, 'Permuta')
     )
 
-    TYPE_PRICE_CHOICES = (
-        ('', 'Seleccione un tipo'),
-        ('uf', 'UF'),
-        ('usd', 'USD'),
-        ('clp', 'CLP'),
-    )
-
-    class Status(models.TextChoices):
-        PUBLISH = 'pu', 'Publicado' # green
-        DRAFT = 'dr', 'No Publicado' # red
-        # BUY = 'bu', 'Vendido' 
-        # RENT = 're', 'Arrendado'
-        # RENTAL_SEASON = 'res', 'Arrendado por Temporada'
-        # EXCHANGE = 'ex', 'Permutado'
-
     # General
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='properties_user')
-    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='properties_owner', verbose_name='Propietario')
-    realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='properties_realtor', verbose_name='Agente')
-    status = models.CharField(choices=Status.choices, max_length=3, default=Status.DRAFT)
     property_type = models.CharField('Tipo de Propiedad', choices=PROPERTY_CHOICES, max_length=2)
     publish_type = models.CharField('Tipo de Operación', choices=PUBLISH_CHOICES, max_length=2)
     title = models.CharField("Titulo(hasta 100 caracteres)", max_length=100)
     description = models.TextField("Descripción")
-    type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)
-    price = models.PositiveIntegerField('Precio Publicación')
-    appraisal_value = models.PositiveIntegerField('Valor Tasación', null=True, blank=True)
-    commission_percentage = models.DecimalField('Porcentaje Comisión', null=True, blank=True, decimal_places=2, max_digits=4)
-    commission_value = models.PositiveIntegerField('Monto Comisión')
     common_expenses = models.PositiveIntegerField('Gastos comunes', blank=True, null=True)
 
     # url externas
@@ -164,9 +142,8 @@ class Property(TimeStampedModel):
     video_url = models.URLField('Video', blank=True, null=True)
 
     # status
-    is_featured = models.BooleanField('Destacada', default=False)
     is_new = models.BooleanField('Nueva', default=False)
-    is_iva = models.BooleanField('IVA', default=False)
+    is_active = models.BooleanField('Activa', default=True)
 
     # miniatura
     # thumbnail = models.ImageField('Imagen',upload_to=property_directory_path, blank=True)
@@ -184,9 +161,6 @@ class Property(TimeStampedModel):
     slug = models.SlugField(unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
-    # get visitors
-    views = models.ManyToManyField(IpVisitor, related_name="property_ip_visitor")
-    
     class Meta:
         '''Meta definition for Property.'''
 
@@ -214,20 +188,20 @@ class Property(TimeStampedModel):
     def get_absolute_url(self):
         return reverse("properties:property_detail", kwargs={"publish_type": self.publish_type, "property_type": self.property_type, 'location_slug': self.commune.location_slug,"slug": self.slug, 'uuid': self.uuid})
 
-    # actuca sobre la clase, considerando todas sus instancias
+    # actua sobre la clase, considerando todas sus instancias
     # El primer argumento de un método de clase debe ser la propia clase, que se pasa automáticamente como argumento(en este caso "cls").
     @classmethod
     def count_by_user(cls, user):
         return cls.objects.filter(user=user).count()
-    
+  
     @property
-    def get_views(self):
-        return self.views.count()
-    
+    def has_active_publication(self):
+        return len([publication for publication in self.publications.all() if publication.state])
+
 
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''
-    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='properties')
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='property_images')
     image = models.ImageField(upload_to=property_images_directory_path)
 
     class Meta:
@@ -279,6 +253,66 @@ class PropertyImage(TimeStampedModel):
         item = model_to_dict(self)
         item['image'] = self.get_image()
         return item
+
+
+class Publication(TimeStampedModel):
+    '''Model definition for Publication.'''
+
+    TYPE_PRICE_CHOICES = (
+        ('', 'Seleccione un tipo'),
+        ('uf', 'UF'),
+        ('usd', 'USD'),
+        ('clp', 'CLP'),
+    )
+
+    class Status(models.TextChoices):
+        PUBLISH = 'pu', 'Publicado'  # green
+        DRAFT = 'dr', 'No Publicado'  # red
+        # BUY = 'bu', 'Vendido' 
+        # RENT = 're', 'Arrendado'
+        # RENTAL_SEASON = 'res', 'Arrendado por Temporada'
+        # EXCHANGE = 'ex', 'Permutado'
+
+    class Operations(models.TextChoices):
+        WAITING = 'wa', 'En espera'  # green
+        ANNULLED = 'an', 'No concretada'  # green
+        FINISHED = 'fi', 'Concretada'  # green
+        # SOLD = 've', 'Vendida'  # green
+        # EXCHANGED = 'pe', 'Permutada'  # red
+        # LEASED = 'ar', 'Arrendada'
+        # LEASED_SEASON = 'at', 'Arrendada por temporada'
+
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="publications")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications_user')
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='publications_owner', verbose_name='Propietario')
+    realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
+    status = models.CharField(choices=Status.choices, max_length=3, default=Status.DRAFT)
+    operation = models.CharField(choices=Operations.choices, max_length=2, default=Operations.WAITING)
+    type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)
+    price = models.PositiveIntegerField('Precio Publicación')
+    appraisal_value = models.PositiveIntegerField('Valor Tasación', null=True, blank=True)
+    commission_percentage = models.DecimalField('Porcentaje Comisión', null=True, blank=True, decimal_places=2, max_digits=4)
+    commission_value = models.PositiveIntegerField('Monto Comisión')
+    is_iva = models.BooleanField('IVA', default=False)
+    is_featured = models.BooleanField('Destacada', default=False)
+
+    # get visitors
+    views = models.ManyToManyField(IpVisitor, related_name="publication_ip_visitor")
+
+    class Meta:
+        '''Meta definition for Publication.'''
+
+        verbose_name = 'Publication'
+        verbose_name_plural = 'Publications'
+
+    def __str__(self):
+        return str(self.property)
+    
+    def get_absolute_url(self):
+        return reverse("properties:publication_detail", kwargs={"pk": self.id})
+
+    def get_views_count(self):
+        return self.views.count()
 
 
 class House(TimeStampedModel):
@@ -367,9 +401,6 @@ class House(TimeStampedModel):
     service = MultiSelectField('Servicios', choices=Services.choices, max_length=250, default="", blank=True)
     kitchen = MultiSelectField('Cocina',choices=Kitchens.choices , max_length=250, default="", blank=True)
     other = MultiSelectField('Otros',choices=Others.choices , max_length=250, default="", blank=True)
-
-
-
 
     class Meta:
         '''Meta definition for House.'''
@@ -598,7 +629,7 @@ class Shop(TimeStampedModel):
         verbose_name_plural = 'Shops'
 
     def __str__(self):
-        return self.title
+        return self.property.title
 
 
 class Cellar(TimeStampedModel):
@@ -638,7 +669,7 @@ class Cellar(TimeStampedModel):
         verbose_name_plural = 'Cellars'
 
     def __str__(self):
-        return self.title
+        return self.property.title
 
 
 class Industrial(TimeStampedModel):
@@ -678,7 +709,7 @@ class Industrial(TimeStampedModel):
         verbose_name_plural = 'Industrials'
 
     def __str__(self):
-        return self.title
+        return self.property.title
 
 
 class UrbanSite(TimeStampedModel):
@@ -725,7 +756,7 @@ class UrbanSite(TimeStampedModel):
         verbose_name_plural = 'UrbanSites'
 
     def __str__(self):
-        return self.title
+        return self.property.title
 
 
 class Parcel(TimeStampedModel):
@@ -772,7 +803,7 @@ class Parcel(TimeStampedModel):
         verbose_name_plural = 'Parcels'
 
     def __str__(self):
-        return self.title
+        return self.property.title
 
 
 class Region(TimeStampedModel):
@@ -826,19 +857,3 @@ class PropertyContact(TimeStampedModel):
         return str(self.from_email)
 
 
-class PropertyManager(TimeStampedModel):
-    '''Model definition for PropertyManager.'''
-    property = models.ForeignKey(Property, on_delete=models.SET_NULL, related_name='managers', blank=True, null=True)
-    type_property = models.CharField('Tipo de Propiedad', max_length=100)
-    total = models.CharField('Total', max_length=100)
-    commission_percentage = models.PositiveIntegerField('Porcentaje Comisión(Valor Entero)')
-    commission_value = models.PositiveIntegerField()
-    is_commission_paid = models.BooleanField('Comisión Pagada', default=False)
-    class Meta:
-        '''Meta definition for PropertyManager.'''
-
-        verbose_name = 'PropertyManager'
-        verbose_name_plural = 'PropertyManagers'
-
-    def __str__(self):
-        return self.type_property

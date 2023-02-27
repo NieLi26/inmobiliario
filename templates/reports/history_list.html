@@ -25,7 +25,7 @@
       </span>
       <input
         hx-get="{% url url_option  page_obj.number  %}"
-        hx-target="#managment_table"
+        hx-target="#operation_table"
         hx-swap="innerHTML"
         hx-trigger="keyup changed delay:500ms"
         name="q"
@@ -36,7 +36,7 @@
     </div>
 
     <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto md:overflow-visible">
-        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden md:overflow-visible border-2" id="managment_table" >
+        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden md:overflow-visible border-2" id="operation_table" >
      
             {% block table_list %}
                 
@@ -45,9 +45,11 @@
                     <tr class="border-b text-gray-400 uppercase text-xs leading-normal">
                         <th class="py-3 px-6 text-left">Tipo</th>
                         <th class="py-3 px-6 text-left">Código</th>
+                        <th class="py-3 px-6 text-left">Region</th>
                         <th class="py-3 px-6 text-left">Comuna</th>
                         <th class="py-3 px-6 text-left">Valor referencial</th>
                         <th class="py-3 px-6 text-left">Valor Comision</th>
+                        <th class="py-3 px-6 text-center">Estado Operación</th>
                         <th class="py-3 px-6 text-center">Estado Comision</th>
                         <th class="py-3 px-6 text-center">Fecha de Creacion</th>
                         <th class="py-3 px-6 text-center">Acciones</th>
@@ -57,98 +59,163 @@
                     {% for property in page_obj  %}
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6 text-left whitespace-nowrap">
-                                <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center">
                                     <span class="font-medium">{{ property.type_property }}</span>
                                 </div>
-                                </a>
                             </td>
                             <td class="py-3 px-6 text-left">
-                                <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center">
-                                    <span>{{ property.property.uuid }}</span>
+                                    <span>{{ property.codigo }}</span>
                                 </div>
-                                </a>
                             </td>
                             <td class="py-3 px-6">
-                                <a href="{{ property.get_absolute_url }}">
                                 <div class="flex items-center ">
-                                    <span> {{ property.property.commune | title }}</span>
+                                    <span> {{ property.region | title }}</span>
                                 </div>
-                                </a>
                             </td>
                             <td class="py-3 px-6">
-                                <a href="{{ property.get_absolute_url }}">
+                                <div class="flex items-center ">
+                                    <span> {{ property.commune | title }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-6">
                                 <div class="flex items-center justify-start">
                                 {{ property.total }}
                                 </div>
-                                </a>
                             </td>
                             <td class="py-3 px-6">
-                                <a href="{{ property.get_absolute_url }}">
-                                    <div class="flex items-center justify-start">
-                                    {% if property.type_price == 'uf' %} UF {{ property.commission_value | intcomma }} {% else %} $ {{ property.commission_value | intcomma }} {% endif %}
-                                    </div>
-                                </a>
+                                <div class="flex items-center justify-start">
+                                {% if property.type_price == 'uf' %} UF {{ property.commission_value | intcomma }} {% else %} $ {{ property.commission_value | intcomma }} {% endif %}
+                                </div>
                             </td>
                             <td class="py-3 px-6 text-center">
-                                <a href="{{ property.get_absolute_url }}">
-                                {% if property.is_commission_paid == False %}
+                                {% if property.operation == 'No concretada' %}
                                <!-- Error -->
                                     <span
-                                    class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
+                                    class="inline-flex items-center justify-center rounded-full bg-gray-100 px-2.5 py-0.5 text-gray-700"
                                     >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-1.5 h-4 w-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                      </svg>
-                                      
-
-                                        <p class="whitespace-nowrap text-sm">Por pagar</p>
+                                        <p class="whitespace-nowrap text-sm">{{ property.operation }}</p>
                                     </span>
                                 {% else %}
                                 <!-- Success -->
                                     <span
                                     class="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700"
                                     >
-                                        <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="-ml-1 mr-1.5 h-4 w-4"
-                                        >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                        </svg>
-
-                                        <p class="whitespace-nowrap text-sm">Pagado</p>
+                                        <p class="whitespace-nowrap text-sm">{{ property.operation }}</p>
                                     </span>
                                 {% endif %}
-                                </a>
                             </td>
                             <td class="py-3 px-6 text-center">
-                                <a href="{{ property.get_absolute_url }}">
+                                {% if not property.operation == 'No concretada' %}     
+                                    {% if property.is_commission_paid == False %}
+                                    <!-- Error -->
+                                        <span
+                                        class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
+                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-1.5 h-4 w-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                        </svg>
+                                        
+
+                                            <p class="whitespace-nowrap text-sm">Por pagar</p>
+                                        </span>
+                                    {% else %}
+                                    <!-- Success -->
+                                        <span
+                                        class="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700"
+                                        >
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="-ml-1 mr-1.5 h-4 w-4"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                            </svg>
+
+                                            <p class="whitespace-nowrap text-sm">Pagado</p>
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    -------
+                                {% endif %}
+                            </td>
+                            <td class="py-3 px-6 text-center">
                                 <div class="flex items-center justify-center">
                                     {{ property.created | date:'Y-m-d '  }}
                                 </div>
-                                </a>
                             </td>
                             <td class="py-3 px-6 text-center">
                                 <div class="flex item-center justify-between">
                                     
-                                    {% if property.is_commission_paid == False %}
-                                        <div x-data="{ open: false }">
-                                            <div @click="open = true" class="w-4 mr-2 transform hover:text-green-500 hover:scale-110">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                                  </svg>                                                  
-                                            </div>
+                                    {% if not property.operation == 'No concretada' %}
+                                        {% if property.is_commission_paid == False %}
+                                            <div x-data="{ open: false }">
+                                                <div @click="open = true" class="w-4 mr-2 transform hover:text-green-500 hover:scale-110">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                                    </svg>                                                  
+                                                </div>
+                                                
+                                                <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                
+                                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                                                    
+                                                    <div class="fixed z-10 inset-0 overflow-y-auto">
+                                                        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+                                                
+                                                        <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
+                                                            <div class="w-full h-full text-center">
+                                                                <div class="flex h-full flex-col justify-between">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-4 w-12 h-12 m-auto text-green-500">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                                                    </svg>        
+                                                                    <p class="text-gray-800  text-xl font-bold mt-4">
+                                                                        Pagar Comisión
+                                                                    </p>
+                                                                    <p class="text-gray-600  text-xs py-2 px-6">
+                                                                        Estas seguro de pagar esta comisión ?
+                                                                    </p>
+                                                                    <div class="flex items-center justify-around w-full mt-8">
+                                                                        <button 
+                                                                        hx-get="{% url 'reports:operation_paid' property.id 'paid' page_obj.number %}"
+                                                                        hx-target="#operation_table"
+                                                                        @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                                                            Pagar
+                                                                        </button>
                                             
-                                            <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                                        <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                                                        Cancelar
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div x-data="{ open: false }" >
+                                            <div  @click="open = true" class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash-banknote-off w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
+                                                    <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
+                                                    <line x1="18" y1="12" x2="18.01" y2="12"></line>
+                                                    <line x1="6" y1="12" x2="6.01" y2="12"></line>
+                                                    <line x1="3" y1="3" x2="21" y2="21"></line>
+                                                </svg>
+                                                
+                                            </div>       
+                                            
+                                            <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                                             
                                                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
                                                 
@@ -158,26 +225,31 @@
                                                     <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
                                                         <div class="w-full h-full text-center">
                                                             <div class="flex h-full flex-col justify-between">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-4 w-12 h-12 m-auto text-green-500">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                                                  </svg>        
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
+                                                                    <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
+                                                                    <line x1="18" y1="12" x2="18.01" y2="12"></line>
+                                                                    <line x1="6" y1="12" x2="6.01" y2="12"></line>
+                                                                    <line x1="3" y1="3" x2="21" y2="21"></line>
+                                                                </svg>
                                                                 <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                    Pagar Comisión
+                                                                    Quitar Comisión
                                                                 </p>
                                                                 <p class="text-gray-600  text-xs py-2 px-6">
-                                                                    Estas seguro de pagar esta comisión ?
+                                                                    Estas seguro de quitar esta comisión ?
                                                                 </p>
                                                                 <div class="flex items-center justify-around w-full mt-8">
                                                                     <button 
-                                                                    hx-get="{% url 'properties:managment_paid' property.id 'paid' page_obj.number %}"
-                                                                    hx-target="#managment_table"
-                                                                    @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                        Pagar
+                                                                    hx-get="{% url 'reports:operation_paid' property.id 'unpaid' page_obj.number %}"
+                                                                    hx-target="#operation_table"
+                                                                    @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                                                        Quitar
                                                                     </button>
                                         
                                                                     <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                    Cancelar
-                                                                </button>
+                                                                        Cancelar
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -185,66 +257,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    {% else %}
-                                        <div x-data="{ open: false }" >
-                                        <div  @click="open = true" class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash-banknote-off w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
-                                                <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
-                                                <line x1="18" y1="12" x2="18.01" y2="12"></line>
-                                                <line x1="6" y1="12" x2="6.01" y2="12"></line>
-                                                <line x1="3" y1="3" x2="21" y2="21"></line>
-                                             </svg>
-                                              
-                                        </div>       
-                                        
-                                        <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                        
-                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                            
-                                            <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                        
-                                                <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                    <div class="w-full h-full text-center">
-                                                        <div class="flex h-full flex-col justify-between">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
-                                                                <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
-                                                                <line x1="18" y1="12" x2="18.01" y2="12"></line>
-                                                                <line x1="6" y1="12" x2="6.01" y2="12"></line>
-                                                                <line x1="3" y1="3" x2="21" y2="21"></line>
-                                                             </svg>
-                                                            <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                Quitar Comisión
-                                                            </p>
-                                                            <p class="text-gray-600  text-xs py-2 px-6">
-                                                                Estas seguro de quitar esta comisión ?
-                                                            </p>
-                                                            <div class="flex items-center justify-around w-full mt-8">
-                                                                <button 
-                                                                hx-get="{% url 'properties:managment_paid' property.id 'unpaid' page_obj.number %}"
-                                                                hx-target="#managment_table"
-                                                                @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                    Quitar
-                                                                </button>
-                                    
-                                                                <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                    Cancelar
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>  
+                                            </div>  
+                                        {% endif %}
                                     {% endif %}
-
                                     
                                     <div  x-data="{ open: false }">
                                         <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
@@ -277,8 +292,8 @@
                                                             <div class="flex items-center justify-between gap-4 w-full mt-8">          
                                                                 <div class='inline-flex'>
                                                                     <button
-                                                                    hx-delete="{% url 'properties:managment_delete' property.id page_obj.number %}"
-                                                                    hx-target="#managment_table"
+                                                                    hx-delete="{% url 'reports:operation_delete' property.id page_obj.number %}"
+                                                                    hx-target="#operation_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                                                         Eliminar
                                                                     </button>
@@ -312,7 +327,7 @@
                             <button 
                                 hx-get="{% url url_option   page_obj.previous_page_number  %}" 
                             hx-vals='{"q": "{{q}}"}'
-                            hx-target='#managment_table'
+                            hx-target='#operation_table'
                             hx-swap="innerHTML"
                             href="#" class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
                                 <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
@@ -328,7 +343,7 @@
                                     <button 
                                         hx-get="{% url url_option  page_obj.number|add:"-1" %}" 
                                         hx-vals='{"q": "{{q}}"}'
-                                        hx-target='#managment_table'
+                                        hx-target='#operation_table'
                                         hx-swap="innerHTML"
                                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
                                     </button> 
@@ -337,7 +352,7 @@
                                 <button 
                                     hx-get="{% url url_option   page_obj.number %}" 
                                     hx-vals='{"q": "{{q}}"}'
-                                    hx-target='#managment_table'
+                                    hx-target='#operation_table'
                                     hx-swap="innerHTML"
                                     href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
                                 </button> 
@@ -347,7 +362,7 @@
                                     <button
                                         hx-get="{% url url_option   page_obj.number|add:"1" %}" 
                                         hx-vals='{"q": "{{q}}"}'
-                                        hx-target='#managment_table'
+                                        hx-target='#operation_table'
                                         hx-swap="innerHTML" 
                                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
                                     </button> 
@@ -359,7 +374,7 @@
                                         <button
                                             hx-get="{% url url_option   i %}" 
                                             hx-vals='{"q": "{{q}}"}'
-                                            hx-target='#managment_table'
+                                            hx-target='#operation_table'
                                             hx-swap="innerHTML" 
                                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
                                         </button> 
@@ -367,7 +382,7 @@
                                         <button
                                             hx-get="{% url url_option   i %}" 
                                             hx-vals='{"q": "{{q}}"}'
-                                            hx-target='#managment_table'
+                                            hx-target='#operation_table'
                                             hx-swap="innerHTML" 
                                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
                                         </button> 
@@ -382,7 +397,7 @@
                             <button 
                             hx-get="{% url url_option   page_obj.next_page_number  %}" 
                             hx-vals='{"q": "{{q}}"}'
-                            hx-target='#managment_table'
+                            hx-target='#operation_table'
                             hx-swap="innerHTML"
                             class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
                                 <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">

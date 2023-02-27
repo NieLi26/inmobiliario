@@ -23,7 +23,7 @@ from .forms import ContactForm, OwnerContactForm
 from .models import Contact, OwnerContact
 from apps.properties.models import (
     Commune, House, Apartment,
-    Property
+    Property, Publication
 )
 
 
@@ -74,26 +74,17 @@ class TestTemplateView(TemplateView):
 
 
 # ========== GENERAL ========== |
-class DashboardTemplateView(TemplateView):
-    """ Se despligan los graficos y tablas """
-    template_name = 'pages/dashboard.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sidebar_title'] = 'Dashboard'
-        context['sidebar_subtitle'] = 'Gestiona la información de tus propiedades a traves de graficos'
-        return context
-
 
 @method_decorator(never_cache, name='dispatch')
 class HomePageView(View):
     def get(self, request, *args, **kwargs):
         houses = House.objects.filter(
-            property__state=True, property__is_featured=True,
-            property__status=Property.Status.PUBLISH)[0:20]
+            property__state=True, property__publications__is_featured=True,
+            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
+
         apartments = Apartment.objects.filter(
-            property__state=True, property__is_featured=True,
-            property__status=Property.Status.PUBLISH)[0:20]
+            property__state=True, property__publications__is_featured=True,
+            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
 
         form = OwnerContactForm()
         form_newsletters = NewsletterUserForm()
@@ -108,8 +99,12 @@ class HomePageView(View):
     def post(self, request, *args, **kwargs):
         form = OwnerContactForm(request.POST)
 
-        houses = House.objects.filter(property__state=True, property__is_featured=True, property__status=Property.Status.PUBLISH)[0:20]
-        apartments = Apartment.objects.filter(property__state=True, property__is_featured=True, property__status=Property.Status.PUBLISH)[0:20]
+        houses = House.objects.filter(
+            property__state=True, property__publications__is_featured=True,
+            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
+        apartments = Apartment.objects.filter(
+            property__state=True, property__publications__is_featured=True,
+            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
 
         publish_type = request.POST.get('q_publish', '')
         property_type = request.POST.get('q_property', '')

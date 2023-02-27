@@ -24,9 +24,9 @@ class PropertyFilter(django_filters.FilterSet):
     class Meta:
         model = Property     
         fields = {
-                'price': ['lte', 'gte'], 
+                # 'price': ['lte', 'gte'], 
                 # 'land_surface': ['lte', 'gte'],
-                'type_price': ['exact'],
+                # 'type_price': ['exact'],
             }
 
     def filter_by_order(self, queryset, name, value):

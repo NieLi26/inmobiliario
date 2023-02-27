@@ -630,8 +630,8 @@
                         <a href="{{ property.get_absolute_url }}">
                         <div class="w-full rounded-lg shadow-lg overflow-hidden flex flex-col sm:flex-row  p-4 bg-gray-500">
                             <div class="w-full sm:w-1/2 md:w-2/6">
-                                {% if property.properties.first %}
-                                <img class="object-cover w-full h-full" src="{{ property.properties.first.image.url }}" alt="photo">
+                                {% if property.property_images.first %}
+                                <img class="object-cover w-full h-full" src="{{ property.property_images.first.image.url }}" alt="photo">
                                 {% else %}
                                 <img class="object-cover w-full h-full" src="{% static 'img/474x296.png' %}" alt="photo">
                                 {% endif %}

@@ -1,13 +1,13 @@
 import os
-from django.db.models.signals import post_save, post_delete, pre_delete
+from django.db.models.signals import post_save, post_delete, pre_delete, pre_save
 from django.core.files.storage import FileSystemStorage
 
 from .utils import send_property_email
 from .models import (
-    PropertyContact, PropertyManager, Property,
-    PropertyImage
+    PropertyContact, Property,
+    PropertyImage, Publication
 )
-
+from apps.reports.models import OperationHistory
 
 def contact_post_save(sender, instance, created, **kwargs):
     if created:
@@ -17,25 +17,24 @@ def contact_post_save(sender, instance, created, **kwargs):
 post_save.connect(contact_post_save, PropertyContact)
 
 
-def property_post_save(sender, instance, created, **kwargs):
-    if instance.status != 'pu' and instance.status != 'dr':
+# def property_post_save(sender, instance, created, **kwargs):
+#     if instance.status != 'pu' and instance.status != 'dr':
 
-        iva = ''
-        if instance.is_iva:
-            iva = 'con IVA'
-        else:
-            iva = 'sin IVA'
+#         iva = ''
+#         if instance.is_iva:
+#             iva = 'con IVA'
+#         else:
+#             iva = 'sin IVA'
 
-        PropertyManager.objects.create(
-            property=instance,
-            type_property=f'{instance.get_property_type_display()} {instance.get_publish_type_display()}',
-            total='{0} {1} {2}'.format(instance.price, instance.get_type_price_display(), iva),
-            commission_percentage=instance.commission_percentage,
-            commission_value=instance.commission_value
-        )
+#         OperationHistory.objects.create(
+#             type_property=f'{instance.get_property_type_display()} {instance.get_publish_type_display()}',
+#             total='{0} {1} {2}'.format(instance.price, instance.get_type_price_display(), iva),
+#             commission_percentage=instance.commission_percentage,
+#             commission_value=instance.commission_value
+#         )
 
 
-post_save.connect(property_post_save, Property)
+# post_save.connect(property_post_save, Property)
 
 
 # def property_pre_delete(sender, instance, **kwargs):
@@ -71,3 +70,57 @@ def property_images_pre_delete(sender, instance, **kwargs):
 
 
 pre_delete.connect(property_images_pre_delete, PropertyImage)
+
+
+def publication_pre_save(sender, instance, **kwargs):
+
+    try:
+        old_instance = Publication.objects.get(id=instance.pk)
+        # se corrobora si operacion no es "En espera" y es una publicacion activa
+        if not instance.operation == "wa" and old_instance.state:
+
+            iva = ''
+            if instance.is_iva:
+                iva = 'con IVA'
+            else:
+                iva = 'sin IVA'
+
+            OperationHistory.objects.create(
+                type_property=f'{instance.property.get_property_type_display()} {instance.property.get_publish_type_display()}',
+                operation=instance.get_operation_display(),
+                codigo=instance.property.uuid,
+                region=instance.property.region,
+                commune=instance.property.commune,
+                total='{0} {1} {2}'.format(instance.price, instance.get_type_price_display(), iva),
+                commission_percentage=instance.commission_percentage if instance.commission_percentage else 0,
+                commission_value=instance.commission_value
+            )
+            instance.state = False
+
+    except Publication.DoesNotExist:
+        pass
+
+
+pre_save.connect(publication_pre_save, Publication)
+
+
+def publication_post_save(sender, instance, created, **kwargs):
+    # desactivamos propiedad al crear publicacion
+    if created:
+        property = instance.property
+        property.is_active = False
+        property.save()
+
+
+post_save.connect(publication_post_save, Publication)
+
+
+# def operation_history_post_save(sender, instance, created, **kwargs):
+#     # desactivamos propiedad al crear publicacion
+#     if created:
+#         publication = Publication.objects.get(property__uuid=instance.codigo)
+#         publication.state = False
+#         publication.save()
+
+
+# post_save.connect(operation_history_post_save, OperationHistory)

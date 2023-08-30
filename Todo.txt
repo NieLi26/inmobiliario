@@ -1,0 +1,34 @@
+# arreglar redirecciones la crear propiedad y crear publicacion
+# corregir al crear propiedad lo envia a propiedad
+# cambiar etiqueta en uso a otro nombre (LISTO)
+# al crear publicacion, mandar a publicacion
+# escoja tipo de publicacion cambiar tipo operacion (LISTO)
+# sidebar publicaciones a ver publicaciones (LISTO)
+# cambiar el sidebar del mobile menu (LISTO)
+# cambiar palabra activa en propiedad a disponible (LISTO)
+# activa ---> disponible o disponibilidad (LISTO)
+# en uso ---> publicacion (LISTO)
+
+#### VALIDACIONES ####
+# Evitar editar publicacion al estar eliminada(state=False) (LISTO)
+# Evitar cambiar estado publicacion al estar eliminada(state=False) (LISTO) (ver como funciona para la interfaz que se interactua en propiedad)( LISTO)
+# Evitar ver Publicacion al estar eliminada(state=False) (LISTO)
+# Evitar ver Publicacion al estar despublicada(status='dr') (LISTO)
+# Evitar crear publicacion, en una propiedad con publicacion activa (LISTO)
+# Evitar cambiar estado propiedad si hay una publicacion vigente (state=True) (LISTO)
+
+# restringir vistas a los no usuarios(LoginRequiredMixin) (LISTO)
+# restringir vistas segun permiso usuario?
+# Pensar si eliminar o no propiedades
+# cambiar funciones globalchange, globaldelete, tableglobal por nombre publication (LISTO)
+# mas adelante pasar como parametros no en los kwargs de la url (publicaciones y propiedades la tienen)
+# incluir sidea_alert y mensaje en la vista "success" o "errors" en la views
+
+# corregir que no se suben archivos
+# cerrar modal al enviar operacion (Solucion recargar pagina)
+
+
+#### OPERACION VENTA #######
+# distinto formulario si tiene el campo has_promise
+- si, mostrar para subir la fecha de compra/venta, y documento, y nose si valor
+- no, solo mostrar el total, o no mostrar nada

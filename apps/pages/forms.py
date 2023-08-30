@@ -49,7 +49,7 @@ class ContactForm(forms.ModelForm):
         phone = self.cleaned_data['phone']
         patron = '^[0-9]+$'
         print(re.search(patron, phone))
-        if re.search(patron, phone) == None and phone != '' :
+        if re.search(patron, phone) is None and phone != '' :
             raise forms.ValidationError('Solo debe ingresar numeros')
         return phone
     

@@ -8,20 +8,26 @@ urlpatterns = [
     path('<str:property_type>/create/test/', views.property_create_test, name='property_create_test'),
     
     ## PANEL
-    path('panel/publicaciones/', views.property_publish_list, name='property_custom_publish'), 
-    path('panel/despublicaciones/', views.DraftListView.as_view(), name='property_custom_draft'), 
+    # path('panel/publicaciones/', views.property_publish_list, name='property_custom_publish'), 
+    # path('panel/despublicaciones/', views.DraftListView.as_view(), name='property_custom_draft'), 
+
+    path('panel/publicaciones/venta/', views.PublishBuyListView.as_view(), name='publish_buy_list'),
+    path('panel/publicaciones/permuta/', views.PublishExchangeListView.as_view(), name='publish_exchange_list'),
+    path('panel/publicaciones/arriendo/', views.PublishRentListView.as_view(), name='publish_rent_list'),
+    path('panel/publicaciones/arriendo-temporada/', views.PublishRentSeasonListView.as_view(), name='publish_rent_season_list'),
+
     path('panel/contacts/', views.PropertyContactListView.as_view(), name='contact_property_list'),
     path('panel/propiedades/', views.PropertyListView.as_view(), name='property_custom_list'),
 
     ## REALTOR
     path('realtor/', views.RealtorListView.as_view(), name='realtor_list'),
-    path('realtor/create/', views.RealtorCreateView.as_view(), name='realtor_create'),
+    path('realtor/create', views.RealtorCreateView.as_view(), name='realtor_create'),
     path('realtor/<int:pk>/detail/', views.RealtorDetailView.as_view(), name='realtor_detail'),
     path('realtor/<int:pk>/update/', views.RealtorUpdateView.as_view(), name='realtor_update'),
 
     ## OWNER
     path('owner/', views.OwnerListView.as_view(), name='owner_list'),
-    path('owner/create/', views.OwnerCreateView.as_view(), name='owner_create'),
+    path('owner/create', views.OwnerCreateView.as_view(), name='owner_create'),
     path('owner/<int:pk>/update/', views.OwnerUpdateView.as_view(), name='owner_update'),
 
     ## PROPERTY
@@ -30,7 +36,7 @@ urlpatterns = [
     path('select/', views.property_select, name='property_select'),
 
     ## PUBLICATION
-    path('<int:pk>/', views.PublicationDetailView.as_view(), name='publication_detail'),
+    path('publication/<int:pk>/', views.PublicationDetailView.as_view(), name='publication_detail'),
     path('<slug:slug>/<uuid:uuid>/publication/create/', views.PublicationCreateView.as_view(), name='publication_create'),
     path('<int:pk>/publication/update/', views.PublicationUpdateView.as_view(), name='publication_update'),
     
@@ -55,20 +61,14 @@ urlpatterns = [
 
 hxpatterns = [
     ## PROPERTY
-    path('property/<uuid:uuid>/<int:page_number>/delete/', views.PropertyDeleteView.as_view(), name='property_delete'),
-    path('property/<int:page_number>/table', views.TablePropertyView.as_view(), name='table_property'),
-    path('property/<int:pk>/<str:action>/<str:page_number>/active/', views.PropertyIsActiveView.as_view(), name='property_active'),
+    path('<uuid:uuid>/property/delete', views.PropertyDeleteView.as_view(), name='property_delete'),
+    path('property/table', views.TablePropertyView.as_view(), name='table_property'),
+    path('<int:pk>/property/active', views.PropertyIsActiveView.as_view(), name='property_active'),
 
-    
-    ## PUBLISH
-    path('publish/<int:pk>/<int:page_number>/delete', views.publish_delete, name='publish_delete'),
-    path('publish/<int:pk>/<str:action>/<str:page_number>/change/', views.publish_change, name='publish_change'),
-    path('publish/<int:page_number>/table', views.table_publish, name='table_publish'),
-
-    ## DRAFT
-    path('draft/<int:pk>/<int:page_number>/delete/', views.DraftDeleteView.as_view(), name='draft_delete'),
-    path('draft/<int:pk>/<str:action>/<str:page_number>/change/', views.DraftChangeView.as_view(), name='draft_change'),
-    path('draft/<int:page_number>/table', views.TableDraftView.as_view(), name='table_draft'),
+    # GENERAL TABLE
+    path('<int:pk>/publication/delete', views.PublicationDeleteView.as_view(), name='publication_delete'),
+    path('publication/table', views.TablePublicationView.as_view(), name='table_publication'),
+    path('<int:pk>/publication/change', views.PublicationChangeView.as_view(), name='publication_change'),
 
     ## CREATE AND UPDATE
     path('commune-select', views.commune_select, name='commune_select'),

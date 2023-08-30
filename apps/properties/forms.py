@@ -202,9 +202,6 @@ class PropertyBaseForm(forms.ModelForm):
         for selects in self.fields:
             self.fields[selects].widget.attrs['form'] = 'form-general'
 
-
- 
-
         # ------------------------------------------------ SUPER FUNCTION END ------------------------------------------------ |
 
     # more_images = forms.FileField(required=True, label='Mas Imagenes',widget=forms.ClearableFileInput(attrs={
@@ -219,11 +216,12 @@ class PropertyBaseForm(forms.ModelForm):
                 print(field)
         return False
 
+
     class Meta:
         model = Property
         # si se quiere asignar valor en formulario debe estar en fields, pero esto te obliga a poner el input en el template o modificarlo en el metodo clean
         # sino lo pasas en el fields debes pasarlo como argumento del formulario, asigarlo a alguna variable que tu puedes crear por ejmplo 'sef.lo_que_sea', luego lo asignas donde quieras
-        fields = ( 
+        fields = (
             'title',
             'description',
             # 'type_price',
@@ -279,6 +277,7 @@ class PropertyBaseForm(forms.ModelForm):
     #     if commit:
     #         instance.save()
     #     return instance
+
 
     # mas seguro y puedes restringir que no se pueda cambiar un valor, en este caso el usuario, ya que la instancia si se puede modificar
     def save(self, commit=True, property_type=None):
@@ -531,7 +530,6 @@ class IndustrialForm(CIBaseForm):
 
 # ========== BASE URBAN SITE, PARCEL ========== |
 
-
 class UPBaseForm(forms.ModelForm):
 
     Yes_Or_No = (
@@ -598,16 +596,33 @@ class ParcelForm(UPBaseForm):
 
 
 class PropertyContactForm(forms.ModelForm):
-    
+
+    message = forms.CharField(label="Mensaje", widget=forms.Textarea(attrs={
+        'rows': '3'
+    }))
+
+    phone = forms.CharField(label='Télefono', widget=(forms.TextInput(attrs={
+        'x-mask': '999999999',
+        'placeholder': 'Ej. 965337823'
+    })))
+
     class Meta:
         model = PropertyContact
         fields = ('name', 'from_email', 'phone', 'message')
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        REGEX = '^[a-zA-Z ]+$'
+        if re.search(REGEX, name) is None and name != '':
+            msg = 'Solo debe ingresar letras'
+            raise forms.ValidationError(msg)
+        return name
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
         patron = '^[0-9]+$'
         print(re.search(patron, phone))
-        if re.search(patron, phone) == None and phone != '':
+        if re.search(patron, phone) is None and phone != '':
             raise forms.ValidationError('Solo debe ingresar numeros')
         return phone
 

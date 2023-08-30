@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     "django_htmx",
     'multiselectfield',
     'captcha',
+    'dbbackup',
 ]
 
 LOCAL_APPS = [
@@ -176,9 +177,9 @@ NPM_BIN_PATH = r'C:\Program Files\nodejs\npm.cmd'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
-LOGIN_REDIRECT_URL = "pages:home"
+LOGIN_REDIRECT_URL = "reports:dashboard"
 LOGOUT_REDIRECT_URL = "pages:home"
-# LOGIN_URL = "accounts:login_view" # sirve para cambiar la ruta del login por defecto, por ejemplo cuando usas '@login_required'
+LOGIN_URL = "login"  # sirve para cambiar la ruta del login por defecto, por ejemplo cuando usas '@login_required'
 
 # captcha
 RECAPTCHA_PUBLIC_KEY = env.str("RECAPTCHA_PUBLIC_KEY")
@@ -209,3 +210,8 @@ if not DEBUG:
     SECURE_REDIRECT_EXEMPT = []
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+
+# django-bdbackup
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}

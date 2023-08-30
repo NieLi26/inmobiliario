@@ -9,9 +9,11 @@ django.setup()
 
 fake = Faker(['es_CL'])
 
+
 def population():
     for _ in range(15):
         print(fake.name())
+
 
 if __name__ == "__main__":
     population()

@@ -4,51 +4,499 @@
 {% block content_sidebar %}
 
   <section class="text-gray-600 body-font">
-    <div class="container px-5 py-24 mx-auto">
+    <div class="container px-5 pt-20 mx-auto space-y-6">
+      <div class="flex items-center">
+        <div class="w-1/5 border-t-2 border-red-200">
+        </div>
+        <h2 class="flex-shrink-0 px-4 text-2xl font-semibold leading-5 tracking-wider text-red-600 uppercase bg-white">
+            Resumen Diario
+        </h2>
+        <div class="flex-1 border-t-2 border-red-200">
+        </div>
+      </div>
+
       <div class="flex flex-wrap -m-4 text-center">
-        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
+        <div class="p-4 md:w-1/5 w-full">
           <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-500 w-12 h-12 mb-3 inline-block">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+
+            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
               <path d="M8 17l4 4 4-4m-4-5v9"></path>
               <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
-            </svg>
-            <h2 class="title-font font-medium text-3xl text-gray-900">2.7K</h2>
-            <p class="leading-relaxed">Downloads</p>
+            </svg> -->
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{ venta }}</h2>
+            <p class="leading-relaxed">Propiedades en Venta</p>
           </div>
         </div>
-        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
+        <div class="p-4 md:w-1/5 w-full">
           <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-500 w-12 h-12 mb-3 inline-block">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
               <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
               <circle cx="9" cy="7" r="4"></circle>
               <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
-            </svg>
-            <h2 class="title-font font-medium text-3xl text-gray-900">1.3K</h2>
-            <p class="leading-relaxed">Users</p>
+            </svg> -->
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{ arriendo }}</h2>
+            <p class="leading-relaxed">Propiedades en Arriendo</p>
           </div>
         </div>
-        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
+        <div class="p-4 md:w-1/5 w-full">
           <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-500 w-12 h-12 mb-3 inline-block">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
               <path d="M3 18v-6a9 9 0 0118 0v6"></path>
               <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"></path>
-            </svg>
-            <h2 class="title-font font-medium text-3xl text-gray-900">74</h2>
-            <p class="leading-relaxed">Files</p>
+            </svg> -->
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{ vendidas }}</h2>
+            <p class="leading-relaxed">Propiedades Vendidas</p>
           </div>
         </div>
-        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
+        <div class="p-4 md:w-1/5 w-full">
           <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
-            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-500 w-12 h-12 mb-3 inline-block">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
-            <h2 class="title-font font-medium text-3xl text-gray-900">46</h2>
-            <p class="leading-relaxed">Places</p>
+            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg> -->
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{ arrendadas }}</h2>
+            <p class="leading-relaxed">Propiedades Arrendadas</p>
+          </div>
+        </div>
+        <div class="p-4 md:w-1/5 w-full">
+          <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 w-12 h-12 mb-3 inline-block" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M10 21v-6.5a3.5 3.5 0 0 0 -7 0v6.5h18v-6a4 4 0 0 0 -4 -4h-10.5"></path>
+              <path d="M12 11v-8h4l2 2l-2 2h-4"></path>
+              <path d="M6 15h1"></path>
+           </svg>
+            <!-- <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-red-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg> -->
+            <h2 class="title-font font-medium text-3xl text-gray-900">{{ total_today_contacts }}</h2>
+            <p class="leading-relaxed">Consultas Realizadas</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="text-gray-600 body-font">
+    <div class="container px-5 pt-16 mx-auto space-y-6">
+      <div class="flex items-center">
+        <div class="flex-1 border-t-2 border-red-200">
+        </div>
+        <h2 class="flex-shrink-0 px-4 text-2xl font-semibold leading-5 tracking-wider text-red-600 uppercase bg-white">
+            Resumen Mensual
+        </h2>
+        <div class="w-1/5 border-t-2 border-red-200">
+        </div>
+      </div>
+
+      <div class="flex flex-wrap -m-4 text-center">
+        <div class="md:w-1/4 sm:w-1/2 w-full rounded-lg border border-gray-100 bg-white p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Cierre Ventas</p>
+        
+              <p class="text-2xl font-medium text-gray-900">{{ cierre_ventas }} % </p>
+            </div>
+        
+            <span class="rounded-full bg-blue-100 p-3 text-blue-600">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg> -->
+            </span>
+          </div>
+        
+          <div class="mt-1 flex gap-1 text-green-600">
+            <!-- <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg> -->
+        
+            <p class="flex gap-2 text-xs ml-1">
+              <!-- <span class="font-medium"> {{ cierre_ventas }} % </span> -->
+        
+              <span class="text-gray-500"> Desde el Ultimo Mes </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="md:w-1/4 sm:w-1/2 w-full rounded-lg border border-gray-100 bg-white p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Cierre Arriendos</p>
+        
+              <p class="text-2xl font-medium text-gray-900">{{ cierre_arriendos }} % </p>
+            </div>
+        
+            <span class="rounded-full bg-blue-100 p-3 text-blue-600">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg> -->
+            </span>
+          </div>
+        
+          <div class="mt-1 flex gap-1 text-green-600">
+            <!-- <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg> -->
+        
+            <p class="flex gap-2 text-xs ml-1">
+              <!-- <span class="font-medium"> {{ cierre_ventas }} % </span> -->
+        
+              <span class="text-gray-500"> Desde el Ultimo Mes </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="md:w-1/4 sm:w-1/2 w-full rounded-lg border border-gray-100 bg-white p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Tasa Conversion Venta</p>
+        
+              <p class="text-2xl font-medium text-gray-900">{{ tasa_ventas }} % </p>
+            </div>
+        
+            <span class="rounded-full bg-blue-100 p-3 text-blue-600">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg> -->
+            </span>
+          </div>
+        
+          <div class="mt-1 flex gap-1 text-green-600">
+            <!-- <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg> -->
+        
+            <p class="flex gap-2 text-xs ml-1">
+              <!-- <span class="font-medium"> {{ cierre_ventas }} % </span> -->
+        
+              <span class="text-gray-500"> Desde el Ultimo Mes </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="md:w-1/4 sm:w-1/2 w-full rounded-lg border border-gray-100 bg-white p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">Tasa Conversion Arriendo</p>
+        
+              <p class="text-2xl font-medium text-gray-900">{{ tasa_arriendos }} % </p>
+            </div>
+        
+            <span class="rounded-full bg-blue-100 p-3 text-blue-600">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+              <!-- <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg> -->
+            </span>
+          </div>
+        
+          <div class="mt-1 flex gap-1 text-green-600">
+            <!-- <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg> -->
+        
+            <p class="flex gap-2 text-xs ml-1">
+              <!-- <span class="font-medium"> {{ cierre_ventas }} % </span> -->
+        
+              <span class="text-gray-500"> Desde el Ultimo Mes </span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex gap-2 -m-4 text-center">
+        <div class="md:w-1/3 w-full">
+          <canvas id="myChart"></canvas>
+        </div>
+        <div class="md:w-2/3 w-full">
+          <canvas id="myChart2"></canvas>
+        </div>
+      </div>
+      <div class="flex gap-2 -m-4 text-center">
+        <div class="md:w-1/3 w-full">
+          <canvas id="myChart3"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
 {% endblock content_sidebar %}
 
+{% block js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    const ctx = document.getElementById('myChart');
+    const ctx2 = document.getElementById('myChart2');
+    const ctx3 = document.getElementById('myChart3');
+  
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: [
+          'Generales',
+          'Propiedades',
+          'Propietarios'
+        ],
+        datasets: [{
+          label: 'Total Consultas',
+          data: ['{{ month_contact | safe }}', '{{ month_property_contact }}', '{{ month_owner_contact }}'],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+          ],
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Cantidad Tipos de Consultas',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }
+            },
+        }
+      }
+    });
+  
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Venta', 'Arriendo', 'Arriendo Temporada', 'permuta'],
+        datasets: [{
+          label: 'Publicaciones',
+          data: ['{{ total_month_ventas }}', '{{ total_month_arriendos }}', '{{ total_month_arriendos_temporada }}', '{{ total_month_permutas }}'],
+          borderWidth: 1,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Cantidad Tipos de Publicaciones Activas',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }
+            },
+        }
+      }
+    });
+  
+    new Chart(ctx3, {
+      type: 'pie',
+      data: {
+        labels: [
+          'Cobradas',
+          'Por Cobrar',
+        ],
+        datasets: [{
+          label: 'Total Comisiones',
+          data: ['{{ total_paid_comission | safe }}', '{{ total_no_paid_comission | safe }}'],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+          ],
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Cantidad de Comisiones',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }
+            },
+        }
+      }
+    });
+  
+  </script>
+{% endblock js %}

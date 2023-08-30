@@ -7,12 +7,13 @@ from .models import (
     PropertyContact, Property,
     PropertyImage, Publication
 )
-from apps.reports.models import OperationHistory
+from apps.reports.models import OperationBuyHistory
+
 
 def contact_post_save(sender, instance, created, **kwargs):
     if created:
-        send_property_email(instance.property.get_absolute_url(), instance.name, instance.phone, instance.property, instance.message, instance.from_email)
-        
+        send_property_email(instance.property.publications.last().get_absolute_url(), instance.name, instance.phone, instance.property, instance.message, instance.from_email)
+
 
 post_save.connect(contact_post_save, PropertyContact)
 
@@ -73,46 +74,47 @@ pre_delete.connect(property_images_pre_delete, PropertyImage)
 
 
 def publication_pre_save(sender, instance, **kwargs):
-
-    try:
-        old_instance = Publication.objects.get(id=instance.pk)
+    pass
+    # try:
+        # old_instance = Publication.objects.get(id=instance.pk)
         # se corrobora si operacion no es "En espera" y es una publicacion activa
-        if not instance.operation == "wa" and old_instance.state:
+        # if not instance.operation == "wa" and old_instance.state:
 
-            iva = ''
-            if instance.is_iva:
-                iva = 'con IVA'
-            else:
-                iva = 'sin IVA'
+            # iva = ''
+            # if instance.is_iva:
+            #     iva = 'con IVA'
+            # else:
+            #     iva = 'sin IVA'
 
-            OperationHistory.objects.create(
-                type_property=f'{instance.property.get_property_type_display()} {instance.property.get_publish_type_display()}',
-                operation=instance.get_operation_display(),
-                codigo=instance.property.uuid,
-                region=instance.property.region,
-                commune=instance.property.commune,
-                total='{0} {1} {2}'.format(instance.price, instance.get_type_price_display(), iva),
-                commission_percentage=instance.commission_percentage if instance.commission_percentage else 0,
-                commission_value=instance.commission_value
-            )
-            instance.state = False
+            # OperationHistory.objects.create(
+            #     type_property=instance.property.property_type,
+            #     type_publish=instance.property.property_publish,
+            #     operation=instance.get_operation_display(),
+            #     codigo=instance.property.uuid,
+            #     region=instance.property.region,
+            #     commune=instance.property.commune,
+            #     total='{0} {1} {2}'.format(instance.price, instance.get_type_price_display(), iva),
+            #     commission_percentage=instance.commission_percentage if instance.commission_percentage else 0,
+            #     commission_value=instance.commission_value
+            # )
+            # instance.state = False
 
-    except Publication.DoesNotExist:
-        pass
+    # except Publication.DoesNotExist:
+    #     pass
 
 
 pre_save.connect(publication_pre_save, Publication)
 
+# ELIMINADO 22-08-2023
+# def publication_post_save(sender, instance, created, **kwargs):
+#     # desactivamos propiedad al crear publicacion
+#     if created:
+#         property = instance.property
+#         property.is_active = False
+#         property.save()
 
-def publication_post_save(sender, instance, created, **kwargs):
-    # desactivamos propiedad al crear publicacion
-    if created:
-        property = instance.property
-        property.is_active = False
-        property.save()
 
-
-post_save.connect(publication_post_save, Publication)
+# post_save.connect(publication_post_save, Publication)
 
 
 # def operation_history_post_save(sender, instance, created, **kwargs):

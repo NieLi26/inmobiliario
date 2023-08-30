@@ -1,7 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'navigation/sidebar_config.html' %}
 
-
-{% block content %}
+{% block content_sidebar %}
     
 <div class="max-w-7xl mx-auto py-8 px-4 sm:py-10 sm:px-6 lg:px-8">
   <div class="text-center">
@@ -1804,7 +1803,11 @@
 
     <div class="mt-5 px-4 pb-8 text-right sm:px-6">
       <a 
-      href="{% url 'properties:property_select' %}"
+      {% if title == 'Creación de Propiedad' %}
+        href="{% url 'properties:property_select' %}"
+      {% else %}
+        href="{% url 'properties:property_custom_list' %}"
+      {% endif %}
       class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-bold rounded-md text-gray-600 hover:text-gray-900 bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2">
         Volver
       </a>
@@ -1818,15 +1821,13 @@
 
 <form id="form-realtor">  </form>
 
-{% endblock content %}
+{% endblock content_sidebar %}
 
-{% block footer %}
-  
-{% endblock footer %}
+{% block footer %} {% endblock footer %}
 
 {% block js %}
 
-<script>
+<!-- <script>
   const id_price = document.querySelector('#id_price')
   const id_commission_percentage = document.querySelector('#id_commission_percentage')
   const id_commission_value = document.querySelector('#id_commission_value')
@@ -1853,6 +1854,6 @@
     // e.currentTarget.value && (id_commission_value.value = 200)
   })
 
-</script>
+</script> -->
   
 {% endblock js %}

@@ -1,6 +1,6 @@
-import socket
 import json
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
@@ -78,27 +78,37 @@ class TestTemplateView(TemplateView):
 @method_decorator(never_cache, name='dispatch')
 class HomePageView(View):
     def get(self, request, *args, **kwargs):
-        houses = House.objects.filter(
-            property__state=True, property__publications__is_featured=True,
-            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
+        # houses = House.objects.filter(
+        #     property__state=True, property__publications__is_featured=True,
+        #     property__publications__status=Publication.Status.PUBLISH
+        # ).distinct()[0:20]
 
-        apartments = Apartment.objects.filter(
-            property__state=True, property__publications__is_featured=True,
-            property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
+        # apartments = Apartment.objects.filter(
+        #     property__state=True, property__publications__is_featured=True,
+        #     property__publications__status=Publication.Status.PUBLISH
+        # ).distinct()[0:20]
 
-        form = OwnerContactForm()
+        publications = Publication.objects.filter(
+            state=True, is_featured=True,
+            status=Publication.Status.PUBLISH
+        )
+
+        publication_houses = publications.filter(property__property_type='ca') \
+                                         .distinct()[0:20]
+
+        publication_apartments = publications.filter(property__property_type='de') \
+                                             .distinct()[0:20]
+
+
         form_newsletters = NewsletterUserForm()
         context = {
-           'house_list': houses,
-           'apartment_list': apartments,
-           'form': form,
+           'house_list': publication_houses,
+           'apartment_list': publication_apartments,
            'form_newsletters': form_newsletters,
         }
         return render(request, 'pages/home.html', context)
 
     def post(self, request, *args, **kwargs):
-        form = OwnerContactForm(request.POST)
-
         houses = House.objects.filter(
             property__state=True, property__publications__is_featured=True,
             property__publications__status=Publication.Status.PUBLISH).distinct()[0:20]
@@ -110,7 +120,7 @@ class HomePageView(View):
         property_type = request.POST.get('q_property', '')
         search_location = request.POST.get('search_location', '')
 
-        if publish_type != '' and property_type !='':
+        if publish_type != '' and property_type != '':
             if search_location != '':
                 communes = Commune.objects.all()
                 location_slug = [commune for commune in communes if commune.get_commune_region() == search_location]
@@ -181,7 +191,7 @@ class ContactPageView(View):
             'disabled': disabled,
         }
         return render(request, 'pages/contact_create.html', context)
-         
+   
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
         SUBJECTS = (
@@ -234,7 +244,7 @@ class ContactPageView(View):
             response = HttpResponse(html)
             response['HX-Trigger'] = 'modal-contact-button'
             return response
-
+        context['errors'] = {'Mensaje no enviado'}
         # context['errors'] = form.errors.values()
         html = render_block_to_string(
             'pages/contact_create.html',
@@ -244,7 +254,7 @@ class ContactPageView(View):
         return HttpResponse(html)
 
 
-class ContactListView(View):
+class ContactListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         contact_list = ContactForm.Meta.model.objects.all()
         paginator = Paginator(contact_list, 2)
@@ -253,8 +263,8 @@ class ContactListView(View):
         context = {
             # 'contact_list': properties_data,
             'page_obj': properties_data,
-            'sidebar_title': 'Contactos',
-            'sidebar_subtitle': 'Maneja la información de contactos generales!'
+            'sidebar_title': 'Mensajes de Clientes',
+            'sidebar_subtitle': 'Revisar mensajes de consultas realizadas por potenciales clientes!'
         }
         return render(request, 'pages/contact_list.html', context) 
 
@@ -364,116 +374,49 @@ def hx_contact_notify(request):
     return HttpResponse(html)
     # return render(request, 'components/contact_notify.html')
 
+# ELIMINADO
+# ========== OWNER CONTACT ========== | 
+# class OwnerContactListView(ListView):
+#     model = OwnerContact
+#     template_name = 'pages/contact_owner_list.html'
+#     paginate_by = 2
 
-# ========== OWNER CONTACT ========== |
-class OwnerContactListView(ListView):
-    model = OwnerContact
-    template_name = 'pages/contact_owner_list.html'
-    paginate_by = 2
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sidebar_title'] = 'Contactos'
-        context['sidebar_subtitle'] = 'Maneja la información de contactos de propietarios!'
-        return context
-
-
-# partials
-class TableOwnerContactView(View):
-    def get(self, request, *args, **kwargs):
-        q = request.GET.get('q', '')
-
-        contact_list = OwnerContact.objects.filter(name__icontains=q)
-
-        paginator = Paginator(contact_list, 2)
-        properties_data = paginator.get_page(kwargs['page_number'])
-        context = {
-            # 'contact_list': properties_data,
-            'page_obj': properties_data,
-            'q': q
-        }
-        html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
-        return HttpResponse(html)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['sidebar_title'] = 'Mensajes de Clientes'
+#         context['sidebar_subtitle'] = 'Revisar mensajes de consultas realizadas por potenciales clientes!'
+#         return context
 
 
-class ModalOwnerContactView(View):
-    def get(self, request, *args, **kwargs):
-        contact = OwnerContact.objects.get(id=kwargs['pk'])
-        contact.state = False
-        contact.save()
-        contact_list = OwnerContact.objects.all()
-        paginator = Paginator(contact_list, 2)
-        properties_data = paginator.get_page(kwargs['page_number'])
-        context = {
-            'page_obj': properties_data,
-        }
-        html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
-        return HttpResponse(html)
-
-
-# def hx_message(request):
-#     return render(request, 'partials/contact_alerts.html')
-
-
-# class ContactPageView(FormView):
-#     template_name = 'pages/contact.html'
-#     form_class = ContactForm
-#     success_url = reverse_lazy('contact')
-
-#     def form_valid(self, form):
-#         subject = form.cleaned_data['subject']
-#         # name = form.cleaned_data['name']
-#         # phone = form.cleaned_data['phone']
-#         from_email = form.cleaned_data['from_email']
-#         message = form.cleaned_data['message']
-#         try:
-#             send_mail(subject, message, from_email, ['seba.diamond5@gmail.com'])
-#         except BadHeaderError:
-#             return HttpResponse('Invalid header found.')
-#         return super().form_valid(form)
-
-    
-
-# def contactView(request):
-#     if request.method == 'GET':
-#         form = ContactForm()
-#     else:
-#         form = ContactForm(request.POST)
-#         if form.is_valid():
-#             subject = form.cleaned_data['subject']
-#             from_email = form.cleaned_data['from_email']
-#             message = form.cleaned_data['message']
-#             try:
-#                 send_mail(subject, message, from_email, ['admin@example.com'])
-#             except BadHeaderError:
-#                 return HttpResponse('Invalid header found.')
-#             return redirect('success')
-#     return render(request, "email.html", {'form': form})
-
-# def successView(request):
-#     return HttpResponse('Success! Thank you for your message.')
-
-
-####################### mensaje en signals ##########################
-# class ContactPageView(SuccessMessageMixin, View):
+# # partials
+# class TableOwnerContactView(View):
 #     def get(self, request, *args, **kwargs):
-#         form = ContactForm()
+#         q = request.GET.get('q', '')
+
+#         contact_list = OwnerContact.objects.filter(name__icontains=q)
+
+#         paginator = Paginator(contact_list, 2)
+#         properties_data = paginator.get_page(kwargs['page_number'])
 #         context = {
-#             'form': form
+#             # 'contact_list': properties_data,
+#             'page_obj': properties_data,
+#             'q': q
 #         }
-#         return render(request, 'pages/contact.html', context)
-    
-#     def post(self, request, *args, **kwargs):
-#         form = ContactForm(request.POST or None)
-#         if form.is_valid():
-#             form.save()
-#             subject = form.cleaned_data['subject']
-#             from_email = form.cleaned_data['from_email']
-#             message = 'Su correo ha sido recibido satisfactoriamente lo contactaremos a la brevedad'
-#             try:
-#                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [from_email])
-#                 messages.success(request, "Mensaje enviado correctamente")    
-#                 return redirect('contact')
-#             except BadHeaderError:
-#                 return HttpResponse('Invalid header found.')
-#         return render(request, 'pages/contact.html', {'form': form})
+#         html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
+#         return HttpResponse(html)
+
+
+# class ModalOwnerContactView(View):
+#     def get(self, request, *args, **kwargs):
+#         contact = OwnerContact.objects.get(id=kwargs['pk'])
+#         contact.state = False
+#         contact.save()
+#         contact_list = OwnerContact.objects.all()
+#         paginator = Paginator(contact_list, 2)
+#         properties_data = paginator.get_page(kwargs['page_number'])
+#         context = {
+#             'page_obj': properties_data,
+#         }
+#         html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
+#         return HttpResponse(html)
+

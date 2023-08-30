@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'navigation/sidebar_config.html' %}
 
 {% block head %}
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 {% endblock head %}
 
- {% block content %}
+ {% block content_sidebar %}
  <!-- <form action="."  style="margin-bottom: 5px;" enctype="multipart/form-data" method="POST" class="dropzone " id="dropzone">
  {% csrf_token %}
     <input type="hidden" name="file" multiple />
@@ -98,7 +98,7 @@
 
 
 
-{% endblock content %} 
+{% endblock content_sidebar %} 
 
 {% block footer %}
   

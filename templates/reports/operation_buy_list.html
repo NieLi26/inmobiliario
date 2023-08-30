@@ -24,7 +24,8 @@
         </svg>
       </span>
       <input
-        hx-get="{% url url_option  page_obj.number  %}"
+        hx-get="{% url 'reports:operation_buy_table' %}"
+        hx-vals='{"page_number": "{{ page_obj.number }}"}'
         hx-target="#operation_table"
         hx-swap="innerHTML"
         hx-trigger="keyup changed delay:500ms"
@@ -35,20 +36,25 @@
       />
     </div>
 
-    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto md:overflow-visible">
+    <div 
+        x-data = "{
+        modalCreateOperationBuy: modalCreateOperationBuyAlpine(),
+    }"
+    class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto md:overflow-visible">
         <div class="inline-block min-w-full shadow rounded-lg overflow-hidden md:overflow-visible border-2" id="operation_table" >
-     
+
             {% block table_list %}
                 
                 <table class="w-full table-auto bg-white" >
                 <thead>
                     <tr class="border-b text-gray-400 uppercase text-xs leading-normal">
                         <th class="py-3 px-6 text-left">Tipo</th>
-                        <th class="py-3 px-6 text-left">Código</th>
                         <th class="py-3 px-6 text-left">Region</th>
                         <th class="py-3 px-6 text-left">Comuna</th>
-                        <th class="py-3 px-6 text-left">Valor referencial</th>
-                        <th class="py-3 px-6 text-left">Valor Comision</th>
+                        <th class="py-3 px-6 text-center">Valor Referencial</th>
+                        <th class="py-3 px-6 text-center">Valor Pagado</th>
+                        <th class="py-3 px-6 text-center">Porcentaje Comision</th>
+                        <th class="py-3 px-6 text-center">Valor Comision</th>
                         <th class="py-3 px-6 text-center">Estado Operación</th>
                         <th class="py-3 px-6 text-center">Estado Comision</th>
                         <th class="py-3 px-6 text-center">Fecha de Creacion</th>
@@ -56,58 +62,73 @@
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
-                    {% for property in page_obj  %}
+                    {% for operation in page_obj  %}
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6 text-left whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <span class="font-medium">{{ property.type_property }}</span>
-                                </div>
-                            </td>
-                            <td class="py-3 px-6 text-left">
-                                <div class="flex items-center">
-                                    <span>{{ property.codigo }}</span>
+                                    <span class="font-medium">
+                                        {{ operation.publication.property.get_property_type_display }} {{ operation.publication.property.get_publish_type_display }}
+                                    </span>
                                 </div>
                             </td>
                             <td class="py-3 px-6">
                                 <div class="flex items-center ">
-                                    <span> {{ property.region | title }}</span>
+                                    <span> {{ operation.publication.property.region | title }}</span>
                                 </div>
                             </td>
                             <td class="py-3 px-6">
                                 <div class="flex items-center ">
-                                    <span> {{ property.commune | title }}</span>
+                                    <span> {{ operation.publication.property.commune | title }}</span>
                                 </div>
                             </td>
                             <td class="py-3 px-6">
-                                <div class="flex items-center justify-start">
-                                {{ property.total }}
+                                <div class="flex items-center justify-center">
+                                {% if operation.publication.type_price == 'uf' %} 
+                                 UF {{ operation.publication.price | intcomma }}
+                                 {% else %} 
+                                 $ {{ operation.publication.price | intcomma }} 
+                                 {% endif %}
                                 </div>
                             </td>
                             <td class="py-3 px-6">
-                                <div class="flex items-center justify-start">
-                                {% if property.type_price == 'uf' %} UF {{ property.commission_value | intcomma }} {% else %} $ {{ property.commission_value | intcomma }} {% endif %}
+                                <div class="flex items-center justify-center">
+                                {% if operation.publication.type_price == 'uf' %} 
+                                 UF {{ operation.total | intcomma }}
+                                 {% else %} 
+                                 $ {{ operation.total | intcomma }} 
+                                 {% endif %}
+                                </div>
+                            </td>
+                            <td class="py-3 px-6">
+                                <div class="flex items-center justify-center">
+                                    {{ operation.publication.commission_percentage }} %
+                                </div>
+                            </td>
+                            <td class="py-3 px-6">
+                                <div class="flex items-center justify-center">
+                                {% if operation.publication.type_price == 'uf' %} UF {{ operation.get_real_comission | intcomma }} {% else %} $ {{ operation.get_real_comission | intcomma }} {% endif %}
                                 </div>
                             </td>
                             <td class="py-3 px-6 text-center">
-                                {% if property.operation == 'No concretada' %}
+                                {% if operation.publication.operation == 'an' %}
                                <!-- Error -->
                                     <span
                                     class="inline-flex items-center justify-center rounded-full bg-gray-100 px-2.5 py-0.5 text-gray-700"
                                     >
-                                        <p class="whitespace-nowrap text-sm">{{ property.operation }}</p>
+                                        <p class="whitespace-nowrap text-sm">{{ operation.publication.get_operation_display }}</p>
                                     </span>
                                 {% else %}
                                 <!-- Success -->
                                     <span
                                     class="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700"
                                     >
-                                        <p class="whitespace-nowrap text-sm">{{ property.operation }}</p>
+                                        <p class="whitespace-nowrap text-sm">{{ operation.publication.get_operation_display }}</p>
                                     </span>
                                 {% endif %}
                             </td>
                             <td class="py-3 px-6 text-center">
-                                {% if not property.operation == 'No concretada' %}     
-                                    {% if property.is_commission_paid == False %}
+                                {% if not operation.publication.operation == 'an' %}     
+                                    {% if operation.is_commission_paid == False %}
                                     <!-- Error -->
                                         <span
                                         class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
@@ -148,16 +169,31 @@
                             </td>
                             <td class="py-3 px-6 text-center">
                                 <div class="flex items-center justify-center">
-                                    {{ property.created | date:'Y-m-d '  }}
+                                    {{ operation.created | date:'Y-m-d '  }}
                                 </div>
                             </td>
                             <td class="py-3 px-6 text-center">
-                                <div class="flex item-center justify-between">
+                                <div class="flex item-center justify-between gap-2">
+
+                                    <div 
+                                    hx-get="{% url 'reports:operation_buy_detail' operation.id %}"
+                                    hx-vals = '{"page_number": "{{ page_obj.number}}"}'
+                                    hx-target="#operation-form"
+                                    hx-trigger="click"
+                                    @click="modalCreateOperationBuy.openModal()" class="w-4 mr-2 transform hover:text-yellow-500 hover:scale-110 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                            <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                            <path d="M12 12l0 .01"></path>
+                                            <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                        </svg>
+                                    </div>
                                     
-                                    {% if not property.operation == 'No concretada' %}
-                                        {% if property.is_commission_paid == False %}
+                                    {% if not operation.publication.operation == 'an' %}
+                                        {% if not operation.is_commission_paid %}
                                             <div x-data="{ open: false }">
-                                                <div @click="open = true" class="w-4 mr-2 transform hover:text-green-500 hover:scale-110">
+                                                <div @click="open = true" class="w-4 mr-2 transform hover:text-green-500 hover:scale-110 cursor-pointer">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
                                                     </svg>                                                  
@@ -184,7 +220,8 @@
                                                                     </p>
                                                                     <div class="flex items-center justify-around w-full mt-8">
                                                                         <button 
-                                                                        hx-get="{% url 'reports:operation_paid' property.id 'paid' page_obj.number %}"
+                                                                        hx-post="{% url 'reports:operation_buy_detail' operation.id %}"
+                                                                        hx-vals = '{"action": "paid", "page_number": "{{ page_obj.number}}"}'
                                                                         hx-target="#operation_table"
                                                                         @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                                                             Pagar
@@ -203,7 +240,7 @@
                                             </div>
                                         {% else %}
                                             <div x-data="{ open: false }" >
-                                            <div  @click="open = true" class="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
+                                            <div  @click="open = true" class="w-4 mr-2 transform hover:text-red-500 hover:scale-110 cursor-pointer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash-banknote-off w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                     <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
@@ -241,7 +278,8 @@
                                                                 </p>
                                                                 <div class="flex items-center justify-around w-full mt-8">
                                                                     <button 
-                                                                    hx-get="{% url 'reports:operation_paid' property.id 'unpaid' page_obj.number %}"
+                                                                    hx-post="{% url 'reports:operation_buy_detail' operation.id %}"
+                                                                    hx-vals = '{"action": "unpaid", "page_number": "{{ page_obj.number}}"}'
                                                                     hx-target="#operation_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                                                         Quitar
@@ -261,9 +299,148 @@
                                         {% endif %}
                                     {% endif %}
                                     
+                            
+                                    <div x-data="{ open: false }" class="relative flex justify-center">
+                                        {% if operation.purchase_sale_agreement or operation.sales_document%}
+                                        <div @click="open = true" class="w-4 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+                                        {% else %}
+                                         <div class="w-4">
+                                        {% endif %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                <path d="M9 15h6"></path>
+                                                <path d="M12.5 17.5l2.5 -2.5l-2.5 -2.5"></path>
+                                             </svg>
+
+                                        </div>
+                                     
+                                        <div x-show="open" 
+                                            x-cloak
+                                            x-transition:enter="transition duration-300 ease-out"
+                                            x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+                                            x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
+                                            x-transition:leave="transition duration-150 ease-in"
+                                            x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+                                            x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+                                            class="fixed inset-0 z-10 overflow-y-auto" 
+                                            aria-labelledby="modal-title" role="dialog" aria-modal="true"
+                                        >
+                                            <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                                                <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
+
+                                                <div @click.away="open = false"  class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl  sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
+                                                    <h3 class="text-xl text-center font-bold leading-6 text-gray-800 capitalize " id="modal-title">
+                                                        Ver Archivos
+                                                    </h3>
+                                                    <p class="mt-2 text-center text-sm text-gray-500 ">
+                                                        Seleccione para Ver o Descargar los archivos
+                                                    </p>
+
+                                                  
+                                                    
+                                                    
+                                                    <ul class="flex flex-col pt-10">
+                                                        {% if operation.purchase_sale_agreement %}
+                                                        <li class="flex flex-row mb-2 border-green-400">
+                                                            <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
+                                                                <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                                        <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                                                        <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
+                                                                        <path d="M17 18h2"></path>
+                                                                        <path d="M20 15h-3v6"></path>
+                                                                        <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="flex-1 pl-1 md:mr-16">
+                                                                    <div class="font-medium ">
+                                                                        Promesa de Compra/Venta
+                                                                    </div>
+                                                                </div>
+                                                                <div class="flex items-center justify-between gap-2 text-gray-600 ">
+                                                                    <a href="{{ operation.purchase_sale_agreement.url }}" target="_blank" >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                                         </svg>
+                                                                    </a>
+                                                                    <a href="{{ operation.purchase_sale_agreement.url }}" download >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                                            <path d="M12 17v-6"></path>
+                                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                                         </svg>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        {% endif %}
+
+                                                        {% if operation.sales_document %}
+                                                        <li class="flex flex-row mb-2 border-green-400">
+                                                            <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
+                                                                <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                                        <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                                                        <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
+                                                                        <path d="M17 18h2"></path>
+                                                                        <path d="M20 15h-3v6"></path>
+                                                                        <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="flex-1 pl-1 md:mr-16">
+                                                                    <div class="font-medium ">
+                                                                        Compra/Venta
+                                                                    </div>
+                                                                </div>
+                                                                <div class="flex items-center justify-between gap-2 text-gray-600 ">
+                                                                    <a href="{{ operation.sales_document.url }}" target="_blank" >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                                         </svg>
+                                                                    </a>
+                                                                    <a href="{{ operation.sales_document.url }}" download >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                                                            <path d="M12 17v-6"></path>
+                                                                            <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                                                         </svg>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                                
+
+                                                    <div class="mt-4 sm:-mx-2">
+                                                        <button type="button" @click="open = false" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-red-700 border-red-200 rounded-md sm:mx-2  hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40">
+                                                            Cerrar
+                                                        </button>
+                                                    </div>
+                                                  
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div  x-data="{ open: false }">
-                                        <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <div @click="open = true" class="w-4 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                         </div>
@@ -284,15 +461,16 @@
                                                                 </path>
                                                             </svg>
                                                             <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                Eliminar Propiedad
+                                                                Eliminar Operación
                                                             </p>
                                                             <p class="text-gray-600  text-xs py-2 px-6">
-                                                                Estas seguro de eliminar esta propiedad ?
+                                                                Estas seguro de eliminar esta Operación ?
                                                             </p>
                                                             <div class="flex items-center justify-between gap-4 w-full mt-8">          
                                                                 <div class='inline-flex'>
                                                                     <button
-                                                                    hx-delete="{% url 'reports:operation_delete' property.id page_obj.number %}"
+                                                                    hx-post="{% url 'reports:operation_buy_detail' operation.id %}"
+                                                                    hx-vals='{"action": "delete", "page_number": "{{ page_obj.number }}"}'
                                                                     hx-target="#operation_table"
                                                                     @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                                                         Eliminar
@@ -313,6 +491,8 @@
                                 </div>
                             </td>
                         </tr>
+
+                        
                     {% endfor %}
                 </tbody>
                 </table>
@@ -325,11 +505,11 @@
                 
                             {% if page_obj.has_previous %}
                             <button 
-                                hx-get="{% url url_option   page_obj.previous_page_number  %}" 
-                            hx-vals='{"q": "{{q}}"}'
+                            hx-get="{% url 'reports:operation_buy_table' %}" 
+                            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.previous_page_number }}"}'
                             hx-target='#operation_table'
                             hx-swap="innerHTML"
-                            href="#" class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
+                            class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
                                 <svg width="9" fill="currentColor" height="8" class="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
                                     </path>
@@ -341,8 +521,8 @@
                 
                                 {% if page_obj.number|add:"-1" >= 1 %}
                                     <button 
-                                        hx-get="{% url url_option  page_obj.number|add:"-1" %}" 
-                                        hx-vals='{"q": "{{q}}"}'
+                                        hx-get="{% url 'reports:operation_buy_table' %}" 
+                                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"-1" }}"}'
                                         hx-target='#operation_table'
                                         hx-swap="innerHTML"
                                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
@@ -350,8 +530,8 @@
                                 {% endif %}
                 
                                 <button 
-                                    hx-get="{% url url_option   page_obj.number %}" 
-                                    hx-vals='{"q": "{{q}}"}'
+                                    hx-get="{% url 'reports:operation_buy_table' %}" 
+                                    hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number }}"}'
                                     hx-target='#operation_table'
                                     hx-swap="innerHTML"
                                     href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
@@ -360,8 +540,8 @@
                 
                                 {% if page_obj.number|add:"1" in page_obj.paginator.page_range %}
                                     <button
-                                        hx-get="{% url url_option   page_obj.number|add:"1" %}" 
-                                        hx-vals='{"q": "{{q}}"}'
+                                        hx-get="{% url 'reports:operation_buy_table' %}" 
+                                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"1" }}"}'
                                         hx-target='#operation_table'
                                         hx-swap="innerHTML" 
                                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
@@ -372,16 +552,16 @@
                                 {% for i in page_obj.paginator.page_range %}
                                     {% if i == page_obj.number %}
                                         <button
-                                            hx-get="{% url url_option   i %}" 
-                                            hx-vals='{"q": "{{q}}"}'
+                                            hx-get="{% url 'reports:operation_buy_table' %}" 
+                                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}"}'
                                             hx-target='#operation_table'
                                             hx-swap="innerHTML" 
                                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
                                         </button> 
                                     {% else %}
                                         <button
-                                            hx-get="{% url url_option   i %}" 
-                                            hx-vals='{"q": "{{q}}"}'
+                                            hx-get="{% url 'reports:operation_buy_table' %}" 
+                                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}"}'
                                             hx-target='#operation_table'
                                             hx-swap="innerHTML" 
                                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
@@ -395,8 +575,8 @@
                 
                             {% if page_obj.has_next %}
                             <button 
-                            hx-get="{% url url_option   page_obj.next_page_number  %}" 
-                            hx-vals='{"q": "{{q}}"}'
+                            hx-get="{% url 'reports:operation_buy_table' %}" 
+                            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.next_page_number }}"}'
                             hx-target='#operation_table'
                             hx-swap="innerHTML"
                             class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
@@ -424,6 +604,8 @@
                 </div>
                 {% endif %}
             
+                {% include 'modules/operation/modal_buy_update.html' %}
+
             {% endblock table_list %}
 
 
@@ -431,3 +613,36 @@
     </div>
 
 {% endblock content_sidebar %}
+
+
+{% block js %}
+
+<script>
+    const formUpdateOperationBuy = document.querySelector("#form-update-operation-buy");
+    function modalCreateOperationBuyAlpine() {
+        return {
+            isOpen: false,
+            openModal(id) {
+                this.isOpen = true;
+
+            },
+            closeModal() {
+                this.isOpen = false;
+                // document.querySelector("#id_publication").value = ""
+                formUpdateOperationBuy.reset();
+            },
+            // sendRequest() {
+            //     const url = `/reports/operation/buy/${this.id}/`
+            //     htmx.ajax('POST', url, {target:'#operation-form', swap:'innerHTML', values:{"action": "update"}, headers:'Content-Type:multipart/form-data'})
+            // }
+        }
+    }
+
+
+    // document.addEventListener('htmx:afterSwap', (e) => {
+       
+    // })
+
+</script>
+    
+{% endblock js %}

@@ -198,6 +198,20 @@ class Property(TimeStampedModel):
     def has_active_publication(self):
         return len([publication for publication in self.publications.all() if publication.state])
 
+    @property
+    def has_active_publication_publish(self):
+        has_publication_active =  self.publications.filter(state=True)
+        if has_publication_active.exists() and has_publication_active.first().status == 'pu':
+            return True
+        return False
+
+    @property
+    def has_active_publication_draft(self):
+        has_publication_active = self.publications.filter(state=True)
+        if has_publication_active.exists() and has_publication_active.first().status == 'dr':
+            return True
+        return False
+
 
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''
@@ -213,7 +227,6 @@ class PropertyImage(TimeStampedModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         im = Image.open(self.image.path)
-
 
         # new resizing
         new_height = 720
@@ -286,7 +299,7 @@ class Publication(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications_user')
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='publications_owner', verbose_name='Propietario')
     realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
-    status = models.CharField(choices=Status.choices, max_length=3, default=Status.DRAFT)
+    status = models.CharField(choices=Status.choices, max_length=3, default=Status.PUBLISH)
     operation = models.CharField(choices=Operations.choices, max_length=2, default=Operations.WAITING)
     type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)
     price = models.PositiveIntegerField('Precio Publicación')
@@ -826,6 +839,7 @@ class Commune(TimeStampedModel):
     region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='communes')
     name = models.CharField('Comuna', max_length=150)
     location_slug = models.SlugField()
+
     class Meta:
         '''Meta definition for Commune.'''
 
@@ -855,5 +869,4 @@ class PropertyContact(TimeStampedModel):
 
     def __str__(self):
         return str(self.from_email)
-
 

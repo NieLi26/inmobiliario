@@ -21,7 +21,7 @@ class PropertyAdmin(admin.ModelAdmin):
 
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display = ("property", "type_price", 'price', 'operation', 'status')
+    list_display = ("property", "type_price", 'price', 'operation', 'status', 'state')
 
 # admin.site.register(House, HouseAdmin)
 # admin.site.register(Apartment, ApartmentAdmin)

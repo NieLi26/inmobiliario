@@ -8,10 +8,12 @@ urlpatterns = [
     # CONTACT LIST
     path('contact/', views.ContactListView.as_view(), name='contact_list'),
     path('contact/create/', views.ContactPageView.as_view(), name='contact_create'),
-    # CONTACT OWNER LIST
-    path('contact-owner/', views.OwnerContactListView.as_view(), name='contact_owner_list'),
-
+    
     path('test/', views.TestTemplateView.as_view(), name='test')
+
+    # ELIMINADO
+    # CONTACT OWNER LIST
+    # path('contact-owner/', views.OwnerContactListView.as_view(), name='contact_owner_list'),
 ]
 
 
@@ -27,9 +29,11 @@ hxpatterns = [
     path('hx_contact_home_form/', views.hx_contact_home_form, name='hx_contact_home_form'),
     path('hx_side_alert/', views.hx_side_alert, name='hx_side_alert'),
     # path('hx_message/', hx_message, name='hx_message'),
+
+    # ELIMINADO
     # CONTACT OWNER LIST
-    path('hx_contact_owner_table/<int:page_number>/', views.TableOwnerContactView.as_view(), name='hx_contact_owner_table'),
-    path('hx_contact_owner_modal/<int:pk>/<int:page_number>/', views.ModalOwnerContactView.as_view(), name='hx_contact_owner_modal'),
+    # path('hx_contact_owner_table/<int:page_number>/', views.TableOwnerContactView.as_view(), name='hx_contact_owner_table'),
+    # path('hx_contact_owner_modal/<int:pk>/<int:page_number>/', views.ModalOwnerContactView.as_view(), name='hx_contact_owner_modal'),
 ]
 
 urlpatterns += hxpatterns

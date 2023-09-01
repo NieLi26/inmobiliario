@@ -49,7 +49,6 @@ from .forms import (
     PublicationRentForm
 )
 
-from apps.reports.forms import OperationBuyHistoryForm
 
 
 def property_create_test(request, property_type):
@@ -407,7 +406,7 @@ class PublishBuyListView(LoginRequiredMixin, PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form_operation_buy'] = OperationBuyHistoryForm()
+        # context['form_operation_buy'] = OperationBuyHistoryForm()
         context['publish_type'] = 've'
         context['sidebar_title'] = 'Publicaciones en Venta'
         context['sidebar_subtitle'] = 'Maneja la información de tus ventas!'
@@ -663,7 +662,7 @@ class PublicationDeleteView(LoginRequiredMixin, View):
             publication_list = publication_list.filter(
                 property__publish_type='ve'
             )
-            context['form_operation_buy'] = OperationBuyHistoryForm()
+            # context['form_operation_buy'] = OperationBuyHistoryForm()
         if type_publish == 'pe':
             publication_list = publication_list.filter(
                 property__publish_type='pe'
@@ -734,12 +733,11 @@ class PublicationChangeView(LoginRequiredMixin, View):
                 publication.operation = Publication.Operations.ANNULLED
                 publication.save()
 
-
         publication_list = Publication.objects.filter(state=True, status=Publication.Status.PUBLISH)
 
         if type_publish == 've':
             publication_list = publication_list.filter(property__publish_type='ve')
-            context['form_operation_buy'] = OperationBuyHistoryForm()
+            # context['form_operation_buy'] = OperationBuyHistoryForm()
         if type_publish == 'pe':
             publication_list = publication_list.filter(property__publish_type='pe')
             # context['form_operation_exchange'] = OperationExchangeHistoryForm()
@@ -784,7 +782,7 @@ class TablePublicationView(LoginRequiredMixin, View):  # probe como pasar templa
             publication_list = publication_list.filter(
                 property__publish_type='ve'
             )
-            context['form_operation_buy'] = OperationBuyHistoryForm()
+            # context['form_operation_buy'] = OperationBuyHistoryForm()
         if type_publish == 'pe':
             publication_list = publication_list.filter(
                 property__publish_type='pe'

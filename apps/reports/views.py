@@ -9,7 +9,7 @@ from django_htmx.http import HttpResponseClientRefresh
 from apps.properties.models import Publication, PropertyContact
 from apps.pages.models import Contact, OwnerContact
 from .models import OperationBuyHistory
-from .forms import OperationBuyHistoryForm, OperationBuyHistoryUpdateForm
+from .forms import OperationBuyHistoryFirstForm, OperationBuyHistorySecondForm, OperationBuyHistoryUpdateForm
 
 from render_block import render_block_to_string
 # Create your views here.
@@ -123,48 +123,27 @@ class OperationBuyListCreateView(LoginRequiredMixin, PaginationMixin, ListView):
     model = OperationBuyHistory
     template_name = 'reports/operation_buy_list.html'
 
-    def post(self, request, *args, **kwargs):
-        context = {}
-        form = OperationBuyHistoryForm(request.POST, request.FILES)
-        print('entro')
-        if form.is_valid():
-            print('paso valdiacion')
-            form.save()
-            return HttpResponseClientRefresh()
-        else:
-            print('No paso validacion')
-            print(form.errors)
-            context['form_operation_buy'] = form
-            context['errors'] = {'No paso Validacion'}
-        html = render_block_to_string('modules/operation/modal_buy_create.html', 'operation_form', context)
-        return HttpResponse(html)
+    # def post(self, request, *args, **kwargs):
+    #     context = {}
+    #     form = OperationBuyHistoryFirstForm(request.POST, request.FILES)
+    #     print('entro')
+    #     if form.is_valid():
+    #         print('paso valdiacion')
+    #         form.save()
+    #         return HttpResponseClientRefresh()
+    #     else:
+    #         print('No paso validacion')
+    #         print(form.errors)
+    #         context['form_operation_buy'] = form
+    #         context['errors'] = {'No paso Validacion'}
+    #     html = render_block_to_string('modules/operation/modal_buy_create.html', 'operation_form', context)
+    #     return HttpResponse(html)
 
     def get_queryset(self):
         return OperationBuyHistory.objects.filter(state=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['url_option'] = 'reports:table_operation'
-        # property_type = [
-        #     {'name': 'ca', 'value': 'Casa'},
-        #     {'name': 'de', 'value': 'Departamento'},
-        #     {'name': 'of', 'value': 'Oficina'},
-        #     {'name': 'lc', 'value': 'Local Comercial'},
-        #     {'name': 'su', 'value': 'Sitio Urbano'},
-        #     {'name': 'in', 'value': 'Industrial'},
-        #     {'name': 'bo', 'value': 'Bodega'},
-        #     {'name': 'pa', 'value': 'Parcela'}
-        # ]
-
-        # publish_type = [
-        #     {'name': 've', 'value': 'Venta'},
-        #     {'name': 'pe', 'value': 'Permuta'},
-        #     {'name': 'ar', 'value': 'Arriendo'},
-        #     {'name': 'at', 'value': 'Arriendo Temporada'}
-        # ]
-        # context['property_type'] = property_type
-        # context['publish_type'] = publish_type
-        # context['form_operation_buy'] = OperationBuyHistoryUpdateForm()
         context['sidebar_title'] = 'Gestión'
         context['sidebar_subtitle'] = 'Registro de acciones en las propiedades!'
         return context
@@ -173,16 +152,28 @@ class OperationBuyListCreateView(LoginRequiredMixin, PaginationMixin, ListView):
 # partials
 class OperationRetrieveUpdateDestroyView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        page_number = request.GET.get('page_number', 1)
-        operation = OperationBuyHistory.objects.get(pk=self.kwargs['pk'])
-        print('existe ', operation)
-
-        operation_buy = OperationBuyHistory.objects.filter(state=True)
-        paginator = Paginator(operation_buy, 2)
-        data = paginator.get_page(page_number)
+        # page_number = request.GET.get('page_number', 1)
+        complete = request.GET.get('complete', '')
+        operation = get_object_or_404(OperationBuyHistory, pk=self.kwargs['pk'])
+        form = None
+        url_vals = None
+        if complete == 'yes':
+            form = OperationBuyHistoryUpdateForm(instance=operation)
+            url_vals = '{"action": "update", "complete": "yes"}'
+        else:
+            url_vals = '{"action": "update", "complete": "no"}'
+            if operation.total > 0:
+                form = OperationBuyHistorySecondForm(instance=operation)
+            else:
+                form = OperationBuyHistoryFirstForm(instance=operation)
+        print(form.instance.signature_sales_document)
+        # operation_buy = OperationBuyHistory.objects.filter(state=True)
+        # paginator = Paginator(operation_buy, 2)
+        # data = paginator.get_page(page_number)
         context = {
-            'form_operation_buy': OperationBuyHistoryUpdateForm(instance=operation),
-            'url_operation': f"/reports/operation/buy/{self.kwargs['pk']}/"
+            'form_operation_buy': form,
+            'url_operation': f"/reports/operation/buy/{self.kwargs['pk']}/",
+            'url_vals': url_vals
             # 'page_obj': data,
         }
         html = render_block_to_string('modules/operation/modal_buy_update.html', 'operation_form', context)
@@ -195,23 +186,35 @@ class OperationRetrieveUpdateDestroyView(LoginRequiredMixin, View):
         # action = data['action'][0]
         # page_number = data.get('page_number', 1)[0]
         action = request.POST.get('action')
+        complete = request.POST.get('complete', '')
         print('action es ', action)
         page_number = request.POST.get('page_number', 1)
 
-        operation_buy = get_object_or_404(OperationBuyHistory, id=kwargs['pk'])
+        operation = get_object_or_404(OperationBuyHistory, id=kwargs['pk'])
 
         if action == 'paid':
-            operation_buy.is_commission_paid = True
-            operation_buy.save()
+            operation.is_commission_paid = True
+            operation.save()
         elif action == 'unpaid':
-            operation_buy.is_commission_paid = False
-            operation_buy.save()
+            operation.is_commission_paid = False
+            operation.save()
         elif action == 'delete':
-            operation_buy.state = False
-            operation_buy.save()
+            operation.state = False
+            operation.save()
         elif action == 'update':
-            print(request.FILES)
-            form = OperationBuyHistoryUpdateForm(request.POST, request.FILES, instance=operation_buy)
+            form = None
+            url_vals = None
+            if complete == 'yes':
+                print('ENTRo')
+                form = OperationBuyHistoryUpdateForm(request.POST, request.FILES, instance=operation)
+                url_vals = '{"action": "update", "complete": "yes"}'
+            else:
+                url_vals = '{"action": "update", "complete": "no"}'
+                if operation.total > 0:
+                    form = OperationBuyHistorySecondForm(request.POST, request.FILES, instance=operation)
+                else:
+                    form = OperationBuyHistoryFirstForm(request.POST, request.FILES, instance=operation)
+
             if form.is_valid():
                 print('ES valido')
                 form.save()
@@ -221,12 +224,13 @@ class OperationRetrieveUpdateDestroyView(LoginRequiredMixin, View):
                 print(form.errors)
                 context['form_operation_buy'] = form
                 context['errors'] = {'No paso Validacion'}
-                context['url_operation'] = f"/reports/operation/buy/{self.kwargs['pk']}/"
+                context['url_operation'] = f"/reports/operation/buy/{self.kwargs['pk']}/",
+                context['url_vals'] = url_vals
                 html = render_block_to_string('modules/operation/modal_buy_update.html', 'operation_form', context)
                 return HttpResponse(html)
 
-        operation_buy = OperationBuyHistory.objects.filter(state=True)
-        paginator = Paginator(operation_buy, 2)
+        operations = OperationBuyHistory.objects.filter(state=True)
+        paginator = Paginator(operations, 2)
         data = paginator.get_page(page_number)
         context['page_obj'] = data
         html = render_block_to_string('reports/operation_buy_list.html', 'table_list', context)

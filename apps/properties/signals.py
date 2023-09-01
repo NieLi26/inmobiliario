@@ -1,6 +1,7 @@
 import os
 from django.db.models.signals import post_save, post_delete, pre_delete, pre_save
 from django.core.files.storage import FileSystemStorage
+from django.dispatch import receiver
 
 from .utils import send_property_email
 from .models import (
@@ -104,6 +105,18 @@ def publication_pre_save(sender, instance, **kwargs):
 
 
 pre_save.connect(publication_pre_save, Publication)
+
+
+@receiver(post_save, sender=Publication)
+def publication_post_save(sender, instance, created, **kwargs):
+    try:
+        if instance.operation == "fi":
+            OperationBuyHistory.objects.create(publication=instance)
+    except Exception as e:
+        print(str(e))
+        pass
+
+
 
 # ELIMINADO 22-08-2023
 # def publication_post_save(sender, instance, created, **kwargs):

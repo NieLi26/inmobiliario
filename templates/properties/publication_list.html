@@ -161,7 +161,7 @@
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex item-center justify-between">
                                                 
-                                        <div @click="modalCreateOperationBuy.openModal({{ publication.id }})" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
+                                        <!-- <div @click="modalCreateOperationBuy.openModal({{ publication.id }})" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
@@ -169,61 +169,87 @@
                                                 <path d="M12 12l0 .01"></path>
                                                 <path d="M3 13a20 20 0 0 0 18 0"></path>
                                             </svg>
-                                        </div>
-                    
+                                        </div> -->
+
                                         {% if publication.status == 'pu' %}
                                             <div x-data="{ open: false }">
-
-                                                <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-                                                        <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-                                                        <path d="M12 12l0 .01"></path>
-                                                        <path d="M3 13a20 20 0 0 0 18 0"></path>
-                                                    </svg>
-                                                </div>
-                                                
-                                                <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                                
-                                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                    
-                                                    <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                                
-                                                            <div @click.away="open = false"  class="relative flex flex-col items-center max-w-lg gap-4 p-6 rounded-md shadow-md sm:py-8 sm:px-12 bg-gray-50 text-gray-800">
-                                                                <button @click="open = false"  class="absolute top-2 right-2">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="flex-shrink-0 w-6 h-6">
-                                                                        <polygon points="427.314 107.313 404.686 84.687 256 233.373 107.314 84.687 84.686 107.313 233.373 256 84.686 404.687 107.314 427.313 256 278.627 404.686 427.313 427.314 404.687 278.627 256 427.314 107.313"></polygon>
-                                                                    </svg>
-                                                                </button>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 text-blue-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-                                                                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-                                                                    <path d="M12 12l0 .01"></path>
-                                                                    <path d="M3 13a20 20 0 0 0 18 0"></path>
-                                                                </svg>
-                                                                <h2 class="text-2xl font-semibold leading-tight tracking-wide">Estado de Operacion.</h2>
-                                                                <p class="flex-1 text-center text-gray-600">Esta seguro de cambiar el estado de la operacion?</p>
-                                                                <div class="flex items-center space-x-2">
-                                                                    <button 
-                                                                        hx-get="{% url 'properties:publication_change' publication.id %}"
-                                                                        hx-vals='{"action": "finished", "type_publish": "{{ publish_type }}", "page_number": "{{ page_obj.number }}"}'
-                                                                        hx-target="#custom_table"
-                                                                        type="button" class="px-8 py-3 font-semibold rounded-full bg-green-600 text-white">Concretada
-                                                                    </button>
-                                                                    <button 
-                                                                        hx-get="{% url 'properties:publication_change' publication.id %}"
-                                                                        hx-vals='{"action": "annulled", "type_publish": "{{ publish_type }}", "page_number": "{{ page_obj.number }}"}'
-                                                                        hx-target="#custom_table"
-                                                                        type="button" class="px-8 py-3 font-semibold rounded-full bg-gray-600 text-white">No Concretada
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                            <div
+                                            @click="open = true"
+                                            class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer"
+                                            >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                <path d="M12 12l0 .01"></path>
+                                                <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                            </svg>
+                                            </div>
+                                        
+                                            <div
+                                            x-show="open"
+                                            x-cloak
+                                            class="relative z-10"
+                                            aria-labelledby="modal-title"
+                                            role="dialog"
+                                            aria-modal="true"
+                                            >
+                                            <div
+                                                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                            ></div>
+                                        
+                                            <div class="fixed z-10 inset-0 overflow-y-auto">
+                                                <div
+                                                class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
+                                                >
+                                                <div
+                                                    @click.away="open = false"
+                                                    class="shadow-lg rounded-2xl p-4 bg-white w-96 m-auto"
+                                                >
+                                                    <div class="w-full h-full text-center">
+                                                    <div class="flex h-full flex-col justify-between">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-blue-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                            <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                            <path d="M12 12l0 .01"></path>
+                                                            <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                        </svg>
+                                                        <p class="text-gray-800 text-xl font-bold mt-4">
+                                                            Estado de Operación
+                                                        </p>
+                                                        <p class="text-gray-600 text-xs py-2 px-6">
+                                                            Estas Seguro de Cambiar el estado de Operación de esta Publicaión ?
+                                                        </p>
+                                                        <div class="flex items-center justify-around w-full mt-8">
+                                                        <button
+                                                            hx-get="{% url 'properties:publication_change' publication.id %}"
+                                                            hx-vals='{"action": "finished", "type_publish": "{{ publish_type }}", "page_number": "{{ page_obj.number }}"}'
+                                                            hx-target="#custom_table"
+                                                            @click="open = false"
+                                                            type="submit"
+                                                            class="py-2 px-4 mx-3 bg-green-300 hover:bg-green-400 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                                                        >
+                                                        Concretada
+                                                        </button>
+                                        
+                                                        <button
+                                                            hx-get="{% url 'properties:publication_change' publication.id %}"
+                                                            hx-vals='{"action": "annulled", "type_publish": "{{ publish_type }}", "page_number": "{{ page_obj.number }}"}'
+                                                            hx-target="#custom_table"
+                                                            @click="open = false"
+                                                            type="button"
+                                                            class="py-2 px-4 bg-gray-300 hover:bg-gray-400 focus:ring-gray-500 focus:ring-offset-gray-200  text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+                                                        >
+                                                            No Concretada
+                                                        </button>
                                                         </div>
                                                     </div>
+                                                    </div>
                                                 </div>
+                                                </div>
+                                            </div>
+                                            </div>
                                             </div>
                                         {% endif %}
 
@@ -587,8 +613,6 @@
                 </p>
                 </div>
                 {% endif %}
-
-                {% include 'modules/operation/modal_buy_create.html' %}
             
             {% endblock table_list %}
 

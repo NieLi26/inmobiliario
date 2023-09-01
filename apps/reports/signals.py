@@ -11,9 +11,9 @@ def operation_buy_history_pre_save(sender, instance, **kwargs):
     if instance.pk:
         try:
             antigua_instancia = OperationBuyHistory.objects.get(pk=instance.pk)
-            if antigua_instancia.purchase_sale_agreement != instance.purchase_sale_agreement:
+            if antigua_instancia.purchase_sale_agreement and antigua_instancia.purchase_sale_agreement != instance.purchase_sale_agreement:
                 delete_file(antigua_instancia.purchase_sale_agreement)
-            if antigua_instancia.sales_document != instance.sales_document:
+            if antigua_instancia.sales_document and antigua_instancia.sales_document != instance.sales_document:
                 delete_file(antigua_instancia.sales_document)
         except OperationBuyHistory.DoesNotExist:
             pass
@@ -22,11 +22,11 @@ def operation_buy_history_pre_save(sender, instance, **kwargs):
 
 
 
-@receiver(post_save, sender=OperationBuyHistory)
-def operation_buy_history_post_save(sender, instance, created, **kwargs):
-    if created:
-        instance.publication.operation = Publication.Operations.FINISHED
-        instance.publication.save()
+# @receiver(post_save, sender=OperationBuyHistory)
+# def operation_buy_history_post_save(sender, instance, created, **kwargs):
+#     if created:
+#         instance.publication.operation = Publication.Operations.FINISHED
+#         instance.publication.save()
 
 
 @receiver(pre_delete, sender=OperationBuyHistory)

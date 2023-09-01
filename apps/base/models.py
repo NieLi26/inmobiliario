@@ -10,6 +10,7 @@ class TimeStampedModel(models.Model):
     state = models.BooleanField('Estado', default=True)
     created = models.DateField('Fecha de Creación', auto_now_add=True)
     modified = models.DateField('Fecha de Modificaión', auto_now=True)
+    deleted = models.DateField('Fecha de Eliminacion', null=True, blank=True)
 
     class Meta:
         """Meta definition for BaseModel."""

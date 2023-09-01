@@ -33,46 +33,58 @@
                     class="mt-4" >
 
                         
-                        {% for field in form_operation_buy.visible_fields  %}
+                        <!-- {% for field in form_operation_buy.visible_fields  %}
                             {% if not  field.field.widget.input_type == 'file' %}
+                                {{ field | as_crispy_field }}
+                            {% endif %}
+                        {% endfor %} -->
+
+                    
+                        
+                        {% for field in form_operation_buy.visible_fields  %}
+                            {% if field.name == 'purchase_sale_agreement'  %}
+
+                                <label for="id_purchase_sale_agreement" class="block text-gray-700 text-sm font-bold mb-">Promesa de Compra/Venta</label>
+                                {% if form_operation_buy.instance.purchase_sale_agreement and not form_operation_buy.errors.purchase_sale_agreement %}
+                                    <div class="mb-4">
+                                    <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_buy.instance.purchase_sale_agreement.url }}">{{ form_operation_buy.instance.purchase_sale_agreement.name | filename }}</a></p>
+                                    <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
+                                    </div>
+                                {% endif %}
+                                <div class="flex">
+                                    <input type="file" name="purchase_sale_agreement" id="id_purchase_sale_agreement" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
+                                </div>
+
+                                {% if form_operation_buy.errors.purchase_sale_agreement %}
+                                    {% for error in form_operation_buy.errors.purchase_sale_agreement %}
+                                    <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            
+                            {% elif field.name == 'sales_document' %}
+                                           
+                                <label for="id_sales_document" class="block text-gray-700 text-sm font-bold mb-2">Contrato de Compra/Venta*</label>
+                                {% if form_operation_buy.instance.sales_document %}
+                                    <div class="mb-4">
+                                        <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_buy.instance.sales_document.url }}">{{ form_operation_buy.instance.sales_document.name | filename }}</a></p>
+                                        <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
+                                    </div>                            
+                                {% endif %}
+                                <div class="flex">
+                                    <input type="file" name="sales_document" id="id_sales_document" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
+                                </div>
+                                
+                                {% if form_operation_buy.errors.sales_document %}
+                                    {% for error in form_operation_buy.errors.sales_document %}
+                                    <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                                    {% endfor %}
+                                {% endif %}
+
+                            {% else %}
                                 {{ field | as_crispy_field }}
                             {% endif %}
                         {% endfor %}
 
-               
-                            <label for="id_purchase_sale_agreement" class="block text-gray-700 text-sm font-bold mb-">Promesa de Compra/Venta</label>
-                            {% if form_operation_buy.instance.purchase_sale_agreement and not form_operation_buy.errors.purchase_sale_agreement %}
-                                <div class="mb-4">
-                                <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_buy.instance.purchase_sale_agreement.url }}">{{ form_operation_buy.instance.purchase_sale_agreement.name | filename }}</a></p>
-                                <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
-                                </div>
-                            {% endif %}
-                            <div class="flex">
-                                <input type="file" name="purchase_sale_agreement" id="id_purchase_sale_agreement" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
-                            </div>
-
-                            {% if form_operation_buy.errors.purchase_sale_agreement %}
-                                {% for error in form_operation_buy.errors.purchase_sale_agreement %}
-                                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
-                                {% endfor %}
-                            {% endif %}
-               
-                            <label for="id_sales_document" class="block text-gray-700 text-sm font-bold mb-2">Compra/Venta</label>
-                            {% if form_operation_buy.instance.sales_document %}
-                                <div class="mb-4">
-                                    <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_buy.instance.sales_document.url }}">{{ form_operation_buy.instance.sales_document.name | filename }}</a></p>
-                                    <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
-                                </div>                            
-                            {% endif %}
-                            <div class="flex">
-                                <input type="file" name="sales_document" id="id_sales_document" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
-                            </div>
-                            
-                            {% if form_operation_buy.errors.sales_document and not form_operation_buy.errors.sales_document %}
-                                {% for error in form_operation_buy.errors.sales_document %}
-                                <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
-                                {% endfor %}
-                            {% endif %}
 
                         <div class="mt-4 sm:flex sm:items-center sm:-mx-2">
                             <button type="button" @click="modalCreateOperationBuy.closeModal()" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2  hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
@@ -83,7 +95,7 @@
                           
                             hx-post="{{ url_operation }}"
                             hx-encoding="multipart/form-data"
-                            hx-vals='{"action": "update"}'
+                            hx-vals='{{ url_vals }}'
                             hx-swap="innerHTML"
                             hx-target="#operation-form"
                             type="submit" class="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">

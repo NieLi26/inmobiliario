@@ -32,3 +32,11 @@
 # distinto formulario si tiene el campo has_promise
 - si, mostrar para subir la fecha de compra/venta, y documento, y nose si valor
 - no, solo mostrar el total, o no mostrar nada
+
+#### OPERACION ARRIENDO #######
+- preguntar como sacar la comision de arriendo, se pide el dato o se queda en base al precio de referencia, no el precio real
+- restringir que solo se pueda cambiar el estado con ciertas condiciones 
+* condicion 1 = total de mensualidad, debe existir
+- restringir que al generar un pago se habilite el icono y se pueda realizar la accion solamente si el campo "is_completed" esta en True
+- hacer el la vista de listado de pagos de arriendo
+- quizas restringir solo un mes unico por pago al crear pago

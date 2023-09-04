@@ -1,3 +1,4 @@
+import os
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import Http404
 from django.urls import reverse
@@ -5,12 +6,24 @@ from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 # Email
 from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
 from django.template.loader import get_template
 
 from .models import Property, Commune
+
+
+def delete_file(image):
+    ''' Recibe una ruta '''
+    # Check if the image exists
+    if os.path.exists(image):
+        # delete image
+        fs = FileSystemStorage()
+        fs.delete(image)
+    else:
+        print('Imagen no existe')
 
 
 def get_ip(request):

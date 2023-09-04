@@ -5,23 +5,22 @@ app_name = "reports"
 
 urlpatterns = [
     path('', views.DashboardTemplateView.as_view(), name='dashboard'),
-
     path('operation/buy/', views.OperationBuyListCreateView.as_view(), name='operation_buy_list'),
+    path('operation/rent/', views.OperationRentListCreateView.as_view(), name='operation_rent_list'),
+    path('operation/rent/payment/', views.PaymentRentListCreateView.as_view(), name='payment_rent_list'),
 ]
-
 
 hx_patterns = [
-    # path('operation/buy/create', views.OperationBuyHistoryCreateView.as_view(), name='operation_buy_create'),
-
-    # path('managment/<int:pk>/<int:page_number>/delete/', views.OperationHistoryDeleteView.as_view(), name='operation_delete'),
-    # path('managment/<int:pk>/<str:action>/<str:page_number>/paid/', views.OperationHistoryPaidView.as_view(), name='operation_paid'),
-    
+    # VENTA
     path('operation/buy/table', views.OperationBuyTableView.as_view(), name='operation_buy_table'),
-    path('operation/buy/<int:pk>/', views.OperationRetrieveUpdateDestroyView.as_view(), name='operation_buy_detail'),
-    # path('managment/<int:page_number>/table', views.TableOperationHistoryView.as_view(), name='table_operation'),
+    path('operation/buy/<int:pk>/', views.OperationBuyRetrieveUpdateDestroyView.as_view(), name='operation_buy_detail'),
+    # ARRIENDO
+    path('operation/rent/table', views.OperationRentTableView.as_view(), name='operation_rent_table'),
+    path('operation/rent/<int:pk>/', views.OperationRentRetrieveUpdateDestroyView.as_view(), name='operation_rent_detail'),
+    # PAGO ARRIENDO
+    path('operation/rent/payment/<int:pk>/', views.PaymentRentRetrieveUpdateDestroyView.as_view(), name='payment_rent_detail'),
 
-    path('hx_publication_buy_list/', views.hx_publication_buy_list, name='hx_publication_buy_list'),
+    # path('hx_publication_buy_list/', views.hx_publication_buy_list, name='hx_publication_buy_list'),
 ]
-
 
 urlpatterns += hx_patterns

@@ -1,0 +1,100 @@
+{% load crispy_forms_tags %}
+{% load humanize %}
+<div x-show="modalCreateRentPayment.isOpen" 
+x-cloak
+x-transition:enter="transition duration-300 ease-out"
+x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
+x-transition:leave="transition duration-150 ease-in"
+x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+class="fixed inset-0 z-10 overflow-y-auto" 
+aria-labelledby="modal-title" role="dialog" aria-modal="true"
+>
+<div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+    <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
+
+    <div @click.away="modalCreateRentPayment.closeModal()"  class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl  sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
+        <h3 class="text-xl text-center font-bold leading-6 text-gray-800 capitalize " id="modal-title">
+            Ver Pagos
+        </h3>
+        <p class="mt-2 text-center text-sm text-gray-500 ">
+            Genere, Modifique o Elimine un Pago
+        </p>
+        <div id="payment-list">
+            {% block payment_list %}
+                <form action="." class="space-y-3">
+
+                    {{ form_payment | crispy }}
+
+
+                    <div class="sm:-mx-2">
+                        <button 
+                        hx-post="{% url 'reports:payment_rent_list' %}"
+                        hx-vals='{"operation_rent": "{{ operation_id }}"}'
+                        hx-swap="innerHTML"
+                        hx-target="#payment-list"
+                        type="submit" class="w-1/2 px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-green-700 border-green-200 rounded-md sm:mx-2  hover:bg-green-500 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40">
+                            Guardar
+                        </button>
+                    </div>
+
+                </form>
+
+                <ul class="flex flex-col pt-10">
+                    {% for payment in payment_list %}
+                        <li class="flex flex-row mb-2 border-green-400">
+                            <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
+                                <div class="flex flex-col items-center justify-center w-10 h-10 mr-4 text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M17.1 8.648a.568 .568 0 0 1 -.761 .011a5.682 5.682 0 0 0 -3.659 -1.34c-1.102 0 -2.205 .363 -2.205 1.374c0 1.023 1.182 1.364 2.546 1.875c2.386 .796 4.363 1.796 4.363 4.137c0 2.545 -1.977 4.295 -5.204 4.488l-.295 1.364a.557 .557 0 0 1 -.546 .443h-2.034l-.102 -.011a.568 .568 0 0 1 -.432 -.67l.318 -1.444a7.432 7.432 0 0 1 -3.273 -1.784v-.011a.545 .545 0 0 1 0 -.773l1.137 -1.102c.214 -.2 .547 -.2 .761 0a5.495 5.495 0 0 0 3.852 1.5c1.478 0 2.466 -.625 2.466 -1.614c0 -.989 -1 -1.25 -2.886 -1.954c-2 -.716 -3.898 -1.728 -3.898 -4.091c0 -2.75 2.284 -4.091 4.989 -4.216l.284 -1.398a.545 .545 0 0 1 .545 -.432h2.023l.114 .012a.544 .544 0 0 1 .42 .647l-.307 1.557a8.528 8.528 0 0 1 2.818 1.58l.023 .022c.216 .228 .216 .569 0 .773l-1.057 1.057z"></path>
+                                    </svg>
+                                </div>
+
+                                <div class="flex-1 pl-1 md:mr-16">
+                                    <div class="flex-col items-center justify-between font-medium">
+                                        <div>
+                                            Total: {{ payment.total_payment | intcomma }}
+                                        </div>
+                                        <div>
+                                            Fecha:  {{ payment.payment_date | date:'Y-m-d ' }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-2 text-gray-600 ">
+                                    <button
+                                        hx-get="{% url 'reports:payment_rent_detail' payment.id  %}"
+                                        hx-vals='{"operation_id": "{{ operation_id }}"}'
+                                        hx-target="#payment-list"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="cursor-pointer bg-yellow-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                        </svg>
+                                    </button>
+
+                                    <button 
+                                    hx-post="{% url 'reports:payment_rent_detail' payment.id  %}"
+                                    hx-vals='{"action": "delete", "operation_id": "{{ operation_id }}"}'
+                                    hx-target="#payment-list"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-red-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endblock payment_list %}
+        </div>            
+        <div class="mt-4 sm:-mx-2">
+            <button type="button" @click="modalCreateRentPayment.closeModal()" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-red-700 border-red-200 rounded-md sm:mx-2  hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+</div>

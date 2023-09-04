@@ -8,8 +8,14 @@ from django_htmx.http import HttpResponseClientRefresh
 
 from apps.properties.models import Publication, PropertyContact
 from apps.pages.models import Contact, OwnerContact
-from .models import OperationBuyHistory
-from .forms import OperationBuyHistoryFirstForm, OperationBuyHistorySecondForm, OperationBuyHistoryUpdateForm
+from .models import OperationBuyHistory, OperationRent, PaymentRent
+from .forms import (
+    OperationBuyHistoryFirstForm,
+    OperationBuyHistorySecondForm,
+    OperationBuyHistoryUpdateForm,
+    OperationRentForm,
+    PaymentRentForm
+)
 
 from render_block import render_block_to_string
 # Create your views here.
@@ -101,56 +107,24 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         return context
 
 
-# ========== CRUD OPERATION VENTA HISTORY ========== |
-
-# class OperationHistoryBuyListView(LoginRequiredMixin, PaginationMixin, ListView):
-#     model = OperationHistory
-#     template_name = 'reports/history_list.html'
-
-#     def get_queryset(self):
-#         return OperationHistory.objects.filter(state=True, property__property_type='ca')
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['url_option'] = 'reports:table_operation'
-#         context['sidebar_title'] = 'Gestión'
-#         context['sidebar_subtitle'] = 'Registro de acciones en las propiedades!'
-#         return context
-
-# ========== CRUD OPERATION HISTORY ========== |
+# ========== OPERATION BUY ========== |
 
 class OperationBuyListCreateView(LoginRequiredMixin, PaginationMixin, ListView):
     model = OperationBuyHistory
     template_name = 'reports/operation_buy_list.html'
-
-    # def post(self, request, *args, **kwargs):
-    #     context = {}
-    #     form = OperationBuyHistoryFirstForm(request.POST, request.FILES)
-    #     print('entro')
-    #     if form.is_valid():
-    #         print('paso valdiacion')
-    #         form.save()
-    #         return HttpResponseClientRefresh()
-    #     else:
-    #         print('No paso validacion')
-    #         print(form.errors)
-    #         context['form_operation_buy'] = form
-    #         context['errors'] = {'No paso Validacion'}
-    #     html = render_block_to_string('modules/operation/modal_buy_create.html', 'operation_form', context)
-    #     return HttpResponse(html)
 
     def get_queryset(self):
         return OperationBuyHistory.objects.filter(state=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sidebar_title'] = 'Gestión'
+        context['sidebar_title'] = 'Gestión Ventas'
         context['sidebar_subtitle'] = 'Registro de acciones en las propiedades!'
         return context
 
 
 # partials
-class OperationRetrieveUpdateDestroyView(LoginRequiredMixin, View):
+class OperationBuyRetrieveUpdateDestroyView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # page_number = request.GET.get('page_number', 1)
         complete = request.GET.get('complete', '')
@@ -256,9 +230,9 @@ class OperationBuyTableView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
         page_number = request.GET.get('page_number', 1)
-        operations_buy = OperationBuyHistory.objects.filter(state=True)
-        operations_buy = operations_buy.filter(Q(publication__property__property_type__icontains=q) | Q(publication__commission_value__icontains=q))
-        paginator = Paginator(operations_buy, 2)
+        operations = OperationBuyHistory.objects.filter(state=True)
+        operations = operations.filter(Q(publication__property__property_type__icontains=q) | Q(publication__commission_value__icontains=q))
+        paginator = Paginator(operations, 2)
         data = paginator.get_page(page_number)
         context = {
             'page_obj': data,
@@ -268,55 +242,243 @@ class OperationBuyTableView(LoginRequiredMixin, View):
         return HttpResponse(html)
 
 
-# class OperationBuyHistoryCreateView(LoginRequiredMixin, PaginationMixin, View):
-#     def post(self, request, *args, **kwargs):
-#         context = {}
-#         form = OperationBuyHistoryForm(request.POST)
-#         print('entro')
-#         if form.is_valid():
-#             print('paso valdiacion')
-#             form.save()
+# ========== OPERATION RENT ========== |
 
-#             return HttpResponseClientRefresh()
+class OperationRentListCreateView(LoginRequiredMixin, PaginationMixin, ListView):
+    model = OperationRent
+    template_name = 'reports/operation_rent_list.html'
+
+    def get_queryset(self):
+        return OperationRent.active_objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['form_payment'] = PaymentRentForm()
+        context['sidebar_title'] = 'Gestión Arriendos'
+        context['sidebar_subtitle'] = 'Registro de acciones en las propiedades!'
+        return context
 
 
-#             # OPCION 1
-#             # response = render(request, "properties/publication_list.html")
-#             # return trigger_client_event(
-#             #     response,
-#             #     "operation-buy",
-#             #     after="swap"
-#             # )
+# partials
+class OperationRentRetrieveUpdateDestroyView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        # page_number = request.GET.get('page_number', 1)
+        action = request.GET.get('action')
+        operation = get_object_or_404(OperationRent, pk=self.kwargs['pk'])
+        if action == 'payment_list':
+            payment_list = operation.payments_rent.filter(state=True)
+            context['payment_list'] = payment_list
+            context['form_payment'] = PaymentRentForm()
+            context['operation_id'] = operation.id
+            html = render_block_to_string('modules/operation/rent/modal_payment.html', 'payment_list', context)
+            return HttpResponse(html)
+        form = OperationRentForm(instance=operation)
+        url_vals = '{"action": "update"}'
+        context['form_operation_rent'] = form
+        context['url_operation'] = f"/reports/operation/rent/{self.kwargs['pk']}/"
+        context['url_vals']: url_vals
 
-#             # OPCION 1.1
+        html = render_block_to_string('modules/operation/rent/modal_update.html', 'operation_form', context)
+        return HttpResponse(html)
 
-#             # response = HttpResponse('')
-#             # response['HX-Trigger'] = 'operation-buy'
-#             # return response
+    def post(self, request, *args, **kwargs):
+        context = {}
 
-#             # OPCION 2
-#             # publication_list = Publication.objects.filter(
-#             #         status=Publication.Status.PUBLISH, state=True,
-#             #         property__publish_type='ve'
-#             #     )
-#             # paginator = Paginator(publication_list, 2)
-#             # data = paginator.get_page(1)
-#             # context['page_obj'] = data
-#             # context['publish_type'] = 've'
-#             # context['form_operation_buy'] = OperationBuyHistoryForm()
-#             # context['success'] = {'Operacion Realizada Correctamente'}
+        action = request.POST.get('action')
+        complete = request.POST.get('complete', '')
+        page_number = request.POST.get('page_number', 1)
 
-#             # html = render_block_to_string('properties/publication_list.html', 'table_list', context)
-#             # response = HttpResponse(html)
-#             # response["HX-Retarget"] = '#custom_table'
-#             # return response
-#         else:
-#             print('No paso validacion')
-#             print(form.errors)
-#             context['form_operation_buy'] = form
-#             context['errors'] = {'No paso Validacion'}
-#         html = render_block_to_string('modules/publication/modal_create_operation_buy.html', 'operation_form', context)
-#         return HttpResponse(html)
+        operation = get_object_or_404(OperationRent, id=kwargs['pk'])
+
+        if action == 'paid':
+            operation.is_lease_commission_paid = True
+            operation.save()
+        elif action == 'unpaid':
+            operation.is_lease_commission_paid = False
+            operation.save()
+        elif action == 'confirm':
+            operation.is_completed = True
+            operation.save()
+        elif action == 'no_confirm':
+            operation.is_completed = False
+            operation.save()
+        elif action == 'delete':
+            operation.state = False
+            operation.save()
+        elif action == 'update':
+            print('ENTRO A UPDATE')
+            form = OperationRentForm(request.POST, request.FILES, instance=operation)
+            url_vals = '{"action": "update"}'
+
+            if form.is_valid():
+                form.save()
+                return HttpResponseClientRefresh()
+            else:
+                print(form.errors)
+                context['form_operation_rent'] = form
+                context['errors'] = {'No paso Validacion'}
+                context['url_operation'] = f"/reports/operation/rent/{self.kwargs['pk']}/"
+                context['url_vals'] = url_vals
+                html = render_block_to_string('modules/operation/rent/modal_update.html', 'operation_form', context)
+                return HttpResponse(html)
+
+        operations = OperationRent.active_objects.all()
+        paginator = Paginator(operations, 2)
+        data = paginator.get_page(page_number)
+        context['page_obj'] = data
+        html = render_block_to_string('reports/operation_rent_list.html', 'table_list', context)
+        return HttpResponse(html)
+
+
+class OperationRentTableView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        q = request.GET.get('q', '')
+        page_number = request.GET.get('page_number', 1)
+        operations = OperationRent.active_objects.all()
+        operations = operations.filter(Q(publication__property__property_type__icontains=q) | Q(publication__commission_value__icontains=q))
+        paginator = Paginator(operations, 2)
+        data = paginator.get_page(page_number)
+        context = {
+            'page_obj': data,
+            'q': q,
+        }
+        html = render_block_to_string('reports/operation_rent_list.html', 'table_list', context)
+        return HttpResponse(html)
+
+
+# ========== PAYMENT RENT ========== |
+
+class PaymentRentListCreateView(LoginRequiredMixin, PaginationMixin, ListView):
+    model = PaymentRent
+    template_name = 'reports/payment_rent_list.html'
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        form = PaymentRentForm(request.POST)
+        operation_rent = request.POST.get('operation_rent')
+
+        if operation_rent:
+
+            operation = get_object_or_404(OperationRent, pk=operation_rent)
+
+            payment_list = operation.payments_rent.filter(state=True)
+            context['payment_list'] = payment_list
+            context['operation_id'] = operation.id
+        if form.is_valid():
+            form.save()
+            context['form_payment'] = PaymentRentForm()
+            context['success'] = {'Pago Guardado Correctamente'}
+        else:
+            print(form.errors)
+            context['form_payment'] = form
+            context['errors'] = {'No paso Validacion'}
+        html = render_block_to_string('modules/operation/rent/modal_payment.html', 'payment_list', context)
+        return HttpResponse(html)
+
+    def get_queryset(self):
+        return PaymentRent.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_payment'] = PaymentRentForm()
+        context['sidebar_title'] = 'Gestión Arriendos'
+        context['sidebar_subtitle'] = 'Registro de acciones en las propiedades!'
+        return context
+
+
+# partials
+class PaymentRentRetrieveUpdateDestroyView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        # page_number = request.GET.get('page_number', 1)
+        # action = request.GET.get('action')
+        operation_id = request.GET.get('operation_id')
+        payment_rent = get_object_or_404(PaymentRent, pk=self.kwargs['pk'])
+        if operation_id:
+            operation = get_object_or_404(OperationRent, pk=operation_id)
+            payment_list = operation.payments_rent.filter(state=True)
+            context['payment_list'] = payment_list
+            form = PaymentRentForm(instance=payment_rent)
+            context['form_payment'] = form
+            context['operation_id'] = operation.id
+            html = render_block_to_string('modules/operation/rent/modal_payment.html', 'payment_list', context)
+            return HttpResponse(html)
+        # url_vals = '{"action": "update"}'
+        # context['url_operation'] = f"/reports/operation/rent/payment/{self.kwargs['pk']}/"
+        # context['url_vals']: url_vals
+        context['payment_rent'] = payment_rent
+        html = render_block_to_string('modules/operation/payment_rent/modal_update.html', 'operation_form', context)
+        return HttpResponse(html)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+
+        action = request.POST.get('action')
+        operation_id = request.POST.get('operation_id')
+        page_number = request.POST.get('page_number', 1)
+        print(operation_id)
+
+        payment_rent = get_object_or_404(PaymentRent, id=kwargs['pk'])
+
+        if operation_id:
+            print('ENTRAMOS AL OERPATION ID')
+            operation = get_object_or_404(OperationRent, pk=operation_id)
+            payment_list = operation.payments_rent.filter(state=True)
+            context['payment_list'] = payment_list
+
+            if action == 'delete':
+                print('ENTRO A DELETE')
+                form = PaymentRentForm()
+                payment_rent.state = False
+                payment_rent.save()
+            elif action == 'update':
+                form = PaymentRentForm(request.POST, request.FILES, instance=payment_rent)
+                url_vals = '{"action": "update"}'
+
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseClientRefresh()
+                else:
+                    print(form.errors)
+                    context['errors'] = {'No paso Validacion'}
+                    # context['url_operation'] = f"/reports/operation/rent/payment/{self.kwargs['pk']}/"
+                    # context['url_vals'] = url_vals
+            context['form_payment'] = form
+            html = render_block_to_string('modules/operation/rent/modal_payment.html', 'payment_list', context)
+            return HttpResponse(html)
+        else:
+            if action == 'paid':
+                payment_rent.is_commission_paid = True
+                payment_rent.save()
+            elif action == 'unpaid':
+                payment_rent.is_commission_paid = False
+                payment_rent.save()
+            elif action == 'delete':
+                payment_rent.state = False
+                payment_rent.save()
+            elif action == 'update':
+                form = PaymentRentForm(request.POST, request.FILES, instance=payment_rent)
+                url_vals = '{"action": "update"}'
+
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseClientRefresh()
+                else:
+                    print(form.errors)
+                    context['form_payment_rent'] = form
+                    context['errors'] = {'No paso Validacion'}
+                    context['url_operation'] = f"/reports/operation/rent/payment/{self.kwargs['pk']}/"
+                    context['url_vals'] = url_vals
+                    html = render_block_to_string('modules/operation/payment_rent/modal_update.html', 'operation_form', context)
+                    return HttpResponse(html)
+
+        payments_rent = PaymentRent.objects.filter(state=True)
+        paginator = Paginator(payments_rent, 2)
+        data = paginator.get_page(page_number)
+        context['page_obj'] = data
+        html = render_block_to_string('reports/payment_rent_list.html', 'table_list', context)
+        return HttpResponse(html)
 
 
 def hx_publication_buy_list(request):
@@ -333,122 +495,4 @@ def hx_publication_buy_list(request):
     context['success'] = {'Operacion Realizada Correctamente'}
     html = render_block_to_string('properties/publication_list.html', 'table_list', context)
     return HttpResponse(html)
-
-
-# def contact_detail_form(request, publish_type, property_type, location_slug, slug, uuid):
-#     form = PropertyContactForm(request.POST or None) # no se puede asignar valor  de inicio a un elemento excluido
-#     property = Property.objects.get(uuid=uuid, commune__location_slug=location_slug, slug=slug, publish_type=publish_type, property_type=property_type)
-
-#     if property_type == 'ca':
-#         property_especific = get_object_or_404(House, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.houses.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-
-#     elif property_type == 'de':
-#         property_especific = get_object_or_404(Apartment, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.apartments.first().num_rooms} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-
-#     elif property_type == 'of':
-#         property_especific = get_object_or_404(Office, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.offices.first().num_offices} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-    
-#     elif property_type == 'su':
-#         property_especific = get_object_or_404(UrbanSite, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.urban_sites.first().num_lot} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-    
-#     elif property_type == 'pa':
-#         property_especific = get_object_or_404(Parcel, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.parcels.first().num_lot} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-    
-#     elif property_type == 'bo':
-#         property_especific = get_object_or_404(Cellar, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.cellars.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-
-#     elif property_type == 'in':
-#         property_especific = get_object_or_404(Industrial, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.industrials.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-
-#     elif property_type == 'lc':
-#         property_especific = get_object_or_404(Shop, property=property)
-#         message = f'Hola , Estoy interesado en {property.get_property_type_display()} en {property.get_publish_type_display()} de {property.shops.first().num_local} Dormitorios En {property.commune.name}, por favor comunícate conmigo. ¡Gracias!'
-
-#     form.initial['message'] = message
-    
-#     if form.is_valid():
-#         form.instance.property = property
-#         form.save()
-    
-#         context = {
-#             'form': PropertyContactForm(initial={'message': message}),
-#             'property': property_especific,
-#             'success': {'Mensaje enviado correctamente'}
-#         }
-#         html = render_block_to_string('properties/publication_detail.html', 'contact_detail', context)
-#         response = HttpResponse(html)
-#         response['HX-Trigger'] = 'modal-contact-button'
-#         return response
-#     context = {
-#         'property': property_especific,
-#         'form': form,
-#         # 'errors': form.errors
-#     }
-#     html = render_block_to_string('properties/publication_detail.html', 'contact_detail', context)
-#     return HttpResponse(html)
-
-# partials
-class OperationHistoryPaidView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-
-        operation_history = get_object_or_404(OperationBuyHistory, id=kwargs['pk'])
-
-        if kwargs['action'] == 'paid':
-            operation_history.is_commission_paid = True
-            operation_history.save()
-
-        if kwargs['action'] == 'unpaid':
-            operation_history.is_commission_paid = False
-            operation_history.save()
-
-        operations_history = OperationBuyHistory.objects.filter(state=True)
-        paginator = Paginator(operations_history, 2)
-        data = paginator.get_page(kwargs['page_number'])
-        context = {
-            'page_obj': data,
-            'url_option': 'retpors:table_operation'
-        }
-        html = render_block_to_string('reports/history_list.html', 'table_list', context)
-        return HttpResponse(html)
-
-
-class TableOperationHistoryView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        q = request.GET.get('q', '')
-        operations_history = OperationBuyHistory.objects.filter(state=True)
-        operations_history = operations_history.filter(Q(publication__property__property_type__icontains=q) | Q(publication__commission_value__icontains=q))
-        paginator = Paginator(operations_history, 2)
-        data = paginator.get_page(kwargs['page_number'])
-        context = {
-            'object_list': data.object_list, 
-            'page_obj': data, 
-            'q': q,
-        }
-        html = render_block_to_string('reports/history_list.html', 'table_list', context)
-        return HttpResponse(html)
-
-
-class OperationHistoryDeleteView(LoginRequiredMixin, View):
-    def delete(self, request, *args, **kwargs):
-    
-        operation_history = OperationBuyHistory.objects.get(id=kwargs['pk'])
-        operation_history.state = False
-        operation_history.save()
-        operations_history = OperationBuyHistory.objects.filter(state=True)
-        paginator = Paginator(operations_history, 2)
-        data = paginator.get_page(kwargs['page_number'])
-
-        context = {
-            'object_list': data.object_list,
-            'page_obj': data, 
-        }
-        html = render_block_to_string('reports/history_list.html', 'table_list', context)
-        return HttpResponse(html)
 

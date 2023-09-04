@@ -1,0 +1,100 @@
+{% load crispy_forms_tags %}
+{% load filename %}
+<div  class="relative flex justify-center">
+
+    <div x-show="modalCreateOperationRent.isOpen" 
+        x-cloak
+        x-transition:enter="transition duration-300 ease-out"
+        x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
+        x-transition:leave="transition duration-150 ease-in"
+        x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+        x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        class="fixed inset-0 z-10 overflow-y-auto" 
+        aria-labelledby="modal-title" role="dialog" aria-modal="true"
+    >
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
+
+            <div @click.away="modalCreateOperationRent.closeModal()"  class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl  sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
+                <h3 class="text-lg font-medium leading-6 text-gray-800 capitalize " id="modal-title">
+                    Actualizar Operación
+                </h3>
+                <p class="mt-2 text-sm text-gray-500 ">
+                    Procede a Completar los Datos para Actualizar Operación
+                </p>
+
+                <div  id="operation-form">
+                {% block operation_form %}
+                    <form 
+            
+                        id="form-update-operation-rent"
+                        class="mt-4" >                        
+                            {% for field in form_operation_rent.visible_fields  %}
+                                {% if field.name == 'guarantee_document'  %}
+
+                                    <label for="id_guarantee_document" class="block text-gray-700 text-sm font-bold mb-">Documento Garantia</label>
+                                    {% if form_operation_rent.instance.guarantee_document and not form_operation_rent.errors.guarantee_document %}
+                                        <div class="mb-4">
+                                        <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_rent.instance.guarantee_document.url }}">{{ form_operation_rent.instance.guarantee_document.name | filename }}</a></p>
+                                        <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
+                                        </div>
+                                    {% endif %}
+                                    <div class="flex">
+                                        <input type="file" name="guarantee_document" id="id_guarantee_document" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
+                                    </div>
+
+                                    {% if form_operation_rent.errors.guarantee_document %}
+                                        {% for error in form_operation_rent.errors.guarantee_document %}
+                                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                
+                                {% elif field.name == 'lease_agreement' %}
+                                            
+                                    <label for="id_lease_agreement" class="block text-gray-700 text-sm font-bold mb-2">Contrato de Compra/Venta*</label>
+                                    {% if form_operation_rent.instance.lease_agreement %}
+                                        <div class="mb-4">
+                                            <p>Archivo Actual: <a target="_blank"  class="text-green-600 no-underline" href="{{ form_operation_rent.instance.lease_agreement.url }}">{{ form_operation_rent.instance.lease_agreement.name | filename }}</a></p>
+                                            <p class="text-xs text-gray-600">Al cargar otro Archivo se Eliminara el Anterior</p>
+                                        </div>                            
+                                    {% endif %}
+                                    <div class="flex">
+                                        <input type="file" name="lease_agreement" id="id_lease_agreement" class="cursor-pointer p-4 border-2 border-dashed rounded-md">
+                                    </div>
+                                    
+                                    {% if form_operation_rent.errors.lease_agreement %}
+                                        {% for error in form_operation_rent.errors.lease_agreement %}
+                                        <p class="text-red-500 text-xs font-bold italic">{{ error | escape  }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% else %}
+                                    {{ field | as_crispy_field }}
+                                {% endif %}
+                            {% endfor %}
+
+
+                            <div class="mt-4 sm:flex sm:items-center sm:-mx-2">
+                                <button type="button" @click="modalCreateOperationRent.closeModal()" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2  hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
+                                    Cancelar
+                                </button>
+
+                                <button 
+                                hx-post="{{ url_operation }}"
+                                hx-vals='{{ url_vals }}'
+                                hx-encoding="multipart/form-data"
+                                hx-swap="innerHTML"
+                                hx-target="#operation-form"
+                                type="submit" class="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                                    Enviar
+                                </button>
+                            </div>
+                    </form>
+                {% endblock operation_form %}
+            </div>
+            
+            </div>
+        </div>
+    </div>
+</div>

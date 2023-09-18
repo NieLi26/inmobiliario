@@ -1,0 +1,54 @@
+<div x-data="{ open: false }">
+    <div @click="open = true" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" class="icon icon-tabler icon-tabler-home-cancel" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <circle cx="19" cy="19" r="3"></circle>
+            <path d="M17 21l4 -4"></path>
+            <path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"></path>
+            <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.58 0 1.103 .247 1.468 .642"></path>
+        </svg>
+    </div>       
+    
+    <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        
+        <div class="fixed z-10 inset-0 overflow-y-auto">
+            <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+    
+            <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
+                <div class="w-full h-full text-center">
+                    <div class="flex h-full flex-col justify-between">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" class="icon icon-tabler icon-tabler-home-cancel" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="19" cy="19" r="3"></circle>
+                            <path d="M17 21l4 -4"></path>
+                            <path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"></path>
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.58 0 1.103 .247 1.468 .642"></path>
+                        </svg>
+                        <p class="text-gray-800  text-xl font-bold mt-4">
+                            Desactivar Propiedad
+                        </p>
+                        <p class="text-gray-600  text-xs py-2 px-6">
+                            Estas seguro de desactivar esta propiedad ?
+                        </p>
+                        <div class="flex items-center justify-around w-full mt-8">
+                            <button 
+                            hx-get="{% url 'properties:property_active' property.id %}"
+                            hx-vals='{"action": "no_active", "page_number": "{{ page_obj.number  }}"}'
+                            hx-target="#custom_table"
+                            @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                Desactivar
+                            </button>
+
+                            <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>  

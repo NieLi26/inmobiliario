@@ -6,18 +6,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock title %}</title>
+    <!-- tailwind -->
+    {% tailwind_css %}
+    <!-- box icon -->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Toastify -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- favicon -->
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
     <!-- logo -->
     <link rel="shortcut icon" href="{% static 'img/logo.ico' %}"> 
     <!-- Static CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- tailwind -->
-    {% tailwind_css %}
-    <!-- box icon -->
-    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-
-    <title>{% block title %} {% endblock title %}</title>
 
     {% block head %}
       
@@ -32,8 +33,6 @@
       {% block navbar %}
         {% include 'navigation/_navbar.html' %}
       {% endblock navbar %}
-
-      {% include 'components/sidealert.html' %}
   
       {% block content %} {% endblock content %}
     </div>
@@ -42,14 +41,16 @@
       {% include 'navigation/_footer.html' %}
     {% endblock footer %}
 
-    <!-- JS -->
-    <script src="{% static 'js/script.js' %}"></script>
     <!-- HTMX -->
     <script defer src="{% static 'lib/htmx-1.8/htmx.min.js' %}"></script>
     <!-- Alpine Mask -->
     <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
     <!-- Alpine Core-->
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
+    <!-- Toastify -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- JS -->
+    <script src="{% static 'js/script.js' %}"></script>
 
     {% block js %} {% endblock js %}
 

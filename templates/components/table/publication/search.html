@@ -1,0 +1,161 @@
+<div class="flex justify-between gap-2">
+  <!-- Orden -->
+  <div id="estado-menu" x-data="{isOpen: false}" class="relative z-10 inline-block text-left">
+    <div>
+      <button 
+      @click="isOpen = !isOpen"
+      type="button" class="border border-gray-300 bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center w-full rounded-md  px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500" id="options-menu">
+          Estado
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z">
+              </path>
+          </svg>
+      </button>
+    </div>
+
+    <!--
+      Dropdown menu, show/hide based on menu state.
+
+      Entering: "transition ease-out duration-100"
+        From: "transform opacity-0 scale-95"
+        To: "transform opacity-100 scale-100"
+      Leaving: "transition ease-in duration-75"
+        From: "transform opacity-100 scale-100"
+        To: "transform opacity-0 scale-95"
+    -->
+    <div x-cloak x-show="isOpen" @click.away="isOpen = false" class="origin-top-left absolute left-0 z-10 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobile-menu-button" tabindex="-1">
+      <div class="py-1" role="none">
+        <fieldset class="flex flex-col gap-1 p-1">
+            <legend class="sr-only">Estado</legend>     
+            <div>
+              <input
+                type="radio"
+                name="estado"
+                value="all"
+                id="all"
+                class="peer hidden"
+                checked
+              />
+          
+              <label
+                for="all"
+                class="flex cursor-pointer items-center justify-center gap-x-2 rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+              >                 
+                <p class="text-sm font-medium">Todos</p>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                </svg>     
+              </label>
+            </div>
+          
+            <div>
+              <input
+                type="radio"
+                name="estado"
+                value="active"
+                id="active"
+                class="peer hidden"
+              />
+          
+              <label
+                for="active"
+                class="flex cursor-pointer items-center justify-center gap-x-2 rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+              >
+                <p class="text-sm font-medium">Activos</p>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                </svg>  
+              </label>
+            </div>
+          
+            <div>
+              <input
+                type="radio"
+                name="estado"
+                value="archive"
+                id="archive"
+                class="peer hidden"
+              />
+          
+              <label
+                for="archive"
+                class="flex cursor-pointer items-center justify-center gap-x-2 rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+              >
+                <p class="text-sm font-medium">Archivados</p>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                </svg>  
+              </label>
+            </div>
+        </fieldset>
+        <!-- Active: "bg-gray-100", Not Active: "" -->
+        <!-- <button class="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="mobile-menu-item-0"> Az </button>
+
+        <button class="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="mobile-menu-item-1"> Best Rating </button> -->
+
+      </div>
+    </div>
+  </div>
+
+  <div class="flex relative flex-1">
+      <span
+        class="rounded-l-md inline-flex items-center px-3 border-t bg-white border-l border-b border-gray-300 text-gray-500 shadow-sm text-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-search"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <circle cx="10" cy="10" r="7"></circle>
+          <line x1="21" y1="21" x2="15" y2="15"></line>
+        </svg>
+      </span>
+      <input
+        hx-get="{% url url_publication %}"
+        hx-vals='{"type_publish": "{{ publish_type }}", "page_number": "{{ page_obj.number }}"}'
+        hx-target="#custom_table"
+        hx-swap="innerHTML"
+        hx-trigger="keyup changed delay:500ms"
+        name="q"
+        type="text"
+        class="rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+        placeholder="Busca la propiedad"
+      />
+  </div>
+</div>
+
+<script>
+    const filterEstado = document.querySelectorAll('#estado-menu [name="estado"]');
+
+    for (let filter of filterEstado) {
+        filter.addEventListener('click', (e) => {
+            if ( e.target.checked ) {
+                const estado = e.target.value;
+                cargarEstado(estado);
+            } 
+        })
+    }
+
+    function cargarEstado(estado) {
+  
+      const url = '{% url url_publication %}';
+      const options = {
+        target: "#custom_table",
+        swap: "innerHTML",
+        values: { 
+            estado,
+        },
+        // headers:'Content-Type:multipart/form-data'}
+      };
+      htmx.ajax("GET", url, options);
+
+    }
+</script>

@@ -24,15 +24,15 @@ def property_images_pre_delete(sender, instance, **kwargs):
     delete_file(image)
 
 
-@receiver(post_save, sender=Publication)
-def publication_post_save(sender, instance, created, **kwargs):
-    try:
-        if instance.operation == "fi":
-            if instance.property.publish_type == 've':
-                OperationBuyHistory.objects.create(publication=instance)
-            elif instance.property.publish_type == 'ar':
-                OperationRent.objects.create(publication=instance)
-    except Exception as e:
-        print(str(e))
-        pass
+# @receiver(post_save, sender=Publication)
+# def publication_post_save(sender, instance, created, **kwargs):
+#     try:
+#         if instance.operation == "fi":
+#             if instance.property.publish_type == 've':
+#                 OperationBuyHistory.objects.create(publication=instance)
+#             elif instance.property.publish_type == 'ar':
+#                 OperationRent.objects.create(publication=instance)
+#     except Exception as e:
+#         print(str(e))
+#         pass
 

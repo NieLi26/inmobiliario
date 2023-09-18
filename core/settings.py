@@ -49,6 +49,7 @@ LOCAL_APPS = [
     'apps.properties.apps.PropertiesConfig',
     'apps.newsletters.apps.NewslettersConfig',
     'apps.reports.apps.ReportsConfig',
+    'apps.crm.apps.CrmConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

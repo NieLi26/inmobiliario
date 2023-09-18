@@ -8,7 +8,7 @@
             {% if page_obj.has_previous %}
             <button 
             hx-get="{% url url_operation %}" 
-            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.previous_page_number }}"}'
+            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.previous_page_number }}", "estado": "{{ estado }}"}'
             hx-target='#operation_table'
             hx-swap="innerHTML"
             class="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
@@ -24,7 +24,7 @@
                 {% if page_obj.number|add:"-1" >= 1 %}
                     <button 
                         hx-get="{% url url_operation %}" 
-                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"-1" }}"}'
+                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"-1" }}", "estado": "{{ estado }}"}'
                         hx-target='#operation_table'
                         hx-swap="innerHTML"
                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"-1" }}
@@ -33,7 +33,7 @@
 
                 <button 
                     hx-get="{% url url_operation %}" 
-                    hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number }}"}'
+                    hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number }}", "estado": "{{ estado }}"}'
                     hx-target='#operation_table'
                     hx-swap="innerHTML"
                     href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ page_obj.number }}
@@ -43,7 +43,7 @@
                 {% if page_obj.number|add:"1" in page_obj.paginator.page_range %}
                     <button
                         hx-get="{% url url_operation %}" 
-                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"1" }}"}'
+                        hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.number|add:"1" }}", "estado": "{{ estado }}"}'
                         hx-target='#operation_table'
                         hx-swap="innerHTML" 
                         href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ page_obj.number|add:"1" }}
@@ -55,7 +55,7 @@
                     {% if i == page_obj.number %}
                         <button
                             hx-get="{% url url_operation %}" 
-                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}"}'
+                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}", "estado": "{{ estado }}"}'
                             hx-target='#operation_table'
                             hx-swap="innerHTML" 
                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-white  bg-blue-500 hover:bg-blue-600" >{{ i }}
@@ -63,7 +63,7 @@
                     {% else %}
                         <button
                             hx-get="{% url url_operation %}" 
-                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}"}'
+                            hx-vals='{"q": "{{q}}", "page_number": "{{ i }}", "estado": "{{ estado }}"}'
                             hx-target='#operation_table'
                             hx-swap="innerHTML" 
                             href="#" class="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">{{ i }}
@@ -78,7 +78,7 @@
             {% if page_obj.has_next %}
             <button 
             hx-get="{% url url_operation %}" 
-            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.next_page_number }}"}'
+            hx-vals='{"q": "{{q}}", "page_number": "{{ page_obj.next_page_number }}", "estado": "{{ estado }}"}'
             hx-target='#operation_table'
             hx-swap="innerHTML"
             class="w-full p-4 border text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">

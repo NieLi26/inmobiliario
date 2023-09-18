@@ -1,0 +1,33 @@
+<div class="flex relative">
+    <span
+      class="rounded-l-md inline-flex items-center px-3 border-t bg-white border-l border-b border-gray-300 text-gray-500 shadow-sm text-sm"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon icon-tabler icon-tabler-search"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <circle cx="10" cy="10" r="7"></circle>
+        <line x1="21" y1="21" x2="15" y2="15"></line>
+      </svg>
+    </span>
+    <input
+      hx-get="{% url 'crm:client_table' %}"
+      hx-vals='{"page_number": "{{ page_obj.number }}"}'
+      hx-target="#client-table"
+      hx-swap="innerHTML"
+      hx-trigger="keyup changed delay:500ms"
+      name="q"
+      type="text"
+      class="rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+      placeholder="Busca la propiedad"
+    />
+  </div>

@@ -1,0 +1,232 @@
+{% extends 'navigation/sidebar_config.html' %}
+
+{% block content_sidebar %}
+    
+
+<div 
+    x-data = "{
+        modalFormClient: modalFormClientAlpine(),
+    }"
+    class="max-w-7xl mx-auto py-4 px-4 lg:px-8"
+>
+ 
+    <div class="text-end mb-2">
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <button
+                @click="modalFormClient.openModal()"
+                class="inline-flex items-center justify-center rounded-md border border-transparent hover:bg-gradient-to-tl bg-gradient-to-tr from-orange-400 via-red-500 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                Agregar
+            </button>
+        </div>
+    </div>
+
+    {% include 'modules/client/modal_form.html' %}
+ 
+    {% include 'components/table/client/search.html' %}
+    
+        
+    <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+        <div 
+        hx-trigger="clientListReload from:body"
+        hx-get="{% url 'crm:client_table' %}"
+        hx-target="this"
+        id="client-table" 
+        class="inline-block min-w-full shadow rounded-lg overflow-hidden border-2">
+          {% block table_list %}
+            <!-- Table  -->
+            <table class="min-w-full leading-normal ">
+              <thead>
+                  <tr>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Nombre
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Rut
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Fecha Creación
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Telefono 
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Correo
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                          Estado
+                      </th>
+                      <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-sm uppercase font-normal">
+                          Acciones
+                      </th>
+                  </tr>
+              </thead>
+              <tbody >
+                  {% for client in page_obj %}
+                  <tr>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                                  {{ client.get_full_name }}
+                          </p>
+                      </td>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                                  {{ client.rut }} 
+                          </p>
+                      </td>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                              {{ client.created | date:'Y-m-d ' }}
+                          </p>
+                      </td>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                                  {% if client.phone == '' %}
+                                  ---------
+                                  {% else %}
+                                  {{ client.phone }}
+                                  {% endif %}
+                          </p>
+                      </td>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p class="text-gray-900 whitespace-no-wrap">
+                              {{ client.email }}
+                          </p>
+                      </td> 
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        {% if client.state %}
+                    <!-- Error -->
+                            <span
+                            class="inline-flex items-center justify-center rounded-full bg-green-100 px-2.5 py-0.5 text-green-700"
+                            >
+                                <p class="whitespace-nowrap text-sm">Activado</p>
+                            </span>
+                        {% else %}
+                        <!-- Success -->
+                            <span
+                            class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
+                            >
+                                <p class="whitespace-nowrap text-sm">Desactivado</p>
+                            </span>
+                        {% endif %}
+                    </td>
+                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center flex items-center justify-center gap-3">
+                        <div 
+                            hx-get="{% url 'crm:client_detail' client.id %}"
+                            hx-vals = '{"page_number": "{{ page_obj.number}}", "complete": "yes"}'
+                            hx-target="#operation-form"
+                            hx-trigger="click"
+                            @click="modalFormClient.openModal('{{client.id}}')" class="w-4 transform hover:text-yellow-500 hover:scale-110 cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                            </svg>
+                        </div>
+                          {% include 'modules/client/modal_delete.html' %}
+                      </td>
+                      <!-- <td>
+                          <div id="modal-contact"></div>
+                      </td> -->
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Paginator -->
+            {% include 'components/table/client/pagination.html' %}
+
+            <!-- Empty Page -->
+            {% if not page_obj.object_list %}
+                {% include 'components/table/empty.html' %}
+            {% endif %}
+
+          {% endblock table_list %}
+        </div>
+    </div>
+</div>
+
+{% endblock content_sidebar %}
+
+{% block js %}
+    
+<script>
+    const form = document.querySelector("#form-client");
+    function modalFormClientAlpine() {
+        return {
+            isOpen: false,
+            openModal(id) {
+                console.log(id);
+
+                this.isOpen = true;
+                this.loadForm(id)
+            },
+            closeModal() {
+                this.isOpen = false;
+                // document.querySelector("#id_publication").value = ""
+                
+                // const url = `/crm/clients/` 
+                // const options = {
+                //     target:'#client-form',
+                //     swap:'innerHTML',
+                //     values: {action: "new_form"},
+                //     // headers:'Content-Type:multipart/form-data'}
+                // }
+                // htmx.ajax('POST', url, options)
+
+                // form.reset();
+            },
+            loadForm(id) {
+                if ( Number(id) ) {
+                    console.log('actualizacion');
+                    const url = `/crm/clients/${id}` 
+                    const options = {
+                        target:'#client-form',
+                        swap:'innerHTML',
+                        values: {action: "update_form"},
+                        // headers:'Content-Type:multipart/form-data'}
+                    }
+                    htmx.ajax('GET', url, options)
+
+                    return;
+                } 
+
+                const url = `/crm/clients/` 
+                const options = {
+                    target:'#client-form',
+                    swap:'innerHTML',
+                    values: {action: "new_form"},
+                    // headers:'Content-Type:multipart/form-data'}
+                }
+                htmx.ajax('POST', url, options)
+
+                form.reset();
+            },
+            sendRequest() {
+                document.addEventListener('htmx:beforeSwap', (e) => {
+                    console.log(e)
+                    // Empty response targeting #client-form => hide the modal
+                    if (e.detail.target.id == "client-form" && !e.detail.xhr.response) {
+                        this.closeModal()
+                        e.detail.shouldSwap = false
+                    }
+                })
+
+            }
+        }
+    }
+
+
+
+
+    // htmx.on("htmx:beforeSwap", (e) => {
+    //     console.log(e)
+    //     // Empty response targeting #client-form => hide the modal
+    //     if (e.detail.target.id == "client-form" && !e.detail.xhr.response) {
+    //         modal.hide()
+    //         e.detail.shouldSwap = false
+    //     }
+    // })
+
+
+</script>
+    
+{% endblock js %}
+

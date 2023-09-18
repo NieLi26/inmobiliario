@@ -1,0 +1,127 @@
+<div x-data="{ open: false }" class="relative flex justify-center">
+    <div @click="open = true" class="w-4 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+        <div class="w-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                <path d="M9 15h6"></path>
+                <path d="M12.5 17.5l2.5 -2.5l-2.5 -2.5"></path>
+            </svg>
+        </div>
+    </div>
+    <div x-show="open" 
+        x-cloak
+        x-transition:enter="transition duration-300 ease-out"
+        x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
+        x-transition:leave="transition duration-150 ease-in"
+        x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
+        x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
+        class="fixed inset-0 z-10 overflow-y-auto" 
+        aria-labelledby="modal-title" role="dialog" aria-modal="true"
+    >
+        <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
+
+            <div @click.away="open = false"  class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl  sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
+                <h3 class="text-xl text-center font-bold leading-6 text-gray-800 capitalize " id="modal-title">
+                    Ver Archivos
+                </h3>
+                <p class="mt-2 text-center text-sm text-gray-500 ">
+                    Seleccione para Ver o Descargar los archivos
+                </p>
+
+                <ul class="flex flex-col pt-10">
+                    {% if operation.guarantee_document %}
+                    <li class="flex flex-row mb-2 border-green-400">
+                        <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
+                            <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                    <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
+                                    <path d="M17 18h2"></path>
+                                    <path d="M20 15h-3v6"></path>
+                                    <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1 pl-1 md:mr-16">
+                                <div class="font-medium ">
+                                    Documento Garantia
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-gray-600 ">
+                                <a href="{{ operation.guarantee_document.url }}" target="_blank" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                    </svg>
+                                </a>
+                                <a href="{{ operation.guarantee_document.url }}" download >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                        <path d="M12 17v-6"></path>
+                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+
+                    {% if operation.lease_agreement %}
+                    <li class="flex flex-row mb-2 border-green-400">
+                        <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
+                            <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                    <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
+                                    <path d="M17 18h2"></path>
+                                    <path d="M20 15h-3v6"></path>
+                                    <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1 pl-1 md:mr-16">
+                                <div class="font-medium ">
+                                    Contrato Arriendo
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-gray-600 ">
+                                <a href="{{ operation.lease_agreement.url }}" target="_blank" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                    </svg>
+                                </a>
+                                <a href="{{ operation.lease_agreement.url }}" download >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                        <path d="M12 17v-6"></path>
+                                        <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+                            
+                <div class="mt-4 sm:-mx-2">
+                    <button type="button" @click="open = false" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-red-700 border-red-200 rounded-md sm:mx-2  hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

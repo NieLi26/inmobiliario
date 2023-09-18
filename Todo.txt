@@ -40,3 +40,34 @@
 - restringir que al generar un pago se habilite el icono y se pueda realizar la accion solamente si el campo "is_completed" esta en True
 - hacer el la vista de listado de pagos de arriendo
 - quizas restringir solo un mes unico por pago al crear pago
+
+#### CAMBIOS NUEVOS ######
+
+====LISTO===
+- Estado operación(LISTO)
+Archivo 
+Operativo
+Archivado o activo(activado)
+
+- Modelo cliente, para agregarlo en operación(LISTO)
+- Campo direccion cliente, propietario en operacion[crm cliente](LISTO)
+- crear modelo de cliente y pedirlo en las operaciones(LISTO)
+- Campo fecha firma contrato por fecha de pago.(LISTO)
+- para cambiar publicacion  y crear una operacion, usar el mismo modal de concretar, pero eso crea una operacion, ya no usar signal para eso(LISTO)
+- hacer todo en publicacion, publicar y despublicar(LISTO)
+- sacar el campo operation(LISTO)
+- restringir 1 publication activa por propiedad(LISTO)
+- restringir 1 operacion activa por publicacion(LISTO)
+- Modal en propiedad con ver información extra(LISTO)
+- activar operacion, solo si publicacion esta activa(LISTO)
+- datos en alguna tabla operacion (Tipo, número rol, comuna, cliente)(LISTO)
+
+====PENDIENTE===
+
+- Fecha termino contrato es igual a la fecha actual no se puede pagar(LISTO)(PREGUNTAR)
+- agregar filtros por estado de operacion 
+- Gráficos y estadística para historial de pagos
+- Botón datos de cliente en apartado de arriendo, para ver datos de cliente, y saber cómo comunicarme con el.
+- al crear publicacion enviarme a listado de la publicacion, igual para operacion al crearla
+- quizas arreglar que al no dejar crear publicacion y no tener permiso, me de una notificacion en vez de redireccionarme
+- crear operaciones usando otra operacion que ya esta deshabilitada

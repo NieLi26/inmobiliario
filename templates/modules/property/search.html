@@ -20,9 +20,9 @@
       </svg>
     </span>
     <input
-      hx-get="{% url url_operation %}"
-      hx-vals='{"page_number": "{{ page_obj.number }}"}'
-      hx-target="#operation_table"
+      hx-get="{% url url_property %}"
+      hx-vals='{"page_number": "{{ page_obj.number  }}"}'
+      hx-target="#custom_table"
       hx-swap="innerHTML"
       hx-trigger="keyup changed delay:500ms"
       name="q"

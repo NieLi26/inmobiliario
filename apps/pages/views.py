@@ -372,51 +372,8 @@ def hx_contact_notify(request):
     }
     html = render_block_to_string('navigation/_navbar.html', 'contact_notify', context)
     return HttpResponse(html)
-    # return render(request, 'components/contact_notify.html')
-
-# ELIMINADO
-# ========== OWNER CONTACT ========== | 
-# class OwnerContactListView(ListView):
-#     model = OwnerContact
-#     template_name = 'pages/contact_owner_list.html'
-#     paginate_by = 2
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['sidebar_title'] = 'Mensajes de Clientes'
-#         context['sidebar_subtitle'] = 'Revisar mensajes de consultas realizadas por potenciales clientes!'
-#         return context
 
 
-# # partials
-# class TableOwnerContactView(View):
-#     def get(self, request, *args, **kwargs):
-#         q = request.GET.get('q', '')
-
-#         contact_list = OwnerContact.objects.filter(name__icontains=q)
-
-#         paginator = Paginator(contact_list, 2)
-#         properties_data = paginator.get_page(kwargs['page_number'])
-#         context = {
-#             # 'contact_list': properties_data,
-#             'page_obj': properties_data,
-#             'q': q
-#         }
-#         html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
-#         return HttpResponse(html)
-
-
-# class ModalOwnerContactView(View):
-#     def get(self, request, *args, **kwargs):
-#         contact = OwnerContact.objects.get(id=kwargs['pk'])
-#         contact.state = False
-#         contact.save()
-#         contact_list = OwnerContact.objects.all()
-#         paginator = Paginator(contact_list, 2)
-#         properties_data = paginator.get_page(kwargs['page_number'])
-#         context = {
-#             'page_obj': properties_data,
-#         }
-#         html = render_block_to_string('pages/contact_owner_list.html', 'table_contact_owner', context)
-#         return HttpResponse(html)
-
+def hx_tostify_alert(request):
+    html = render_block_to_string('base.html', 'toastify_alert')
+    return HttpResponse(html)

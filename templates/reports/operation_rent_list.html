@@ -2,7 +2,7 @@
 {% load humanize %}
 {% block content_sidebar %}
     
-    {% include 'components/reports/search.html' with url_operation='reports:operation_rent_table' %}
+    {% include 'components/table/operation/search.html' with url_operation='reports:operation_rent_table' %}
 
     <div 
         x-data = "{
@@ -13,12 +13,14 @@
         <div class="inline-block min-w-full shadow rounded-lg overflow-hidden md:overflow-visible border-2" id="operation_table" >
 
             {% block table_list %}
+
+            {% include 'components/toastify.html' %}
                 
                 <table class="w-full table-auto bg-white" >
                     <thead>
                         <tr class="border-b text-gray-400 uppercase text-xs leading-normal">
                             <th class="py-3 px-6 text-left">Tipo</th>
-                            <th class="py-3 px-6 text-left">Region</th>
+                            <th class="py-3 px-6 text-left">Numero Rol</th>
                             <th class="py-3 px-6 text-left">Comuna</th>
                             <th class="py-3 px-6 text-center">Valor Referencial</th>
                             <th class="py-3 px-6 text-center">Valor Pagado</th>
@@ -42,7 +44,7 @@
                                 </td>
                                 <td class="py-3 px-6">
                                     <div class="flex items-center ">
-                                        <span> {{ operation.publication.property.region | title }}</span>
+                                        <span> {{ operation.publication.property.num_roll | title }}</span>
                                     </div>
                                 </td>
                                 <td class="py-3 px-6">
@@ -74,19 +76,19 @@
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
-                                    {% if operation.publication.operation == 'an' %}
-                                <!-- Error -->
+                                    {% if operation.state %}
+                                    <!-- Error -->
                                         <span
-                                        class="inline-flex items-center justify-center rounded-full bg-gray-100 px-2.5 py-0.5 text-gray-700"
+                                        class="inline-flex items-center justify-center rounded-full bg-green-100 px-2.5 py-0.5 text-green-700"
                                         >
-                                            <p class="whitespace-nowrap text-sm">{{ operation.publication.get_operation_display }}</p>
+                                            <p class="whitespace-nowrap text-sm">Activado</p>
                                         </span>
                                     {% else %}
                                     <!-- Success -->
                                         <span
-                                        class="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700"
+                                        class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
                                         >
-                                            <p class="whitespace-nowrap text-sm">{{ operation.publication.get_operation_display }}</p>
+                                            <p class="whitespace-nowrap text-sm">Archivado</p>
                                         </span>
                                     {% endif %}
                                 </td>
@@ -95,13 +97,8 @@
                                         {% if operation.is_lease_commission_paid == False %}
                                         <!-- Error -->
                                             <span
-                                            class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700"
+                                                class="inline-flex items-center justify-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-yellow-700"
                                             >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-1 mr-1.5 h-4 w-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                            </svg>
-                                            
-
                                                 <p class="whitespace-nowrap text-sm">Por pagar</p>
                                             </span>
                                         {% else %}
@@ -109,21 +106,6 @@
                                             <span
                                             class="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700"
                                             >
-                                                <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="-ml-1 mr-1.5 h-4 w-4"
-                                                >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                />
-                                                </svg>
-
                                                 <p class="whitespace-nowrap text-sm">Pagado</p>
                                             </span>
                                         {% endif %}
@@ -131,31 +113,27 @@
                                         -------
                                     {% endif %}
                                 </td>
-                                <td class="py-3 px-6 text-center">
-                                    {% if not operation.publication.operation == 'an' %}     
-                                        {% if operation.is_completed == False %}
-                                        <!-- Error -->
-                                            <span
-                                            class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-red-700"
-                                            >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm-1.489 7.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" fill="currentColor" stroke-width="0"></path>
-                                             </svg>   
-                                            </span>
-                                        {% else %}
-                                        <!-- Success -->
-                                            <span
-                                            class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-emerald-700"
-                                            >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z" fill="currentColor" stroke-width="0"></path>
-                                             </svg>     
-                                            </span>
-                                        {% endif %}
+                                <td class="py-3 px-6 text-center"> 
+                                    {% if operation.is_completed == False %}
+                                    <!-- Error -->
+                                        <span
+                                        class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-red-700"
+                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm-1.489 7.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" fill="currentColor" stroke-width="0"></path>
+                                            </svg>   
+                                        </span>
                                     {% else %}
-                                        -------
+                                    <!-- Success -->
+                                        <span
+                                        class="inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-emerald-700"
+                                        >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z" fill="currentColor" stroke-width="0"></path>
+                                            </svg>     
+                                        </span>
                                     {% endif %}
                                 </td>
                                 <td class="py-3 px-6 text-center">
@@ -166,236 +144,65 @@
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex item-center justify-between gap-3">
 
-                                        <div 
-                                            hx-get="{% url 'reports:operation_rent_detail' operation.id %}"
-                                            hx-vals = '{"page_number": "{{ page_obj.number}}"}'
-                                            hx-target="#operation-form"
-                                            hx-trigger="click"
-                                            @click="modalCreateOperationRent.openModal()" class="w-4 transform hover:text-yellow-500 hover:scale-110 cursor-pointer"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-                                                <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-                                                <path d="M12 12l0 .01"></path>
-                                                <path d="M3 13a20 20 0 0 0 18 0"></path>
-                                            </svg>
-                                        </div>
-                                        
-                                        {% if not operation.publication.operation == 'an' %}
-                                            {% if not operation.is_lease_commission_paid %}
-                                                <div x-data="{ open: false }">
-                                                    <div @click="open = true" class="w-4 transform hover:text-green-500 hover:scale-110 cursor-pointer">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                                        </svg>                                                  
-                                                    </div>
-                                                    
-                                                    <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                                    
-                                                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                        
-                                                        <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                            <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                                    
-                                                            <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                                <div class="w-full h-full text-center">
-                                                                    <div class="flex h-full flex-col justify-between">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-4 w-12 h-12 m-auto text-green-500">
-                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                                                        </svg>        
-                                                                        <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                            Pagar Comisión
-                                                                        </p>
-                                                                        <p class="text-gray-600  text-xs py-2 px-6">
-                                                                            Estas seguro de pagar esta comisión ?
-                                                                        </p>
-                                                                        <div class="flex items-center justify-around w-full mt-8">
-                                                                            <button 
-                                                                            hx-post="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                                            hx-vals = '{"action": "paid", "page_number": "{{ page_obj.number}}"}'
-                                                                            hx-target="#operation_table"
-                                                                            @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                                Pagar
-                                                                            </button>
-                                                
-                                                                            <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Cancelar
-                                                                        </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% else %}
-                                                <div x-data="{ open: false }" >
-                                                <div  @click="open = true" class="w-4 transform hover:text-red-500 hover:scale-110 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash-banknote-off w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
-                                                        <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
-                                                        <line x1="18" y1="12" x2="18.01" y2="12"></line>
-                                                        <line x1="6" y1="12" x2="6.01" y2="12"></line>
-                                                        <line x1="3" y1="3" x2="21" y2="21"></line>
-                                                    </svg>
-                                                    
-                                                </div>       
-                                                
-                                                <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                                
-                                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                    
-                                                    <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                                
-                                                        <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                            <div class="w-full h-full text-center">
-                                                                <div class="flex h-full flex-col justify-between">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                        <path d="M9.88 9.878a3 3 0 1 0 4.242 4.243m.58 -3.425a3.012 3.012 0 0 0 -1.412 -1.405"></path>
-                                                                        <path d="M10 6h9a2 2 0 0 1 2 2v8c0 .294 -.064 .574 -.178 .825m-2.822 1.175h-13a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h1"></path>
-                                                                        <line x1="18" y1="12" x2="18.01" y2="12"></line>
-                                                                        <line x1="6" y1="12" x2="6.01" y2="12"></line>
-                                                                        <line x1="3" y1="3" x2="21" y2="21"></line>
-                                                                    </svg>
-                                                                    <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                        Quitar Comisión
-                                                                    </p>
-                                                                    <p class="text-gray-600  text-xs py-2 px-6">
-                                                                        Estas seguro de quitar esta comisión ?
-                                                                    </p>
-                                                                    <div class="flex items-center justify-around w-full mt-8">
-                                                                        <button 
-                                                                        hx-post="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                                        hx-vals = '{"action": "unpaid", "page_number": "{{ page_obj.number}}"}'
-                                                                        hx-target="#operation_table"
-                                                                        @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Quitar
-                                                                        </button>
-                                            
-                                                                        <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Cancelar
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                </div>  
-                                            {% endif %}
-                                        {% endif %}
+                                        {% if operation.state %}
 
-                                        {% if not operation.is_completed %}
-                                            <div x-data="{ open: false }">
-                                                <div @click="open = true" class="w-4 transform hover:text-green-500 hover:scale-110 cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z" fill="currentColor" stroke-width="0"></path>
-                                                     </svg>                                               
-                                                </div>
-                                                
-                                                <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                                
-                                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                    
-                                                    <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                                
-                                                        <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                            <div class="w-full h-full text-center">
-                                                                <div class="flex h-full flex-col justify-between">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                        <path d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z" fill="currentColor" stroke-width="0"></path>
-                                                                     </svg>   
-
-                                                                    <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                        Confirmar Arriendo
-                                                                    </p>
-                                                                    <p class="text-gray-600  text-xs py-2 px-6">
-                                                                        Estas seguro de Confirmar este Arriendo ?
-                                                                    </p>
-                                                                    <div class="flex items-center justify-around w-full mt-8">
-                                                                        <button 
-                                                                        hx-post="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                                        hx-vals = '{"action": "confirm", "page_number": "{{ page_obj.number}}"}'
-                                                                        hx-target="#operation_table"
-                                                                        @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Confirmar
-                                                                        </button>
-                                            
-                                                                        <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                        Cancelar
-                                                                    </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% else %}
-                                            <div x-data="{ open: false }" >
-                                            <div  @click="open = true" class="w-4 transform hover:text-red-500 hover:scale-110 cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <div 
+                                                hx-get="{% url 'reports:operation_rent_detail' operation.id %}"
+                                                hx-vals = '{"page_number": "{{ page_obj.number}}"}'
+                                                hx-target="#operation-form"
+                                                hx-trigger="click"
+                                                @click="modalCreateOperationRent.openModal()" class="w-4 transform hover:text-yellow-500 hover:scale-110 cursor-pointer"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm-1.489 7.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" fill="currentColor" stroke-width="0"></path>
-                                                 </svg>                                                
-                                            </div>       
-                                            
-                                            <div x-show="open"  x-cloak  class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            
-                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                
-                                                <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                    <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                            
-                                                    <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                        <div class="w-full h-full text-center">
-                                                            <div class="flex h-full flex-col justify-between">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="mt-4 w-12 h-12 m-auto text-yellow-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M12 2l.324 .001l.318 .004l.616 .017l.299 .013l.579 .034l.553 .046c4.785 .464 6.732 2.411 7.196 7.196l.046 .553l.034 .579c.005 .098 .01 .198 .013 .299l.017 .616l.005 .642l-.005 .642l-.017 .616l-.013 .299l-.034 .579l-.046 .553c-.464 4.785 -2.411 6.732 -7.196 7.196l-.553 .046l-.579 .034c-.098 .005 -.198 .01 -.299 .013l-.616 .017l-.642 .005l-.642 -.005l-.616 -.017l-.299 -.013l-.579 -.034l-.553 -.046c-4.785 -.464 -6.732 -2.411 -7.196 -7.196l-.046 -.553l-.034 -.579a28.058 28.058 0 0 1 -.013 -.299l-.017 -.616c-.003 -.21 -.005 -.424 -.005 -.642l.001 -.324l.004 -.318l.017 -.616l.013 -.299l.034 -.579l.046 -.553c.464 -4.785 2.411 -6.732 7.196 -7.196l.553 -.046l.579 -.034c.098 -.005 .198 -.01 .299 -.013l.616 -.017c.21 -.003 .424 -.005 .642 -.005zm-1.489 7.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" fill="currentColor" stroke-width="0"></path>
-                                                                 </svg>  
-
-                                                                <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                    Quitar Confirmación
-                                                                </p>
-                                                                <p class="text-gray-600  text-xs py-2 px-6">
-                                                                    Estas seguro de quitar la confirmación ?
-                                                                </p>
-                                                                <div class="flex items-center justify-around w-full mt-8">
-                                                                    <button 
-                                                                    hx-post="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                                    hx-vals = '{"action": "no_confirm", "page_number": "{{ page_obj.number}}"}'
-                                                                    hx-target="#operation_table"
-                                                                    @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-yellow-300 hover:bg-yellow-400 focus:ring-yellow-500 focus:ring-offset-yellow-200 text-black w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                        Quitar
-                                                                    </button>
-                                        
-                                                                    <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                        Cancelar
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                                    <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                    <path d="M12 12l0 .01"></path>
+                                                    <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                </svg>
                                             </div>
-                                            </div>  
+
+                                            {% if not operation.is_lease_commission_paid %}
+                                                {% include 'modules/operation/rent/modal_comission_pay.html' %}
+                                            {% else %}
+                                                {% include 'modules/operation/rent/modal_comission_unpay.html' %}
+                                            {% endif %}
+
+                                            {% if not operation.is_completed %}
+                                                {% include 'modules/operation/rent/modal_confirm.html' %}
+                                            {% else %}
+                                                {% include 'modules/operation/rent/modal_unconfirm.html' %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="w-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-briefcase w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                                    <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
+                                                    <path d="M12 12l0 .01"></path>
+                                                    <path d="M3 13a20 20 0 0 0 18 0"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="w-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                                </svg>   
+                                            </div>
+                                            <div class="w-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M12 2c-.218 0 -.432 .002 -.642 .005l-.616 .017l-.299 .013l-.579 .034l-.553 .046c-4.785 .464 -6.732 2.411 -7.196 7.196l-.046 .553l-.034 .579c-.005 .098 -.01 .198 -.013 .299l-.017 .616l-.004 .318l-.001 .324c0 .218 .002 .432 .005 .642l.017 .616l.013 .299l.034 .579l.046 .553c.464 4.785 2.411 6.732 7.196 7.196l.553 .046l.579 .034c.098 .005 .198 .01 .299 .013l.616 .017l.642 .005l.642 -.005l.616 -.017l.299 -.013l.579 -.034l.553 -.046c4.785 -.464 6.732 -2.411 7.196 -7.196l.046 -.553l.034 -.579c.005 -.098 .01 -.198 .013 -.299l.017 -.616l.005 -.642l-.005 -.642l-.017 -.616l-.013 -.299l-.034 -.579l-.046 -.553c-.464 -4.785 -2.411 -6.732 -7.196 -7.196l-.553 -.046l-.579 -.034a28.058 28.058 0 0 0 -.299 -.013l-.616 -.017l-.318 -.004l-.324 -.001zm2.293 7.293a1 1 0 0 1 1.497 1.32l-.083 .094l-4 4a1 1 0 0 1 -1.32 .083l-.094 -.083l-2 -2a1 1 0 0 1 1.32 -1.497l.094 .083l1.293 1.292l3.293 -3.292z" fill="currentColor" stroke-width="0"></path>
+                                                </svg>    
+                                            </div>
                                         {% endif %}
+                                        
+                                        
+ 
                                         
                                         {% if operation.guarantee_document or operation.lease_agreement %}
-                                        <div x-data="{ open: false }" class="relative flex justify-center">
-                                            <div @click="open = true" class="w-4 transform hover:text-blue-500 hover:scale-110 cursor-pointer">
+                                            {% include 'modules/operation/rent/modal_files.html' %}
+                                        {% else %}
+                                            <div class="w-4 transform">
                                                 <div class="w-4">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -406,215 +213,50 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <div x-show="open" 
-                                                x-cloak
-                                                x-transition:enter="transition duration-300 ease-out"
-                                                x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-                                                x-transition:enter-end="translate-y-0 opacity-100 sm:scale-100"
-                                                x-transition:leave="transition duration-150 ease-in"
-                                                x-transition:leave-start="translate-y-0 opacity-100 sm:scale-100"
-                                                x-transition:leave-end="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"
-                                                class="fixed inset-0 z-10 overflow-y-auto" 
-                                                aria-labelledby="modal-title" role="dialog" aria-modal="true"
-                                            >
-                                                <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                                                    <span class="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">&#8203;</span>
-
-                                                    <div @click.away="open = false"  class="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl  sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
-                                                        <h3 class="text-xl text-center font-bold leading-6 text-gray-800 capitalize " id="modal-title">
-                                                            Ver Archivos
-                                                        </h3>
-                                                        <p class="mt-2 text-center text-sm text-gray-500 ">
-                                                            Seleccione para Ver o Descargar los archivos
-                                                        </p>
-
-                                                        <ul class="flex flex-col pt-10">
-                                                            {% if operation.guarantee_document %}
-                                                            <li class="flex flex-row mb-2 border-green-400">
-                                                                <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
-                                                                    <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
-                                                                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
-                                                                            <path d="M17 18h2"></path>
-                                                                            <path d="M20 15h-3v6"></path>
-                                                                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="flex-1 pl-1 md:mr-16">
-                                                                        <div class="font-medium ">
-                                                                            Documento Garantia
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="flex items-center justify-between gap-2 text-gray-600 ">
-                                                                        <a href="{{ operation.guarantee_document.url }}" target="_blank" >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                                                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
-                                                                            </svg>
-                                                                        </a>
-                                                                        <a href="{{ operation.guarantee_document.url }}" download >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                                                <path d="M12 17v-6"></path>
-                                                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                                            </svg>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            {% endif %}
-
-                                                            {% if operation.lease_agreement %}
-                                                            <li class="flex flex-row mb-2 border-green-400">
-                                                                <div class="transition duration-500 shadow ease-in-out transform hover:shadow-lg select-none bg-white  rounded-md flex flex-1 items-center p-2">
-                                                                    <div class="flex flex-col items-center justify-center w-10 h-10 mr-4">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
-                                                                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
-                                                                            <path d="M17 18h2"></path>
-                                                                            <path d="M20 15h-3v6"></path>
-                                                                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <div class="flex-1 pl-1 md:mr-16">
-                                                                        <div class="font-medium ">
-                                                                            Contrato Arriendo
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="flex items-center justify-between gap-2 text-gray-600 ">
-                                                                        <a href="{{ operation.lease_agreement.url }}" target="_blank" >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-blue-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                                                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
-                                                                            </svg>
-                                                                        </a>
-                                                                        <a href="{{ operation.lease_agreement.url }}" download >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-green-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                                                <path d="M12 17v-6"></path>
-                                                                                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
-                                                                            </svg>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            {% endif %}
-                                                        </ul>
-                                                                    
-                                                        <div class="mt-4 sm:-mx-2">
-                                                            <button type="button" @click="open = false" class="w-full px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-red-700 border-red-200 rounded-md sm:mx-2  hover:bg-red-500 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40">
-                                                                Cerrar
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% else %}
-                                        <div class="w-4 transform">
-                                            <div class="w-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                                                    <path d="M9 15h6"></path>
-                                                    <path d="M12.5 17.5l2.5 -2.5l-2.5 -2.5"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
                                         {% endif %}
 
-                                        {% if operation.is_completed %}
-                                        <div class="relative flex justify-center">
-                                            <div 
-                                                hx-get="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                hx-vals = '{"page_number": "{{ page_obj.number}}", "action": "payment_list"}'
-                                                hx-target="#payment-list"
-                                                hx-trigger="click"
-                                                @click="modalCreateRentPayment.openModal()" class="w-4 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
-                                            >
+                                        {% now "Y-m-d" as todays_date %}
+                                        {% if operation.is_completed and operation.state and operation.lease_final_date|date:"Y-m-d" > todays_date %}
+                                            <div class="relative flex justify-center">
+                                                <div 
+                                                    hx-get="{% url 'reports:operation_rent_detail' operation.id %}"
+                                                    hx-vals = '{"page_number": "{{ page_obj.number}}", "action": "payment_list"}'
+                                                    hx-target="#payment-list"
+                                                    hx-trigger="click"
+                                                    @click="modalCreateRentPayment.openModal()" class="w-4 transform hover:text-blue-500 hover:scale-110 cursor-pointer"
+                                                >
+                                                    <div class="w-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M17.1 8.648a.568 .568 0 0 1 -.761 .011a5.682 5.682 0 0 0 -3.659 -1.34c-1.102 0 -2.205 .363 -2.205 1.374c0 1.023 1.182 1.364 2.546 1.875c2.386 .796 4.363 1.796 4.363 4.137c0 2.545 -1.977 4.295 -5.204 4.488l-.295 1.364a.557 .557 0 0 1 -.546 .443h-2.034l-.102 -.011a.568 .568 0 0 1 -.432 -.67l.318 -1.444a7.432 7.432 0 0 1 -3.273 -1.784v-.011a.545 .545 0 0 1 0 -.773l1.137 -1.102c.214 -.2 .547 -.2 .761 0a5.495 5.495 0 0 0 3.852 1.5c1.478 0 2.466 -.625 2.466 -1.614c0 -.989 -1 -1.25 -2.886 -1.954c-2 -.716 -3.898 -1.728 -3.898 -4.091c0 -2.75 2.284 -4.091 4.989 -4.216l.284 -1.398a.545 .545 0 0 1 .545 -.432h2.023l.114 .012a.544 .544 0 0 1 .42 .647l-.307 1.557a8.528 8.528 0 0 1 2.818 1.58l.023 .022c.216 .228 .216 .569 0 .773l-1.057 1.057z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                                {% include 'modules/operation/rent/modal_payment.html' %}
+                                            </div>
+                                        {% else %}
+                                            <div class="w-4 transform">
                                                 <div class="w-4">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <path d="M17.1 8.648a.568 .568 0 0 1 -.761 .011a5.682 5.682 0 0 0 -3.659 -1.34c-1.102 0 -2.205 .363 -2.205 1.374c0 1.023 1.182 1.364 2.546 1.875c2.386 .796 4.363 1.796 4.363 4.137c0 2.545 -1.977 4.295 -5.204 4.488l-.295 1.364a.557 .557 0 0 1 -.546 .443h-2.034l-.102 -.011a.568 .568 0 0 1 -.432 -.67l.318 -1.444a7.432 7.432 0 0 1 -3.273 -1.784v-.011a.545 .545 0 0 1 0 -.773l1.137 -1.102c.214 -.2 .547 -.2 .761 0a5.495 5.495 0 0 0 3.852 1.5c1.478 0 2.466 -.625 2.466 -1.614c0 -.989 -1 -1.25 -2.886 -1.954c-2 -.716 -3.898 -1.728 -3.898 -4.091c0 -2.75 2.284 -4.091 4.989 -4.216l.284 -1.398a.545 .545 0 0 1 .545 -.432h2.023l.114 .012a.544 .544 0 0 1 .42 .647l-.307 1.557a8.528 8.528 0 0 1 2.818 1.58l.023 .022c.216 .228 .216 .569 0 .773l-1.057 1.057z"></path>
-                                                     </svg>
+                                                    </svg>
                                                 </div>
                                             </div>
-
-                                            {% include 'modules/operation/rent/modal_payment.html' %}
-                                        </div>
-                                        {% else %}
-                                        <div class="w-4 transform">
-                                            <div class="w-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M17.1 8.648a.568 .568 0 0 1 -.761 .011a5.682 5.682 0 0 0 -3.659 -1.34c-1.102 0 -2.205 .363 -2.205 1.374c0 1.023 1.182 1.364 2.546 1.875c2.386 .796 4.363 1.796 4.363 4.137c0 2.545 -1.977 4.295 -5.204 4.488l-.295 1.364a.557 .557 0 0 1 -.546 .443h-2.034l-.102 -.011a.568 .568 0 0 1 -.432 -.67l.318 -1.444a7.432 7.432 0 0 1 -3.273 -1.784v-.011a.545 .545 0 0 1 0 -.773l1.137 -1.102c.214 -.2 .547 -.2 .761 0a5.495 5.495 0 0 0 3.852 1.5c1.478 0 2.466 -.625 2.466 -1.614c0 -.989 -1 -1.25 -2.886 -1.954c-2 -.716 -3.898 -1.728 -3.898 -4.091c0 -2.75 2.284 -4.091 4.989 -4.216l.284 -1.398a.545 .545 0 0 1 .545 -.432h2.023l.114 .012a.544 .544 0 0 1 .42 .647l-.307 1.557a8.528 8.528 0 0 1 2.818 1.58l.023 .022c.216 .228 .216 .569 0 .773l-1.057 1.057z"></path>
-                                                 </svg>
-                                            </div>
-                                        </div>
                                         {% endif %}
 
+                                        {% include 'modules/operation/rent/modal_info_client.html' %}
 
-                                        <div  x-data="{ open: false }">
-                                            <div @click="open = true" class="w-4 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </div>
-    
-                                            <div x-show="open"  x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            
-                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                                                
-                                                <div class="fixed z-10 inset-0 overflow-y-auto">
-                                                    <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-                                            
-                                                    <div @click.away="open = false" class="shadow-lg rounded-2xl p-4 bg-white  w-64 m-auto">
-                                                        <div class="w-full h-full text-center">
-                                                            <div class="flex h-full flex-col justify-between">
-                                                                <svg width="40" height="40" class="mt-4 w-12 h-12 m-auto text-red-500" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z">
-                                                                    </path>
-                                                                </svg>
-                                                                <p class="text-gray-800  text-xl font-bold mt-4">
-                                                                    Eliminar Operación
-                                                                </p>
-                                                                <p class="text-gray-600  text-xs py-2 px-6">
-                                                                    Estas seguro de eliminar esta Operación ?
-                                                                </p>
-                                                                <div class="flex items-center justify-between gap-4 w-full mt-8">          
-                                                                    <div class='inline-flex'>
-                                                                        <button
-                                                                        hx-post="{% url 'reports:operation_rent_detail' operation.id %}"
-                                                                        hx-vals='{"action": "delete", "page_number": "{{ page_obj.number }}"}'
-                                                                        hx-target="#operation_table"
-                                                                        @click="open = false" type="submit" class="py-2 px-4 mx-3 bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Eliminar
-                                                                        </button>
-                                        
-                                                                        <button @click="open = false" type="button" class="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                                                                            Cancelar
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>     
+                                        {% if operation.state  %}
+                                            {% include 'modules/operation/rent/modal_disable.html' %}
+                                        {% else %}
+                                            {% include 'modules/operation/rent/modal_enable.html' %}
+                                        {% endif %}
+
+                                        {% include 'modules/operation/rent/modal_delete.html' %}
+
+                                           
                                     </div>
                                 </td>
                             </tr>
@@ -622,9 +264,11 @@
                     </tbody>
                 </table>
                 
-                {% include 'components/reports/pagination.html' with url_operation='reports:operation_rent_table' %}
+                {% include 'components/table/operation/pagination.html' with url_operation='reports:operation_rent_table' %}
                 
-                {% include 'components/reports/empty_table.html' %}
+                {% if not page_obj.object_list %}
+                    {% include 'components/table/empty.html' %}
+                {% endif %}
             
                 {% include 'modules/operation/rent/modal_update.html' %}
 

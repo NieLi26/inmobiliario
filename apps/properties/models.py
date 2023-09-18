@@ -11,12 +11,15 @@ from PIL import Image
 
 from django.utils.text import slugify
 
+
 User = AUTH_USER_MODEL
 
 # multi select
 from multiselectfield import MultiSelectField
 
 from apps.base.models import TimeStampedModel
+
+from apps.crm.models import Client
 
 # def property_directory_path(instance,filename):
 #     return 'property/{0}/{1}'.format(instance.uuid, filename)
@@ -196,22 +199,10 @@ class Property(TimeStampedModel):
   
     @property
     def has_active_publication(self):
-        return len([publication for publication in self.publications.all() if publication.state])
-
-    @property
-    def has_active_publication_publish(self):
-        has_publication_active =  self.publications.filter(state=True)
-        if has_publication_active.exists() and has_publication_active.first().status == 'pu':
+        if self.publications.filter(state=True).exists():
             return True
         return False
-
-    @property
-    def has_active_publication_draft(self):
-        has_publication_active = self.publications.filter(state=True)
-        if has_publication_active.exists() and has_publication_active.first().status == 'dr':
-            return True
-        return False
-
+        # return len([publication for publication in self.publications.all() if publication.state])
 
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''
@@ -300,7 +291,7 @@ class Publication(TimeStampedModel):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='publications_owner', verbose_name='Propietario')
     realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
     status = models.CharField(choices=Status.choices, max_length=3, default=Status.PUBLISH)
-    operation = models.CharField(choices=Operations.choices, max_length=2, default=Operations.WAITING)
+    # operation = models.CharField(choices=Operations.choices, max_length=2, default=Operations.WAITING)
     type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)
     price = models.PositiveIntegerField('Precio Publicación')
     appraisal_value = models.PositiveIntegerField('Valor Tasación', null=True, blank=True)
@@ -320,12 +311,21 @@ class Publication(TimeStampedModel):
 
     def __str__(self):
         return str(self.property)
-    
+
     def get_absolute_url(self):
         return reverse("properties:publication_detail", kwargs={"pk": self.id})
 
     def get_views_count(self):
         return self.views.count()
+   
+    def has_active_operation(self):
+        print('entro a has active operation')
+        print(self.operations_buy.filter(state=True).exists())
+        print(self.operations_rent.filter(state=True).exists())
+        if self.operations_buy.filter(state=True).exists() or \
+            self.operations_rent.filter(state=True).exists():
+            return True
+        return False
 
 
 class House(TimeStampedModel):

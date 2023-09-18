@@ -20,6 +20,8 @@ urlpatterns = [
                                  namespace="newsletters")),
     path("reports/", include("apps.reports.urls",
                                namespace="reports")),
+    path("crm/", include("apps.crm.urls",
+                               namespace="crm")),
 ]
 
 if settings.DEBUG:

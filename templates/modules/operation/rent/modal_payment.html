@@ -26,12 +26,11 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true"
                 <form action="." class="space-y-3">
 
                     {{ form_payment | crispy }}
-
-
+  
                     <div class="sm:-mx-2">
                         <button 
-                        hx-post="{% url 'reports:payment_rent_list' %}"
-                        hx-vals='{"operation_rent": "{{ operation_id }}"}'
+                        hx-post="{% if url_payment  %} {{ url_payment }} {% else %} {% url 'reports:payment_rent_list' %} {% endif %}"
+                        hx-vals='{"operation_rent": "{{ operation_id }}", "action": "{{ action }}"}'
                         hx-swap="innerHTML"
                         hx-target="#payment-list"
                         type="submit" class="w-1/2 px-4 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform border bg-green-700 border-green-200 rounded-md sm:mx-2  hover:bg-green-500 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40">
@@ -66,7 +65,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true"
                                 <div class="flex items-center justify-between gap-2 text-gray-600 ">
                                     <button
                                         hx-get="{% url 'reports:payment_rent_detail' payment.id  %}"
-                                        hx-vals='{"operation_id": "{{ operation_id }}"}'
+                                        hx-vals='{"action": "update", "operation_id": "{{ operation_id }}"}'
                                         hx-target="#payment-list"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="cursor-pointer bg-yellow-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8">
@@ -76,7 +75,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true"
 
                                     <button 
                                     hx-post="{% url 'reports:payment_rent_detail' payment.id  %}"
-                                    hx-vals='{"action": "delete", "operation_id": "{{ operation_id }}"}'
+                                    hx-vals='{"action": "delete", "operation_rent": "{{ operation_id }}"}'
                                     hx-target="#payment-list"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer bg-red-700 rounded-md text-white shadow transition duration-500 ease-in-out transform hover:scale-110 w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,4 +1,5 @@
-from typing import Any, Dict
+from datetime import date
+from typing import Any
 from django import forms
 from .models import OperationBuyHistory, OperationRent, PaymentRent
 
@@ -27,10 +28,11 @@ class OperationBuyHistoryFirstForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['signature_purchase_sale_agreement'].widget = forms.DateInput(attrs={"type": "date"})
+        self.fields['client'].required = True
 
     class Meta:
         model = OperationBuyHistory
-        fields = ('total', 'purchase_sale_advance', 'signature_purchase_sale_agreement', 'purchase_sale_agreement')
+        fields = ('client', 'total', 'purchase_sale_advance', 'signature_purchase_sale_agreement', 'purchase_sale_agreement')
 
     def clean_total(self):
         total = self.cleaned_data['total']
@@ -113,9 +115,12 @@ class OperationBuyHistoryUpdateForm(forms.ModelForm):
         for field in date_list:
             self.fields[field].widget = forms.DateInput(attrs={"type": "date"}, format='%Y-%m-%d')
 
+        self.fields['client'].required = True
+
     class Meta:
         model = OperationBuyHistory
         fields = (
+            'client',
             'total',
             'purchase_sale_advance',
             'signature_purchase_sale_agreement',
@@ -158,13 +163,15 @@ class OperationBuyHistoryUpdateForm(forms.ModelForm):
                 self.add_error('signature_sales_document', msg)
         return cleaned_data
 
-    # def save(self, commit=True):
-    #     instance = super().save(commit=False)
-    #     if instance.purchase_sale_advance and instance.purchase_sale_agreement and instance.signature_purchase_sale_agreement:
-    #         instance.has_promise = True
-    #     if commit:
-    #         instance.save()
-    #     return instance
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # if instance.purchase_sale_advance and instance.purchase_sale_agreement and instance.signature_purchase_sale_agreement:
+        #     instance.has_promise = True
+        # instance.total_commision = (instance.total * instance.publication.commission_percentage) / 100
+        instance.total_commision = instance.get_real_comission
+        if commit:
+            instance.save()
+        return instance
 
 
 class OperationRentForm(forms.ModelForm):
@@ -175,7 +182,9 @@ class OperationRentForm(forms.ModelForm):
         date_list = ['signature_lease_agreement', 'lease_start_date', 'lease_final_date']
         for field in date_list:
             self.fields[field].widget = forms.DateInput(attrs={"type": "date"}, format='%Y-%m-%d')
-     
+
+        self.fields['client'].required = True
+
         # required_list = ['lease_start_date', 'lease_final_date']
         # for field in required_list:
         #     self.fields[field].required = True
@@ -183,6 +192,7 @@ class OperationRentForm(forms.ModelForm):
     class Meta:
         model = OperationRent
         fields = (
+            'client',
             'guarantee_value', 'guarantee_document',
             'signature_lease_agreement',
             'lease_agreement', 'lease_start_date',
@@ -238,8 +248,8 @@ class OperationRentForm(forms.ModelForm):
             if not signature_lease_agreement:
                 msg = 'Debe Indicar la Fecha de Firma de Contrato'
                 self.add_error('signature_lease_agreement', msg)
-        return cleaned_data
-    
+        return cleaned_data 
+
 
 class PaymentRentForm(forms.ModelForm):
 
@@ -257,8 +267,19 @@ class PaymentRentForm(forms.ModelForm):
         if total_payment != '' and total_payment <= 0:
             msg = 'Total debe ser Mayora 0'
             raise forms.ValidationError(msg)
-        return total_payment
-    
+        return total_payment    
+
+    def clean(self):
+        cleaned_data = super().clean()
+        payment_date = cleaned_data.get('payment_date')
+        operation_rent = cleaned_data.get('operation_rent')
+        print(payment_date)
+        print(operation_rent.lease_final_date)
+        if payment_date and payment_date >= operation_rent.lease_final_date:
+            msg = 'La fecha de pago no debe superar la fecha de termino de contrato'
+            self.add_error('payment_date', msg)
+        return cleaned_data
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         if instance.total_payment < instance.operation_rent.monthly_total:
@@ -267,5 +288,3 @@ class PaymentRentForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
-
-    

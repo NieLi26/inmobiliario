@@ -30,6 +30,8 @@ from django.views.decorators.cache import cache_control
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 
+from apps.reports.models import OperationBuyHistory, OperationRent
+
 from .filters import PropertyFilter
 
 from .models import (
@@ -48,7 +50,6 @@ from .forms import (
     PropertyRentForm, PublicationForm,
     PublicationRentForm
 )
-
 
 
 def property_create_test(request, property_type):
@@ -399,8 +400,7 @@ def contact_detail_form(request, publish_type, property_type, location_slug, slu
 class PublishBuyListView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = 'properties/publication_list.html'
     queryset = Publication.objects.filter(
-        status=Publication.Status.PUBLISH,
-        state=True,
+        # state=True,
         property__publish_type='ve'
     )
 
@@ -418,8 +418,7 @@ class PublishBuyListView(LoginRequiredMixin, PaginationMixin, ListView):
 class PublishExchangeListView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = 'properties/publication_list.html'
     queryset = Publication.objects.filter(
-        status=Publication.Status.PUBLISH,
-        state=True,
+        # state=True,
         property__publish_type='pe'
     )
 
@@ -436,8 +435,7 @@ class PublishExchangeListView(LoginRequiredMixin, PaginationMixin, ListView):
 class PublishRentListView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = 'properties/publication_list.html'
     queryset = Publication.objects.filter(
-        status=Publication.Status.PUBLISH,
-        state=True,
+        # state=True,
         property__publish_type='ar'
     )
 
@@ -454,8 +452,7 @@ class PublishRentListView(LoginRequiredMixin, PaginationMixin, ListView):
 class PublishRentSeasonListView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = 'properties/publication_list.html'
     queryset = Publication.objects.filter(
-        status=Publication.Status.PUBLISH,
-        state=True,
+        # state=True,
         property__publish_type='at'
     )
 
@@ -535,7 +532,7 @@ class PublicationDetailView(View):
 class PublicationCreateView(LoginRequiredMixin, View):
     def dispatch(self, request, uuid, slug, *args, **kwargs):
         property = Property.objects.filter(uuid=uuid, slug=slug).first()
-        if not property.is_active:
+        if not property.state:
             return redirect('reports:dashboard')
         if property.has_active_publication:
             return redirect('reports:dashboard')
@@ -559,7 +556,7 @@ class PublicationCreateView(LoginRequiredMixin, View):
             'subtitle': 'Maneje la creación de sus publicaciones',
         }
         return render(request, 'properties/publication_form.html', context)
-    
+ 
     def post(self, request, uuid, slug, *args, **kwargs):
         property = Property.objects.filter(uuid=uuid, slug=slug).first()
         if property.publish_type == 'ar' or property.publish_type == 'at':
@@ -576,7 +573,7 @@ class PublicationCreateView(LoginRequiredMixin, View):
         # Valida si se puede publicar
         if property.has_active_publication:
             print('La propiedad tiene un publicacion en uso')
-            messages.add_message(request, messages.INFO, "La propiedad tiene un publicacion en uso.")
+            messages.add_message(request, messages.INFO, "La propiedad tiene una publicacion en uso.")
         else:
             if form.is_valid():
                 instance = form.save(commit=False) 
@@ -597,7 +594,7 @@ class PublicationCreateView(LoginRequiredMixin, View):
 class PublicationUpdateView(LoginRequiredMixin, View):
     def dispatch(self, request, pk, *args, **kwargs):
         publication = get_object_or_404(Publication, pk=pk)
-        # Evita editar publicacion eliminada(state=False)
+        # Evita editar publicacion desactivada(state=False)
         if not publication.state:
             return redirect('reports:dashboard')
         return super().dispatch(request, pk, *args, **kwargs)
@@ -614,13 +611,25 @@ class PublicationUpdateView(LoginRequiredMixin, View):
                 instance=publication,
                 user=request.user, publish_type=publication.property.publish_type
             )  # forma mas robusta pasandosela al form y ahi asignandola
+        
+        url_back = None
+        if publication.property.publish_type == 'ar':
+            url_back = 'properties:publish_rent_list'
+        elif publication.property.publish_type == 'at':
+            url_back = 'properties:publish_rent_season_list'
+        elif publication.property.publish_type == 've':
+            url_back = 'properties:publish_buy_list'
+        elif publication.property.publish_type == 'pe':
+            url_back = 'properties:publish_exchange_list'
+
         context = {
             "form": form,
             'title': 'Modificación de Publicación',
+            'url_back': url_back,
             'subtitle': 'Maneje la modificación de sus publicaciones'
         }
         return render(request, 'properties/publication_form.html', context)
- 
+
     def post(self, request, pk, *args, **kwargs):
         publication = get_object_or_404(Publication, pk=pk)
         if publication.property.publish_type == 'ar' or publication.property.publish_type == 'at':
@@ -636,9 +645,21 @@ class PublicationUpdateView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect('reports:dashboard')
+
+        url_back = None
+        if publication.property.publish_type == 'ar':
+            url_back = 'properties:publish_rent_list'
+        elif publication.property.publish_type == 'at':
+            url_back = 'properties:publish_rent_season_list'
+        elif publication.property.publish_type == 've':
+            url_back = 'properties:publish_buy_list'
+        elif publication.property.publish_type == 'pe':
+            url_back = 'properties:publish_exchange_list'
+        
         context = {
             "form": form,
             'title': 'Modificación de Publicación',
+            'url_back': url_back,
             'subtitle': 'Maneje la modificación de sus publicaciones'
         }
         return render(request, 'properties/publication_form.html', context) 
@@ -697,65 +718,64 @@ class PublicationChangeView(LoginRequiredMixin, View):
 
         publication = get_object_or_404(Publication, id=kwargs['pk'])
 
+
         # Evita cambiar estado publicacion eliminada(state=False)
         if not publication.state:
-            print('No puede cambiar estado de una publicacion eliminada')
+            if action == 'enable':
+                if publication.property.has_active_publication:
+                    context['errors'] = {'Solo puede haber una publicacion activa por propiedad'}
+                else:
+                    publication.state = True
+                    publication.save()
+                    context['success'] = {'Activada Correctamente'}
+            else:
+                context['errors'] = {'Solo se puede realizar una accion con una publicacion activada'}
         else:
-            if action == 'normal':
-                publication.is_featured = False
-                publication.save()
-                context['success'] = {'Publicación Normalizada Correctamente'}
-            if action == 'featured':
-                publication.is_featured = True
-                publication.save()
-                context['success'] = {'Publicación Destacada Correctamente'}
-            if action == 'draft':
-                publication.status = Publication.Status.DRAFT
-                publication.save()
-                context['success'] = {'Publicación Despublicada Correctamente'}
-            if action == 'publish':
-                publication.status = Publication.Status.PUBLISH
-                publication.save()
-    
-                property_list = Property.objects.filter(state=True)
-                paginator = Paginator(property_list, 2)
-                properties_data = paginator.get_page(page_number)
-                context['page_obj'] = properties_data
-                context['success'] = {'Publicación Publicada Correctamente'}
-                html = render_block_to_string('properties/properties_list.html', 'table_list', context)
-                return HttpResponse(html)
+            if not publication.has_active_operation():
+                if action == 'normal':
+                    publication.is_featured = False
+                    publication.save()
+                    context['success'] = {'Normalizada Correctamente'}
+                elif action == 'featured':
+                    publication.is_featured = True
+                    publication.save()
+                    context['success'] = {'Destacada Correctamente'}
+                elif action == 'draft':
+                    publication.status = Publication.Status.DRAFT
+                    publication.save()
+                    context['success'] = {'Despublicada Correctamente'}
+                elif action == 'publish':
+                    publication.status = Publication.Status.PUBLISH
+                    publication.save()
+                    context['success'] = {'Publicada Correctamente'}
+                elif action == 'disable':
+                    publication.state = False
+                    publication.status = Publication.Status.DRAFT
+                    publication.save()
+                    context['success'] = {'Desactivada Correctamente'}
+                elif action == 'operation':
+                    if publication.property.publish_type == 've':
+                        OperationBuyHistory.objects.create(publication=publication)
+                    elif publication.property.publish_type == 'ar':
+                        OperationRent.objects.create(publication=publication)
+                    publication.status = Publication.Status.DRAFT
+                    publication.save()
+                    context['success'] = {'Operación Creada Correctamente'}
+                else:
+                    context['errors'] = {'Prohibido, Accion Desconocida'}
+            else:
+                context['errors'] = {'Prohibido, tiene una operacion en uso'}
 
-            if action == 'finished':
-                publication.operation = Publication.Operations.FINISHED
-                publication.save()
-
-            if action == 'annulled':
-                publication.operation = Publication.Operations.ANNULLED
-                publication.save()
-
-        publication_list = Publication.objects.filter(state=True, status=Publication.Status.PUBLISH)
+        publication_list = Publication.objects.all()
 
         if type_publish == 've':
             publication_list = publication_list.filter(property__publish_type='ve')
-            # context['form_operation_buy'] = OperationBuyHistoryForm()
         if type_publish == 'pe':
             publication_list = publication_list.filter(property__publish_type='pe')
-            # context['form_operation_exchange'] = OperationExchangeHistoryForm()
         if type_publish == 'ar':
             publication_list = publication_list.filter(property__publish_type='ar')
-            # context['form_operation_rent'] = OperationRentHistoryForm()
         if type_publish == 'at':
             publication_list = publication_list.filter(property__publish_type='at')
-            # context['form_operation_rental_season'] = OperationRentalSeasonHistoryForm()
-        if type_publish == 'random':
-            property_list = Property.objects.filter(state=True)
-            paginator = Paginator(property_list, 2)
-            properties_data = paginator.get_page(page_number)
-            context['page_obj'] = properties_data
-            context['errors'] = {'Acción no Valida'}
-            html = render_block_to_string('properties/properties_list.html', 'table_list', context)
-            return HttpResponse(html)
-          
 
         paginator = Paginator(publication_list, 2)
         publications_data = paginator.get_page(page_number)
@@ -772,11 +792,16 @@ class TablePublicationView(LoginRequiredMixin, View):  # probe como pasar templa
         q = request.GET.get('q', '')
         type_publish = request.GET.get('type_publish')
         page_number = request.GET.get('page_number', 1)
+        estado = request.GET.get('estado', '')
 
         publication_list = Publication.objects.filter(
-            property__commune_id__name__icontains=q,
-            status=Publication.Status.PUBLISH, state=True
+            property__commune_id__name__icontains=q
         )
+
+        if estado == 'active':
+            publication_list = publication_list.filter(state=True)
+        if estado == 'archive':
+            publication_list = publication_list.filter(state=False)
 
         if type_publish == 've':
             publication_list = publication_list.filter(
@@ -805,6 +830,7 @@ class TablePublicationView(LoginRequiredMixin, View):  # probe como pasar templa
         context['page_obj'] = publications_data
         context['q'] = q
         context['publish_type'] = type_publish
+        context['estado'] = estado
         html = render_block_to_string('properties/publication_list.html', 'table_list', context)
         return HttpResponse(html)
         # return HttpResponse(template.render(context), content_type='html')
@@ -814,7 +840,7 @@ class TablePublicationView(LoginRequiredMixin, View):  # probe como pasar templa
 
 class PropertyListView(LoginRequiredMixin, PaginationMixin, ListView):
     template_name = 'properties/properties_list.html'
-    queryset = Property.objects.filter(state=True)
+    queryset = Property.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -837,7 +863,7 @@ class PropertyDeleteView(LoginRequiredMixin, View):
             publication.state = False
             publication.save()
 
-        property_list = Property.objects.filter(state=True)
+        property_list = Property.objects.all()
         paginator = Paginator(property_list, 2)
         properties_data = paginator.get_page(page_number)
         context = {
@@ -850,6 +876,7 @@ class PropertyDeleteView(LoginRequiredMixin, View):
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def property_create(request, property_type, publish_type):
+
     if publish_type == 'ar' or publish_type == 'at':
         form = PropertyRentForm(
             request.POST or None, request.FILES or None,
@@ -945,7 +972,8 @@ def property_create(request, property_type, publish_type):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def property_update(request, slug, uuid):
     property = get_object_or_404(Property, uuid=uuid, slug=slug)
-    # property = Property.objects.get(uuid=uuid, slug=slug)
+    if not property.state:
+        return redirect('reports:dashboard')
 
     if property.publish_type == 'ar' or property.publish_type == 'at':
         form = PropertyRentForm(
@@ -1159,6 +1187,7 @@ class PropertySuccessDetailView(LoginRequiredMixin, DetailView):
 # partials list
 class PropertyIsActiveView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        context = {}
         action = request.GET.get('action')
         page_number = request.GET.get('page_number', 1)
 
@@ -1166,22 +1195,21 @@ class PropertyIsActiveView(LoginRequiredMixin, View):
 
         if property.has_active_publication:
             print('No puede cambiar estado de propiedad porque hay un publicacion vigente')
+            context['errors'] = {'Prohibido, tiene una publicacion en uso'}
         else:
             if action == 'no_active':
-                property.is_active = False
+                property.state = False
                 property.save()
 
             if action == 'active':
-                property.is_active = True
+                property.state = True
                 property.save()
 
-        property_list = Property.objects.filter(state=True)
+        property_list = Property.objects.all()
         paginator = Paginator(property_list, 2)
         properties_data = paginator.get_page(page_number)
-        context = {
-            'page_obj': properties_data,
-            'url_option': 'table_property'
-        }
+        context['page_obj'] = properties_data
+        context['url_option'] = 'table_property'
         html = render_block_to_string('properties/properties_list.html', 'table_list', context)
         return HttpResponse(html)
 
@@ -1194,8 +1222,7 @@ class TablePropertyView(LoginRequiredMixin, View):
         page_number = request.GET.get('page_number', 1)
         
         property_list = Property.objects.filter(
-            commune_id__name__icontains=q,
-            state=True
+            commune_id__name__icontains=q
         )
         paginator = Paginator(property_list, 2)
         properties_data = paginator.get_page(page_number)

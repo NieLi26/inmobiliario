@@ -1,8 +1,11 @@
 import os
+import random
+import string
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import Http404
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.utils.text import slugify
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.conf import settings
@@ -13,6 +16,28 @@ from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
 from django.template.loader import get_template
 
 from .models import Property, Commune
+
+
+def create_unique_slug(model_instance, slug_field_name):
+    # Creamos un slug a partir del título del elemento
+    slug = slugify(model_instance.title)
+
+    # Verificamos si existe un elemento con ese slug
+    class_ = model_instance.__class__
+    count = 0
+    while class_.objects.filter(**{slug_field_name: slug}).exclude(pk=model_instance.pk).exists():
+        # Si existe, agregamos una combinación de letras y números al final para hacerlo único
+        slug += '-' + ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+        count += 1
+        if count > 100:
+            # Evitamos bucles infinitos
+            break
+    # Asignamos el slug único al objeto
+    model_instance.slug = slug
+
+
+def property_images_directory_path(instance, filename):
+    return 'property_images/{0}/{1}'.format(instance.property.uuid, filename)
 
 
 def delete_file(image):
@@ -37,27 +62,6 @@ def get_ip(request):
     # devuelve la dirección IP de la máquina en la que se está ejecutando el código
     # hostname = socket.gethostname()
     # return socket.gethostbyname(hostname)
-
-
-# def can_property(request, property_type=None):
-#     ''' Deniega permiso a vista de creacion si se sobrepasa el limite de publicaciones que permite la subscripcion'''
-#     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
-#     if property_type not in list_property_type:
-#         raise Http404
-#     elif not request.user.is_superuser:
-#         if Property.count_by_user(request.user) >= request.user.subscription.pricing.allowed_property: # evita crear o editar si se pasa de las propiedades maximas
-#             raise PermissionDenied
-#     return request
-
-# def can_edit_property(request, slug=None, uuid=None):
-#     ''' Deniega permiso a vista de edicion sino es le usuario que la creo'''
-#     property = Property.objects.filter(uuid=uuid, slug=slug).first()
-#     if property is None:
-#         # raise ObjectDoesNotExist("La propiedad no existe.")
-#         raise Http404
-#     if not request.user.is_superuser and property.user != request.user:
-#         raise PermissionDenied
-#     return request
 
 
 # tipo publicacion - tipo propiedad - locacion
@@ -87,6 +91,43 @@ def url_custom_list(publish_type, property_type, location_slug, page_number=None
         return reverse('properties:custom_list_publish_property', args=[publish_type, property_type])
     
     return False
+
+
+# def filter_properties(first_data, second_data):
+#     properties = Property.objects.all()
+#     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
+#     list_location_slug = [i.location_slug for i in Commune.objects.all()]
+
+#     if first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe':
+#         return filter_by_publish_type(first_data, second_data, properties, list_property_type, list_location_slug)
+#     else:
+#         return reverse('pages:home')
+
+
+# def filter_by_publish_type(publish_type, second_data, properties, list_property_type, list_location_slug):
+#     if second_data in list_property_type:
+#         property_type = [display_value for value, display_value in Property.PROPERTY_CHOICES if value == second_data][0]
+#         entity = get_entity(publish_type, property_type)
+#         qs = properties.filter(publish_type=publish_type, property_type=second_data)
+#     elif second_data in list_location_slug:
+#         location_slug = [i.name for i in Commune.objects.all() if second_data in i.location_slug][0]
+#         entity = get_entity(publish_type, location_slug)
+#         qs = properties.filter(publish_type=publish_type, commune__location_slug=second_data)
+#     else:
+#         return reverse('pages:home')
+
+#     return qs, entity
+
+
+# def get_entity(publish_type, description):
+#     if publish_type == 've':
+#         return f'Ventas {description}'
+#     elif publish_type == 'ar':
+#         return f'Arriendos {description}'
+#     elif publish_type == 'pe':
+#         return f'Permutas {description}'
+#     else:
+#         return f'Arriendos temporada {description}'
 
 
 # tipo publicacion - tipo propiedad o tipo publicacion - locacion o tipo propiedad - locacion

@@ -30,6 +30,9 @@ hxpatterns = [
     path('hx_side_alert/', views.hx_side_alert, name='hx_side_alert'),
     # path('hx_message/', hx_message, name='hx_message'),
 
+    # TEST ALERT
+    path('hx_tostify_alert/', views.hx_tostify_alert, name='hx_tostify_alert'),
+
     # ELIMINADO
     # CONTACT OWNER LIST
     # path('hx_contact_owner_table/<int:page_number>/', views.TableOwnerContactView.as_view(), name='hx_contact_owner_table'),

@@ -32,7 +32,7 @@ from django.views.decorators.cache import never_cache
 
 from apps.reports.models import OperationBuyHistory, OperationRent
 
-from .filters import PropertyFilter
+from .filters import PropertyFilter, PublicationFilter
 
 from .models import (
     Commune, PropertyImage, Property, House,  
@@ -1344,9 +1344,11 @@ def custom_list(request, publish_type, property_type, location_slug):
     elif publish_type == 'pe':
         entity = f'Permutas de {[i[1] for i in Property.PROPERTY_CHOICES if i[0] == property_type][0]} en {[i.name for i in Commune.objects.all() if location_slug == i.location_slug][0]}' 
 
-    qs = Property.objects.filter(publish_type=publish_type, property_type=property_type, commune__location_slug=location_slug)
+    # qs = Property.objects.filter(publish_type=publish_type, property_type=property_type, commune__location_slug=location_slug, state=True)
+    qs = Publication.objects.filter(property__publish_type=publish_type, property__property_type=property_type, property__commune__location_slug=location_slug, state=True, status='pu')
 
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    # django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
     qs = django_filter.qs
 
     paginator = Paginator(qs, 1)
@@ -1367,7 +1369,6 @@ def custom_list(request, publish_type, property_type, location_slug):
 
 @url_custom_list_decorator
 def property_list(request, page_number, publish_type, property_type, location_slug):
-
     if publish_type == 've':
         entity = f'Ventas de {[i[1] for i in Property.PROPERTY_CHOICES if i[0] == property_type][0]} en {[i.name for i in Commune.objects.all() if location_slug == i.location_slug][0]}' 
     elif publish_type == 'ar':
@@ -1377,7 +1378,8 @@ def property_list(request, page_number, publish_type, property_type, location_sl
     elif publish_type == 'pe':
         entity = f'Permutas de {[i[1] for i in Property.PROPERTY_CHOICES if i[0] == property_type][0]} en {[i.name for i in Commune.objects.all() if location_slug == i.location_slug][0]}' 
 
-    qs = Property.objects.filter(publish_type=publish_type, property_type=property_type, commune__location_slug=location_slug)
+    # qs = Property.objects.filter(publish_type=publish_type, property_type=property_type, commune__location_slug=location_slug, state=True)
+    qs = Publication.objects.filter(property__publish_type=publish_type, property__property_type=property_type, property__commune__location_slug=location_slug, state=True, status='pu')
 
     print(request.GET.get('price_option',''))
     property__publish_type = request.GET.get('property__publish_type','')
@@ -1390,12 +1392,13 @@ def property_list(request, page_number, publish_type, property_type, location_sl
     price__lte = request.GET.get('price__lte','')
     type_price = request.GET.get('type_price','')
 
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    # django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
     qs = django_filter.qs
 
     paginator = Paginator(qs, 1)
     page_obj = paginator.get_page(page_number)
-
+    
     context = {
         'page_obj': page_obj,
         'entity': entity,
@@ -1421,6 +1424,7 @@ def property_list(request, page_number, publish_type, property_type, location_sl
 
 # 2)
 def custom_list_publish_property(request, first_data, second_data):
+    qs = None
     response = url_custom_list_publish_property(first_data, second_data)
 
     if len(response) == 2:
@@ -1428,9 +1432,13 @@ def custom_list_publish_property(request, first_data, second_data):
         entity = response[1]
     else:
         return redirect(response)
+    
+    for q in qs:
+        print(q.type_price)
 
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
     qs = django_filter.qs
+    print(qs)
 
     paginator = Paginator(qs, 1)
     page_number = request.GET.get('page')
@@ -1448,7 +1456,8 @@ def custom_list_publish_property(request, first_data, second_data):
 
 
 def property_list_publish_property(request, page_number, first_data, second_data):
-
+    print('ESTOY USANDOOO O KEEE')
+    qs = None
     response = url_custom_list_publish_property(first_data, second_data)
 
     if len(response) == 2:
@@ -1456,6 +1465,8 @@ def property_list_publish_property(request, page_number, first_data, second_data
         entity = response[1]
     else:
         return redirect(response)
+
+    print(response)
 
     property__publish_type = request.GET.get('property__publish_type','')
     order = request.GET.get('order','')
@@ -1467,8 +1478,10 @@ def property_list_publish_property(request, page_number, first_data, second_data
     price__lte = request.GET.get('price__lte','')
     type_price = request.GET.get('type_price','')
 
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
+
     qs = django_filter.qs
+    print(qs)
 
     paginator = Paginator(qs, 1)
     page_obj = paginator.get_page(page_number)
@@ -1500,13 +1513,15 @@ def custom_list_publish(request, publish_type):
     print(publish_type)
     try:
         if publish_type == 've' or publish_type == 'ar' or publish_type == 'at' or publish_type == 'pe':
-            qs = Property.objects.filter(publish_type=publish_type, state=True)
+            # qs = Property.objects.filter(publish_type=publish_type, state=True)
+            qs = Publication.objects.filter(property__publish_type=publish_type, state=True, status='pu')
+            for q in qs:
+                print(q.price)
         else:
             return redirect('pages:home')
     except Exception as e:
         print(str(e))
         return redirect('pages:home')
-
 
     if publish_type == 've':
         entity = 'Inmuebles en Venta'
@@ -1517,7 +1532,8 @@ def custom_list_publish(request, publish_type):
     if publish_type == 'pe':
         entity = 'Inmuebles en Permuta'
 
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    # django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
     qs = django_filter.qs
 
     paginator = Paginator(qs, 1)
@@ -1537,7 +1553,8 @@ def custom_list_publish(request, publish_type):
 def property_list_publish(request, page_number, publish_type):
     try:
         if publish_type == 've' or publish_type == 'ar' or publish_type == 'at' or publish_type == 'pe':
-            qs = Property.objects.filter(publish_type=publish_type, state=True)
+            # qs = Property.objects.filter(publish_type=publish_type, state=True)
+            qs = Publication.objects.filter(property__publish_type=publish_type, state=True, status='pu')
         else:
             return redirect('pages:home')
     except Exception as e:
@@ -1564,8 +1581,8 @@ def property_list_publish(request, page_number, publish_type):
     price__lte = request.GET.get('price__lte','')
     type_price = request.GET.get('type_price','')
 
-    
-    django_filter = PropertyFilter(request.GET, queryset=qs)
+    # django_filter = PropertyFilter(request.GET, queryset=qs)
+    django_filter = PublicationFilter(request.GET, queryset=qs)
     qs = django_filter.qs
     paginator = Paginator(qs, 1)
     page_obj = paginator.get_page(page_number)

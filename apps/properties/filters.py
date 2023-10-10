@@ -1,7 +1,7 @@
 import django_filters
 from django.db.models import Q
 
-from .models import House, Apartment, Property
+from .models import House, Apartment, Property, Publication
 
 
 class PropertyFilter(django_filters.FilterSet):
@@ -19,6 +19,7 @@ class PropertyFilter(django_filters.FilterSet):
     min_bathroom = django_filters.NumberFilter(method='get_min_bathroom')
     max_bathroom = django_filters.NumberFilter(method='get_max_bathroom')
     order = django_filters.ChoiceFilter(choices=ORDER_CHOICES, method='filter_by_order')
+    type_price = django_filters.CharFilter(method='filter_by_type_price')
     # price = django_filters.RangeFilter()
 
     class Meta:
@@ -32,6 +33,10 @@ class PropertyFilter(django_filters.FilterSet):
     def filter_by_order(self, queryset, name, value):
         expression = 'created' if value == 'asc' else '-created'
         return queryset.order_by(expression)
+
+    def filter_by_type_price(self, queryset, name, value):
+        print(value)
+        return queryset.filter(publications__type_price=value)
 
     def get_min_bathroom(self, queryset, name, value):
         return queryset.filter(
@@ -67,6 +72,76 @@ class PropertyFilter(django_filters.FilterSet):
         return queryset.filter(
             Q(houses__num_rooms__lte=value) | 
             Q(apartments__num_rooms__lte=value)
+        )
+
+
+class PublicationFilter(django_filters.FilterSet):
+
+    ORDER_ASC = 'asc'
+    ORDER_DESC = 'desc'
+
+    ORDER_CHOICES = (
+        (ORDER_ASC, 'A - Z'),
+        (ORDER_DESC, 'Z - A'),
+    )
+
+    min_room = django_filters.NumberFilter(method='get_min_room')
+    max_room = django_filters.NumberFilter(method='get_max_room')
+    min_bathroom = django_filters.NumberFilter(method='get_min_bathroom')
+    max_bathroom = django_filters.NumberFilter(method='get_max_bathroom')
+    order = django_filters.ChoiceFilter(choices=ORDER_CHOICES, method='filter_by_order')
+    type_price = django_filters.CharFilter(method='filter_by_type_price')
+    # price = django_filters.RangeFilter()
+
+    class Meta:
+        model = Publication     
+        fields = {
+                'price': ['lte', 'gte'], 
+                # 'land_surface': ['lte', 'gte'],
+                # 'type_price': ['exact'],
+            }
+
+    def filter_by_order(self, queryset, name, value):
+        expression = 'created' if value == 'asc' else '-created'
+        return queryset.order_by(expression)
+
+    def filter_by_type_price(self, queryset, name, value):
+        return queryset.filter(type_price=value)
+
+    def get_min_bathroom(self, queryset, name, value):
+        return queryset.filter(
+            Q(property__houses__num_bathrooms__gte=value) |
+            Q(property__apartments__num_bathrooms__gte=value) |
+            Q(property__offices__num_bathrooms__gte=value) |
+            Q(property__shops__num_bathrooms__gte=value) |
+            Q(property__cellars__num_bathrooms__gte=value) |
+            Q(property__industrials__num_bathrooms__gte=value) 
+            # Q(urban_sites__num_bathrooms__gte=value) |
+            # Q(parcels__num_bathrooms__gte=value) 
+        ).distinct()
+        # return queryset.filter(Q(houses__num_bathrooms__gte=value) | Q(apartments__num_bathrooms__gte=value))
+
+    def get_max_bathroom(self, queryset, name, value):
+        return queryset.filter(
+            Q(property__houses__num_bathrooms__lte=value) |
+            Q(property__apartments__num_bathrooms__lte=value) |
+            Q(property__offices__num_bathrooms__lte=value) |
+            Q(property__shops__num_bathrooms__lte=value) |
+            Q(property__cellars__num_bathrooms__lte=value) |
+            Q(property__industrials__num_bathrooms__lte=value)
+        ).distinct()
+        # return queryset.filter(Q(houses__num_bathrooms__lte=value) | Q(apartments__num_bathrooms__lte=value))
+
+    def get_min_room(self, queryset, name, value):
+        return queryset.filter(
+            Q(property__houses__num_rooms__gte=value) | 
+            Q(property__apartments__num_rooms__gte=value)
+        )
+
+    def get_max_room(self, queryset, name, value):
+        return queryset.filter(
+            Q(property__houses__num_rooms__lte=value) | 
+            Q(property__apartments__num_rooms__lte=value)
         )
 
 
@@ -123,6 +198,7 @@ class HouseFilter(django_filters.FilterSet):
     #     else:
     #         expression =  order.reverse()
     #     return expression
+
 
 class ApartmentFilter(django_filters.FilterSet):    
     ORDER_ASC = 'asc'

@@ -15,7 +15,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
 from django.template.loader import get_template
 
-from .models import Property, Commune
+from .models import Property, Commune, Publication
 
 
 def create_unique_slug(model_instance, slug_field_name):
@@ -65,6 +65,34 @@ def get_ip(request):
 
 
 # tipo publicacion - tipo propiedad - locacion
+# def url_custom_list(publish_type, property_type, location_slug, page_number=None): 
+#     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
+#     list_location_slug = [i.location_slug for i in Commune.objects.all()]
+
+#     try:
+
+#         if (publish_type != 've' and publish_type != 'ar' and publish_type != 'at' and publish_type != 'pe' ) and property_type in list_property_type and location_slug in list_location_slug:
+#             print('entrre en propiedad - locacion')
+#             return reverse('properties:custom_list_publish_property', args=[property_type, location_slug])
+#         elif (publish_type == 've' or publish_type == 'ar' or publish_type == 'at' or publish_type == 'pe' ) and property_type not in list_property_type and location_slug in list_location_slug:
+#             print('entrre en publicacion - locacion')
+#             return reverse('properties:custom_list_publish_property', args=[publish_type, location_slug])
+#         elif (publish_type == 've' or publish_type == 'ar' or publish_type == 'at' or publish_type == 'pe' ) and location_slug not in list_location_slug and property_type in list_property_type:
+#             print('entrre en publicacion - propiedad')
+#             return reverse('properties:custom_list_publish_property', args=[publish_type, property_type])
+#         elif (publish_type == 've' or publish_type == 'ar' or publish_type == 'at' or publish_type == 'pe' ) and location_slug not in list_location_slug and property_type not in list_property_type:
+#             return redirect('properties:custom_list_publish', args=[publish_type])
+#         elif (publish_type != 've' and publish_type != 'ar' and publish_type != 'at' and publish_type != 'pe' ) and property_type not in list_property_type and location_slug in list_location_slug:
+#             return reverse('pages:home')
+#         elif (publish_type != 've' and publish_type != 'ar' and publish_type != 'at' and publish_type != 'pe' ) and property_type in list_property_type and location_slug not in list_location_slug:
+#             return reverse('pages:home')
+            
+#     except ObjectDoesNotExist:
+#         return reverse('properties:custom_list_publish_property', args=[publish_type, property_type])
+    
+#     return False
+
+# tipo publicacion - tipo propiedad - locacion MOD
 def url_custom_list(publish_type, property_type, location_slug, page_number=None): 
     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
     list_location_slug = [i.location_slug for i in Commune.objects.all()]
@@ -131,15 +159,76 @@ def url_custom_list(publish_type, property_type, location_slug, page_number=None
 
 
 # tipo publicacion - tipo propiedad o tipo publicacion - locacion o tipo propiedad - locacion
+# def url_custom_list_publish_property(first_data, second_data):
+#     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
+#     list_location_slug = [i.location_slug for i in Commune.objects.all()]
+#     properties = Property.objects.all()
+    
+#     try:
+#         if (first_data != 've' and first_data != 'ar' and first_data != 'at' and first_data != 'pe' ) and first_data in list_property_type and second_data in list_location_slug:
+#             print('entrre en propiedad - locacion')
+#             qs = properties.filter(property_type=first_data, commune__location_slug=second_data)
+
+#             property_type = [display_value for value, display_value in Property.PROPERTY_CHOICES if value == first_data][0]
+#             location_slug = [i.name for i in Commune.objects.all() if second_data in i.location_slug][0]
+#             entity = '{0} en {1}'.format(property_type, location_slug)
+
+#             return qs, entity
+
+#         elif (first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe' )  and second_data not in list_property_type and second_data in list_location_slug:
+#             print('entrre en publicacion - locacion')
+#             qs = properties.filter(publish_type=first_data, commune__location_slug=second_data)
+
+#             location_slug = [i.name for i in Commune.objects.all() if second_data in i.location_slug][0]
+
+#             if first_data == 've':
+#                 entity = f'Ventas en {location_slug}'
+#             elif first_data == 'ar':
+#                 entity = f'Arriendos en {location_slug}'
+#             elif first_data == 'pe':
+#                 entity = f'Permutas en {location_slug}'
+#             else:
+#                 entity = f'Arriendos temporada en {location_slug}'
+            
+#             return qs, entity
+
+#         elif (first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe' ) and second_data in list_property_type and second_data not in list_location_slug:
+#             print('entrre en publicacion - propiedad')
+#             qs = properties.filter(publish_type=first_data, property_type=second_data)
+
+#             property_type = [display_value for value, display_value in Property.PROPERTY_CHOICES if value == second_data][0]
+
+#             if first_data == 've':
+#                 entity = f'Ventas de {property_type}'
+#             elif first_data == 'ar':
+#                 entity = f'Arriendos de {property_type}'
+#             elif first_data == 'pe':
+#                 entity = f'Permutas de {property_type}'
+#             else:
+#                 entity = f'Arriendos temporada de {property_type}'
+
+#             return qs, entity
+
+#         elif (first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe' ) and second_data not in list_property_type and second_data not in list_location_slug:
+#             return reverse('properties:custom_list_publish', args=[first_data])
+
+#         else:
+#             # messages.error(request, 'Ha ocurrido un error inesperado')
+#             return reverse('pages:home')
+#     except Exception as e:
+#         print(str(e))
+#         return reverse('pages:home')
+
+# tipo publicacion - tipo propiedad o tipo publicacion - locacion o tipo propiedad - locacion
 def url_custom_list_publish_property(first_data, second_data):
     list_property_type = [i[0] for i in Property.PROPERTY_CHOICES]
     list_location_slug = [i.location_slug for i in Commune.objects.all()]
-    properties = Property.objects.all()
+    properties = Publication.objects.filter(state=True, status='pu')
     
     try:
         if (first_data != 've' and first_data != 'ar' and first_data != 'at' and first_data != 'pe' ) and first_data in list_property_type and second_data in list_location_slug:
             print('entrre en propiedad - locacion')
-            qs = properties.filter(property_type=first_data, commune__location_slug=second_data)
+            qs = properties.filter(property__property_type=first_data, property__commune__location_slug=second_data)
 
             property_type = [display_value for value, display_value in Property.PROPERTY_CHOICES if value == first_data][0]
             location_slug = [i.name for i in Commune.objects.all() if second_data in i.location_slug][0]
@@ -149,7 +238,7 @@ def url_custom_list_publish_property(first_data, second_data):
 
         elif (first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe' )  and second_data not in list_property_type and second_data in list_location_slug:
             print('entrre en publicacion - locacion')
-            qs = properties.filter(publish_type=first_data, commune__location_slug=second_data)
+            qs = properties.filter(property__publish_type=first_data, property__commune__location_slug=second_data)
 
             location_slug = [i.name for i in Commune.objects.all() if second_data in i.location_slug][0]
 
@@ -166,7 +255,7 @@ def url_custom_list_publish_property(first_data, second_data):
 
         elif (first_data == 've' or first_data == 'ar' or first_data == 'at' or first_data == 'pe' ) and second_data in list_property_type and second_data not in list_location_slug:
             print('entrre en publicacion - propiedad')
-            qs = properties.filter(publish_type=first_data, property_type=second_data)
+            qs = properties.filter(property__publish_type=first_data, property__property_type=second_data)
 
             property_type = [display_value for value, display_value in Property.PROPERTY_CHOICES if value == second_data][0]
 

@@ -318,6 +318,24 @@
                 </a>
               </div>
 
+              <div>
+                <a
+                  href="{% url 'crm:client_list' %}"
+                  class="group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md  hover:text-red-500 {% activate_on 'client_list' %}"
+                  x-state:on="Current"
+                  x-state:off="Default"
+                  x-state-description='Current: "bg-gray-100 text-gray-900", Default: "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900"'
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user text-gray-500 mr-3 flex-shrink-0 h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+               </svg>     
+                
+                  Clientes
+                </a>
+              </div>
+
 
               <div x-data="{ open: false }" class="space-y-1">
                 <button
@@ -629,6 +647,23 @@
                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
              </svg>              
                 Propietarios
+              </a>
+            </div>
+
+            <div>
+              <a
+                href="{% url 'crm:client_list' %}"
+                class="group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md  hover:text-red-500 {% activate_on 'client_list' %}"
+                x-state:on="Current"
+                x-state:off="Default"
+                x-state-description='Current: "bg-gray-100 text-gray-900", Default: "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900"'
+              >
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user text-gray-500 mr-3 flex-shrink-0 h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+             </svg>              
+                Clientes
               </a>
             </div>
 

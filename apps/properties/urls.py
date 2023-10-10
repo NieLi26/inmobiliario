@@ -21,13 +21,13 @@ urlpatterns = [
 
     ## REALTOR
     path('realtor/', views.RealtorListView.as_view(), name='realtor_list'),
-    path('realtor/create', views.RealtorCreateView.as_view(), name='realtor_create'),
+    path('realtor/create/', views.RealtorCreateView.as_view(), name='realtor_create'),
     path('realtor/<int:pk>/detail/', views.RealtorDetailView.as_view(), name='realtor_detail'),
     path('realtor/<int:pk>/update/', views.RealtorUpdateView.as_view(), name='realtor_update'),
 
     ## OWNER
     path('owner/', views.OwnerListView.as_view(), name='owner_list'),
-    path('owner/create', views.OwnerCreateView.as_view(), name='owner_create'),
+    path('owner/create/', views.OwnerCreateView.as_view(), name='owner_create'),
     path('owner/<int:pk>/update/', views.OwnerUpdateView.as_view(), name='owner_update'),
 
     ## PROPERTY

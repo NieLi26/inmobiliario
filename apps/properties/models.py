@@ -188,8 +188,8 @@ class Property(TimeStampedModel):
         item = model_to_dict(self)
         return item
 
-    def get_absolute_url(self):
-        return reverse("properties:property_detail", kwargs={"publish_type": self.publish_type, "property_type": self.property_type, 'location_slug': self.commune.location_slug,"slug": self.slug, 'uuid': self.uuid})
+    # def get_absolute_url(self):
+    #     return reverse("properties:property_detail", kwargs={"publish_type": self.publish_type, "property_type": self.property_type, 'location_slug': self.commune.location_slug,"slug": self.slug, 'uuid': self.uuid})
 
     # actua sobre la clase, considerando todas sus instancias
     # El primer argumento de un método de clase debe ser la propia clase, que se pasa automáticamente como argumento(en este caso "cls").
@@ -203,6 +203,7 @@ class Property(TimeStampedModel):
             return True
         return False
         # return len([publication for publication in self.publications.all() if publication.state])
+
 
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''

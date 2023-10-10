@@ -248,7 +248,7 @@ class OwnerListView(LoginRequiredMixin, PaginationMixin, ListView):
         return Owner.objects.filter(state=True)
 
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['sidebar_title'] = 'Propietarios'
         context['sidebar_subtitle'] = 'Maneja la información de tus propietarios!'
         return context
@@ -556,7 +556,7 @@ class PublicationCreateView(LoginRequiredMixin, View):
             'subtitle': 'Maneje la creación de sus publicaciones',
         }
         return render(request, 'properties/publication_form.html', context)
- 
+
     def post(self, request, uuid, slug, *args, **kwargs):
         property = Property.objects.filter(uuid=uuid, slug=slug).first()
         if property.publish_type == 'ar' or property.publish_type == 'at':
@@ -576,10 +576,18 @@ class PublicationCreateView(LoginRequiredMixin, View):
             messages.add_message(request, messages.INFO, "La propiedad tiene una publicacion en uso.")
         else:
             if form.is_valid():
-                instance = form.save(commit=False) 
+                instance = form.save(commit=False)
                 instance.property = property
                 instance.save()
-                return redirect('reports:dashboard')
+                messages.add_message(request, messages.INFO, "Su Publicación ha sido creada con exito")
+                if property.publish_type == 've':
+                    return redirect('properties:publish_buy_list')
+                elif property.publish_type == 'pe':
+                    return redirect('properties:publish_exchange_list')
+                elif property.publish_type == 'ar':
+                    return redirect('properties:publish_rent_list')
+                elif property.publish_type == 'at':
+                    return redirect('properties:publish_rent_season_list')
             else:
                 print(form.errors)
         context = {
@@ -717,7 +725,6 @@ class PublicationChangeView(LoginRequiredMixin, View):
         action = request.GET.get('action')
 
         publication = get_object_or_404(Publication, id=kwargs['pk'])
-
 
         # Evita cambiar estado publicacion eliminada(state=False)
         if not publication.state:
@@ -1429,7 +1436,6 @@ def custom_list_publish_property(request, first_data, second_data):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-
     context = {
         'page_obj': page_obj,
         'entity': entity,
@@ -1466,7 +1472,6 @@ def property_list_publish_property(request, page_number, first_data, second_data
 
     paginator = Paginator(qs, 1)
     page_obj = paginator.get_page(page_number)
-
 
     context = {
         'page_obj': page_obj,

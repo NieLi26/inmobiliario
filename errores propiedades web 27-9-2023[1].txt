@@ -1,0 +1,14 @@
+1. Falta boton de ingreso para inicio de sesion admin (tuve que buscar la url para entrar) X
+2. No se pueden crear nuevos propietarios. (LISTO) (mas adelante cambiar a modal como client)
+3. Falta modal que diga ; "Su publicacion ha sido creada con exito" , y luego dirigir al listado de publicaciones (LISTO)
+4. El filtro de busqueda principal da Error 500 (En que menu) 
+ (trate de listar los resultados por una publicacion recien hecha pero tira el error.
+5. Las fotos no se ven previsualizadas , ni tampoco en el istado de publicaciones destacadas
+6. Las fotos tampoco se ven en la ficha individual , no se cargan
+7. Cuando se crea una nueva propiedad , tampoco permite previsualizar las fotos , las sube pero no se ven
+8. La creacion de nuevos agentes desde el backend del administrador no se puede , solo se pueden crear nuevos agentes
+cuando se entra a crear publicacion.
+
+Esta pasa en el Crohme y el Edge..no probe en otro explorador
+
+

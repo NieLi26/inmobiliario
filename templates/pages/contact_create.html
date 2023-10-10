@@ -39,6 +39,8 @@
       <div id="contact-form">
         {% block contact_form %}
 
+        {% include 'components/toastify.html' %}
+
         <form class="flex flex-wrap">
           <div class="md:w-2/3 w-full px-2">
             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">
@@ -180,7 +182,7 @@
           </div>
         </form>
 
-        {% include 'components/custom_sidealert.html' %}
+
 
         {% endblock contact_form %}
       </div>

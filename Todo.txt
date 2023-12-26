@@ -71,3 +71,33 @@ Archivado o activo(activado)
 - al crear publicacion enviarme a listado de la publicacion, igual para operacion al crearla
 - quizas arreglar que al no dejar crear publicacion y no tener permiso, me de una notificacion en vez de redireccionarme
 - crear operaciones usando otra operacion que ya esta deshabilitada
+
+
+// EXPORTAR UNA BASE DE DATOS
+python manage.py dumpdata --indent 2 > database.json
+python -Xutf8 manage.py dumpdata --indent 2 > database.json
+python -Xutf8 manage.py dumpdata --indent 2 -o database.json
+
+// IMPORTAR(RESTAURAR) UNA BASE DE DATOS
+python manage.py loaddata database.json
+
+// RESET INCREMENT SQLITE
+sqlite3 nombre_base
+delete from auth_permission;
+delete from sqlite_sequence where name='auth_permission';
+delete from django_content_type;
+delete from sqlite_sequence where name='django_content_type';
+
+// RESET INCREMENT POSTGRESQL
+sudo -u postgres psql -d nombre_base
+use nombre_base;
+delete from public.auth_permission;
+ALTER SEQUENCE public.auth_permission_id_seq RESTART WITH 1;
+delete from public.django_content_type;
+ALTER SEQUENCE public.django_content_type_id_seq RESTART WITH 1;
+
+// RESET INCREMENT MYSQL
+delete from auth_permission;
+ALTER TABLE auth_permission AUTO_INCREMENT = 1;
+delete from django_content_type;
+ALTER TABLE django_content_type AUTO_INCREMENT = 1;

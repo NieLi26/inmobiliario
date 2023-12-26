@@ -55,6 +55,7 @@ class OwnerContact(TimeStampedModel):
     subject = models.CharField('Asunto', choices=Subjects.choices, max_length=50)
     phone = models.CharField('Télefono(opcional)', max_length=9, blank=True)
     message = models.TextField('Mensaje')
+    
     class Meta:
         '''Meta definition for OwnerContact.'''
 

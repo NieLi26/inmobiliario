@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
+
 # Email
 from django.core.mail import send_mail, BadHeaderError, EmailMultiAlternatives
 from django.template.loader import get_template
@@ -314,3 +315,4 @@ def send_property_email(property, name, phone, subject, message, from_email):
     except Exception as e:
         print(str(e))
         pass
+

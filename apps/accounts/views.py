@@ -23,16 +23,18 @@ def register_view(request):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
         password2 = form.cleaned_data.get('password2')
+   
         # para evitar algun error con la creacion
         try:
-            user = User.objects.create_user(username, email, password=password) # se crear y se autentica solo
+            user = User.objects.create_user(username, email, password=password)  # se crear y se autentica solo
         except:
             user = None
-        if user != None:
+
+        if user is not None:
             login(request, user)
             return redirect("/")
         else:
-            request.session['register_error'] = 1 # 1==True
+            request.session['register_error'] = 1  # 1==True
     return render(request, 'registration/signup.html', {'form': form})
 
 

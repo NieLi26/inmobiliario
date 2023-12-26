@@ -17,7 +17,7 @@ class PropertyAdmin(admin.ModelAdmin):
     inlines = [
         PropertyImageInline,
     ]
-    list_display = ("title", "street_address", "property_type", "publish_type",  'uuid', 'is_active')
+    list_display = ("title", "street_address", "property_type", "publish_type", 'uuid', 'is_active')
 
 
 class PublicationAdmin(admin.ModelAdmin):

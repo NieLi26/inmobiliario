@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save, post_delete, pre_delete, pre_save
 from django.core.files.storage import FileSystemStorage
 from django.dispatch import receiver
+from cloudinary.api import delete_resources
 
 from .utils import send_property_email, delete_file
 from .models import (
@@ -17,11 +18,21 @@ def contact_post_save(sender, instance, created, **kwargs):
 
 post_save.connect(contact_post_save, PropertyContact)
 
-
+## Eliminar de cloudinary
 @receiver(pre_delete, sender=PropertyImage)
 def property_images_pre_delete(sender, instance, **kwargs):
-    image = instance.image.path
-    delete_file(image)
+    # Obtiene el identificador público de la imagen (public_id)
+    public_id = instance.image.public_id
+
+    # Borra la imagen de Cloudinary
+    delete_resources([public_id])
+
+## para eliminar de la misma ruta en el servidor
+# @receiver(pre_delete, sender=PropertyImage)
+# def property_images_pre_delete(sender, instance, **kwargs):
+#     image = instance.image.path
+#     delete_file(image)
+    
 
 
 # @receiver(post_save, sender=Publication)

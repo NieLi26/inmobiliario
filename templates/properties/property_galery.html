@@ -15,7 +15,7 @@
  <div id="galeryContent">
  {% if property_images %}
   {% for property_image in property_images %}
-    <input type="hidden" name="" id="{{ property_image.id }}" value="{{ property_image.image }}" class="galeria">
+    <input type="hidden" name="" id="{{ property_image.id }}" value="{{ property_image.image.url }}" class="galeria">
     
   {% endfor %}
  {% endif %}
@@ -58,12 +58,12 @@
 
     <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" id="template-test">
       {% for property_image in property_images %}
-      <div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">
+        <div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">
 
-    <img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="{{ property_image.image.url }}" alt="Image 1" data-dz-remove>
+      <img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="{{ property_image.image.url }}" alt="Image 1" data-dz-remove>
 
-    </div>
-    {% endfor %}
+      </div>
+      {% endfor %}
     </div>
 
     <div class="mt-12 text-center">
@@ -136,8 +136,7 @@
                     imagenPublicada.id = imagen.id;
                     maxFiles -= 1;
                     this.options.addedfile.call(this, imagenPublicada);
-                    this.options.thumbnail.call(this, imagenPublicada, `${location.protocol}//${location.host}/media/${imagenPublicada.name}`);
-                      
+                    this.options.thumbnail.call(this, imagenPublicada, `${imagenPublicada.name}`);
 
                     imagenPublicada.previewElement.classList.add('dz-success');
                     imagenPublicada.previewElement.classList.add('dz-complete');
@@ -156,6 +155,7 @@
       file.previewElement.parentNode.removeChild(file.previewElement);
    })
 
+   
     dropzone.on('addedfile', function(file){
         const property = document.querySelector('#id_property')
         // const params = {
@@ -197,24 +197,24 @@
             // if (!data.hasOwnProperty('error')){
               const imagenPublicada = {};
               imagenPublicada.size = 1;
-              imagenPublicada.name = data.property_image;
+              imagenPublicada.name = data.url;
               imagenPublicada.id = data.id;
               imagenPublicada.status = 'success';
             
           
               this.options.addedfile.call(this, imagenPublicada);
-              this.options.thumbnail.call(this, imagenPublicada, `${location.protocol}//${location.host}/media/${imagenPublicada.name}`);
+              this.options.thumbnail.call(this, imagenPublicada, `${imagenPublicada.name}`);
         
 
               imagenPublicada.previewElement.classList.add('dz-success');
               imagenPublicada.previewElement.classList.add('dz-complete');
 
               
-
+              console.log(data.preview_images);
               let html = ''
               for(const i of data.preview_images) {
                 html += '<div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">'
-                html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${location.protocol}//${location.host}/${i.image}" alt="Image 1" data-dz-remove>`
+                html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${i.image}" alt="Image 1" data-dz-remove>`
                 html += '</div>'
               }
             
@@ -273,7 +273,7 @@
           let html = ''
           for(const i of data.preview_images) {
             html += '<div class="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-pink-500/10">'
-            html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${location.protocol}//${location.host}/${i.image}" alt="Image 1" data-dz-remove>`
+            html += `<img class="h-full w-full aspect-video rounded-sm object-cover object-center dark:bg-gray-500 hover:scale-110 ease-in-out transition duration-300" src="${i.image}" alt="Image 1" data-dz-remove>`
             html += '</div>'
           }
         

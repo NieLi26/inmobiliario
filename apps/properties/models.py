@@ -1,13 +1,15 @@
 import os
 import random
 import string
+import uuid
 
 from django.forms import model_to_dict
-import uuid 
 from django.db import models
 from core.settings import MEDIA_URL, STATIC_URL, AUTH_USER_MODEL
 from django.urls import reverse
 from PIL import Image
+
+from cloudinary.models import CloudinaryField
 
 from django.utils.text import slugify
 
@@ -64,7 +66,7 @@ class Realtor(TimeStampedModel):
 
     class Meta:
         '''Meta definition for Realtor.'''
-
+        ordering = ['-created']
         verbose_name = 'Realtor'
         verbose_name_plural = 'Realtors'
 
@@ -208,7 +210,8 @@ class Property(TimeStampedModel):
 class PropertyImage(TimeStampedModel):
     '''Model definition for PropertyImage.'''
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='property_images')
-    image = models.ImageField(upload_to=property_images_directory_path)
+    # image = models.ImageField(upload_to=property_images_directory_path)
+    image = CloudinaryField('image')
 
     class Meta:
         '''Meta definition for PropertyImage.'''
@@ -216,20 +219,20 @@ class PropertyImage(TimeStampedModel):
         verbose_name = 'PropertyImage'
         verbose_name_plural = 'PropertyImages'
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        im = Image.open(self.image.path)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     im = Image.open(self.image.path)
 
-        # new resizing
-        new_height = 720
-        new_width = int(new_height / im.height * im.width)
-        new_size = Image.new("RGB", (new_width, new_height), color="white")
-        new_size.paste(im.resize((new_width, new_height)), (0, 0))
+    #     # new resizing
+    #     new_height = 720
+    #     new_width = int(new_height / im.height * im.width)
+    #     new_size = Image.new("RGB", (new_width, new_height), color="white")
+    #     new_size.paste(im.resize((new_width, new_height)), (0, 0))
 
-        # save new image
-        # new_image_path = self.image.path.split(".")[0] + "_resized.jpg"
-        new_image_path = self.image.path
-        new_size.save(new_image_path, "JPEG", quality=90)
+    #     # save new image
+    #     # new_image_path = self.image.path.split(".")[0] + "_resized.jpg"
+    #     new_image_path = self.image.path
+    #     new_size.save(new_image_path, "JPEG", quality=90)
 
         # resizing 
         # new_height = 720
@@ -256,7 +259,7 @@ class PropertyImage(TimeStampedModel):
     
     def toJSON(self):
         item = model_to_dict(self)
-        item['image'] = self.get_image()
+        item['image'] = self.image.url
         return item
 
 

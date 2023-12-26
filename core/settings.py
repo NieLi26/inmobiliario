@@ -1,8 +1,13 @@
+import cloudinary.api
+import cloudinary.uploader
+import cloudinary
 from pathlib import Path
 
 from environ import Env
 env = Env()
 env.read_env()
+
+import core.db as db
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +45,7 @@ THIRD_PARTY_APPS = [
     'multiselectfield',
     'captcha',
     'dbbackup',
+    'cloudinary'
 ]
 
 LOCAL_APPS = [
@@ -93,12 +99,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES  = db.SQLITE
 
 if not DEBUG:
     MYSQL = {
@@ -180,7 +188,8 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 
 LOGIN_REDIRECT_URL = "reports:dashboard"
 LOGOUT_REDIRECT_URL = "pages:home"
-LOGIN_URL = "login"  # sirve para cambiar la ruta del login por defecto, por ejemplo cuando usas '@login_required'
+# sirve para cambiar la ruta del login por defecto, por ejemplo cuando usas '@login_required'
+LOGIN_URL = "login"
 
 # captcha
 RECAPTCHA_PUBLIC_KEY = env.str("RECAPTCHA_PUBLIC_KEY")
@@ -216,3 +225,11 @@ if not DEBUG:
 # django-bdbackup
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
+
+
+# cloudinary integration
+cloudinary.config(
+    cloud_name=env.str('CLOUD_NAME'),
+    api_key=env.str('CLOUD_API_KEY'),
+    api_secret=env.str('CLOUD_API_SECRET')
+)

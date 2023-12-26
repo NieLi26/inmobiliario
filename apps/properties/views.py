@@ -14,6 +14,9 @@ from django.contrib.auth.decorators import login_required
 # from django.contrib.admin.views.decorators import staff_member_required # para que me obligue a logiarme en panel de admin cuando quiero ingresar a una vista
 from render_block import render_block_to_string
 
+# cloudinary
+from cloudinary.api import delete_resources
+
 #test decorator
 from .decorators import url_custom_list_decorator
 from .utils import url_custom_list_publish_property, get_ip
@@ -184,7 +187,7 @@ class TableRealtorView(LoginRequiredMixin, View):
 
         realtors = Realtor.objects.filter(state=True)
         realtors = realtors.filter(Q(first_name__icontains=q) | Q(last_name__icontains=q))
-        paginator = Paginator(realtors, 1)
+        paginator = Paginator(realtors, 2)
         realtors_data = paginator.get_page(kwargs['page_number'])
         print(realtors_data.object_list)
         context = {
@@ -260,7 +263,7 @@ class TableOwnerView(LoginRequiredMixin, View):
         q = request.GET.get('q', '')
         owners = Owner.objects.filter(state=True)
         owners = owners.filter(Q(name__icontains=q) | Q(rut__icontains=q))
-        paginator = Paginator(owners, 1)
+        paginator = Paginator(owners, 2)
         owners_data = paginator.get_page(kwargs['page_number'])
         print(owners_data.object_list)
         context = {
@@ -1105,7 +1108,7 @@ class PropertyGaleryView(LoginRequiredMixin, View):
         # if os.path.isfile(image):
         #     os.remove(image)
         #     property_image.delete()
-        
+
     def get(self, request, *args, **kwargs):
         property = Property.objects.get(slug=kwargs['slug'], uuid=kwargs['uuid'])
         property_images = PropertyImage.objects.filter(property=property)
@@ -1122,8 +1125,14 @@ class PropertyGaleryView(LoginRequiredMixin, View):
             action = request.POST['action']
             if action == 'delete':
                 id = request.POST['id']
-                property_image = PropertyImage.objects.get(id=id)
-                self.delete_image(property_image)
+                property_image = get_object_or_404(PropertyImage, id=id)
+                try:
+                    property_image.delete()
+                except Exception as e:
+                    print(str(e))
+                ## forma almacenada en servidor
+                # self.delete_image(property_image) 
+
               
                 # retornar previsualización personalizada
                 property = Property.objects.get(slug=kwargs['slug'], uuid=kwargs['uuid'])
@@ -1150,10 +1159,8 @@ class PropertyGaleryView(LoginRequiredMixin, View):
                         # retornar previsualización personalizada
                         preview_images = PropertyImage.objects.filter(property=property)
                         preview_images = [i.toJSON() for i in preview_images]
-
-
                         data['id'] = property_image.id
-                        data['property_image'] = str(property_image.image)
+                        data['url'] = str(property_image.image.url)
                         data['preview_images'] = preview_images
 
                 else:

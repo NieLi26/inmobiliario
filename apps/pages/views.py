@@ -7,7 +7,10 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView, ListView, View
 
+# cloudinary
+import cloudinary
 
+# for htmx
 from render_block import render_block_to_string
 
 # email
@@ -25,6 +28,7 @@ from apps.properties.models import (
     Commune, House, Apartment,
     Property, Publication
 )
+
 
 
 def custom_alert(message, tag):
@@ -48,21 +52,38 @@ class TestTemplateView(TemplateView):
     #     return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        data = dict()
-        try:
-            print(request.POST)
-            print(request.FILES)
-            action = json.loads(request.body)['action']
-            if action == 'delete':
-                imagen = json.loads(request.body)['imagen']
-                property_image = PropertyImage.objects.get(image=imagen)
-                property_image.delete()
-            else:
-                data['error'] = 'Ha ocurrido un error'
-        except Exception as e:
-            print(str(e))
-            data['error'] = str(e)
-        return JsonResponse(data)
+        print(request.FILES)
+        imagen = request.FILES.get('imagen')
+
+        if imagen:
+            try:
+                cloudinary.config( 
+                    cloud_name=settings.CLOUD_NAME, 
+                    api_key=settings.CLOUD_API_KEY, 
+                    api_secret=settings.CLOUD_API_SECRET 
+                )
+
+                cloudinary.uploader.upload(imagen)
+            except Exception as e:
+                print(str(e))
+
+        return render(request, 'test.html')
+
+        # data = dict()
+        # try:
+        #     print(request.POST)
+        #     print(request.FILES)
+        #     action = json.loads(request.body)['action']
+        #     if action == 'delete':
+        #         imagen = json.loads(request.body)['imagen']
+        #         property_image = PropertyImage.objects.get(image=imagen)
+        #         property_image.delete()
+        #     else:
+        #         data['error'] = 'Ha ocurrido un error'
+        # except Exception as e:
+        #     print(str(e))
+        #     data['error'] = str(e)
+        # return JsonResponse(data)
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
@@ -98,7 +119,6 @@ class HomePageView(View):
 
         publication_apartments = publications.filter(property__property_type='de') \
                                              .distinct()[0:20]
-
 
         form_newsletters = NewsletterUserForm()
         context = {

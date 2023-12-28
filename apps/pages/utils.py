@@ -38,7 +38,9 @@ def send_general_email(name, phone, subject, message, from_email):
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
-            ['theprimatesfactoryinc@gmail.com']
+            # ['theprimatesfactoryinc@gmail.com']
+            ['test@sistemagestion.propiedadesweb.cl']
+            # ['seba.silver4@gmail.com']
         )
         
         # convert the html and css inside the "contact_form.txt" in html template
@@ -51,6 +53,7 @@ def send_general_email(name, phone, subject, message, from_email):
     except Exception as e:
         print(str(e))
         pass
+
 
 def send_owner_email(name, phone, subject, message, from_email):
     print('ENTRE')
@@ -71,7 +74,9 @@ def send_owner_email(name, phone, subject, message, from_email):
             subject,
             message,
             settings.DEFAULT_FROM_EMAIL,
-            ['theprimatesfactoryinc@gmail.com']
+            # ['theprimatesfactoryinc@gmail.com']
+            ['test@sistemagestion.propiedadesweb.cl']
+            # ['seba.silver4@gmail.com']
         )
         
         # convert the html and css inside the "contact_form.txt" in html template

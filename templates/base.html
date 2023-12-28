@@ -41,6 +41,8 @@
       {% include 'navigation/_footer.html' %}
     {% endblock footer %}
 
+    {% include 'components/toastify_messages.html' %}
+
     <!-- HTMX -->
     <script defer src="{% static 'lib/htmx-1.8/htmx.min.js' %}"></script>
     <!-- Alpine Mask -->

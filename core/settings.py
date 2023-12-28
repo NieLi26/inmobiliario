@@ -206,6 +206,7 @@ EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS",  default=False)
+# EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL",  default=False)
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True

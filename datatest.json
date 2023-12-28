@@ -1,0 +1,6668 @@
+[
+{
+  "model": "pages.contact",
+  "pk": 1,
+  "fields": {
+    "state": false,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "name": "sebastian",
+    "from_email": "seba@gmail.com",
+    "category": "propietario",
+    "subject": "Quiero arrendar mi propiedad",
+    "phone": "923432423",
+    "message": "awddddddddddd"
+  }
+},
+{
+  "model": "pages.contact",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-08-23",
+    "modified": "2023-08-23",
+    "deleted": null,
+    "name": "pedro",
+    "from_email": "pedro@gmail.com",
+    "category": "propietario",
+    "subject": "Quiero arrendar mi propiedad",
+    "phone": "932423423",
+    "message": "dasdasdasd"
+  }
+},
+{
+  "model": "pages.contact",
+  "pk": 3,
+  "fields": {
+    "state": true,
+    "created": "2023-08-23",
+    "modified": "2023-08-23",
+    "deleted": null,
+    "name": "javier heriquez",
+    "from_email": "javii@gmail.com",
+    "category": "comprador",
+    "subject": "Quiero visitar una propiedad",
+    "phone": "923423423",
+    "message": "dddddd"
+  }
+},
+{
+  "model": "pages.ownercontact",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "name": "javier rodriguez",
+    "from_email": "javi@gmail.com",
+    "subject": "Permuta",
+    "phone": "912321313",
+    "message": "ddddddddddddddaas"
+  }
+},
+{
+  "model": "properties.ipvisitor",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "ip": "127.0.0.1"
+  }
+},
+{
+  "model": "properties.realtor",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "first_name": "fabian2",
+    "last_name": "urrutia",
+    "phone1": "94234234",
+    "phone2": "",
+    "email": "fabian@gmail.com"
+  }
+},
+{
+  "model": "properties.realtor",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-02-25",
+    "modified": "2023-02-25",
+    "deleted": null,
+    "first_name": "javier",
+    "last_name": "mariquez",
+    "phone1": "0234324",
+    "phone2": "",
+    "email": "javi@gmai.com"
+  }
+},
+{
+  "model": "properties.realtor",
+  "pk": 3,
+  "fields": {
+    "state": true,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "first_name": "Manolo",
+    "last_name": "Gonazales",
+    "phone1": "934343553",
+    "phone2": "",
+    "email": "manu@gmail.com"
+  }
+},
+{
+  "model": "properties.realtor",
+  "pk": 4,
+  "fields": {
+    "state": true,
+    "created": "2023-12-25",
+    "modified": "2023-12-25",
+    "deleted": null,
+    "first_name": "eric",
+    "last_name": "cisternas",
+    "phone1": "945566456",
+    "phone2": "",
+    "email": "eric@gmail.com"
+  }
+},
+{
+  "model": "properties.realtor",
+  "pk": 5,
+  "fields": {
+    "state": true,
+    "created": "2023-12-25",
+    "modified": "2023-12-25",
+    "deleted": null,
+    "first_name": "pedro",
+    "last_name": "pascal",
+    "phone1": "934355355",
+    "phone2": "",
+    "email": "pedro@gmail.com"
+  }
+},
+{
+  "model": "properties.owner",
+  "pk": 1,
+  "fields": {
+    "state": false,
+    "created": "2023-02-24",
+    "modified": "2023-02-26",
+    "deleted": null,
+    "name": "manuel",
+    "rut": "189994745",
+    "phone1": "923423432",
+    "phone2": "",
+    "email": "manu@gmail.com"
+  }
+},
+{
+  "model": "properties.owner",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-02-25",
+    "modified": "2023-02-25",
+    "deleted": null,
+    "name": "loro",
+    "rut": "189994745",
+    "phone1": "9234234",
+    "phone2": "",
+    "email": "loro@gmail.com"
+  }
+},
+{
+  "model": "properties.owner",
+  "pk": 3,
+  "fields": {
+    "state": true,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "name": "Faboan Rosas",
+    "rut": "26.591.233-8",
+    "phone1": "934433553",
+    "phone2": "",
+    "email": "fabi@gmail.com"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 5,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-12-25",
+    "deleted": null,
+    "user": 1,
+    "property_type": "pa",
+    "publish_type": "ve",
+    "title": "Waewaewae",
+    "description": "awewaeawe",
+    "common_expenses": 3000,
+    "google_url": "",
+    "video_url": null,
+    "is_new": false,
+    "is_active": false,
+    "region": 11,
+    "commune": 585,
+    "street_address": "ewqeqwe",
+    "street_number": "2323",
+    "num_roll": "24242",
+    "slug": "waewaewae",
+    "uuid": "67dbfcdb-529e-44df-9d5e-ff68c6c3718d"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 6,
+  "fields": {
+    "state": true,
+    "created": "2023-02-25",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "lc",
+    "publish_type": "ar",
+    "title": "Ewrewrewr",
+    "description": "erwrewr",
+    "common_expenses": 0,
+    "google_url": "",
+    "video_url": null,
+    "is_new": true,
+    "is_active": true,
+    "region": 6,
+    "commune": 463,
+    "street_address": "werewrewr",
+    "street_number": "343434",
+    "num_roll": "asas",
+    "slug": "ewrewrewr",
+    "uuid": "ba97c465-1af6-4133-833b-f78f773c3fe6"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 7,
+  "fields": {
+    "state": true,
+    "created": "2023-02-26",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "ca",
+    "publish_type": "ve",
+    "title": "Weqeqwewqe",
+    "description": "qweqwewq",
+    "common_expenses": 2000,
+    "google_url": "",
+    "video_url": null,
+    "is_new": false,
+    "is_active": true,
+    "region": 6,
+    "commune": 464,
+    "street_address": "qwewqe",
+    "street_number": "232q",
+    "num_roll": "4324234",
+    "slug": "weqeqwewqe",
+    "uuid": "14a9181e-4835-4e6c-9c94-6163eec2d068"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 8,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "bo",
+    "publish_type": "ve",
+    "title": "Bodega buena",
+    "description": "bodega grande",
+    "common_expenses": 15000,
+    "google_url": "",
+    "video_url": null,
+    "is_new": false,
+    "is_active": true,
+    "region": 5,
+    "commune": 455,
+    "street_address": "lso alamos",
+    "street_number": "2333",
+    "num_roll": "213123123",
+    "slug": "bodega-buena",
+    "uuid": "af7abde6-fc40-4240-a97f-782a702ee73f"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 9,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "pa",
+    "publish_type": "ve",
+    "title": "Parcela buenba",
+    "description": "parcela buenba",
+    "common_expenses": 23333,
+    "google_url": "",
+    "video_url": null,
+    "is_new": true,
+    "is_active": true,
+    "region": 13,
+    "commune": 617,
+    "street_address": "los lulos",
+    "street_number": "2333",
+    "num_roll": "23423423",
+    "slug": "parcela-buenba",
+    "uuid": "7c8fa7fe-d874-4544-9498-a9201dc1536e"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 10,
+  "fields": {
+    "state": true,
+    "created": "2023-08-23",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "ca",
+    "publish_type": "ve",
+    "title": "Casa bien bonita",
+    "description": "wewaeaeaweawe",
+    "common_expenses": 2000,
+    "google_url": "",
+    "video_url": null,
+    "is_new": false,
+    "is_active": true,
+    "region": 9,
+    "commune": 547,
+    "street_address": "los orios",
+    "street_number": "3233",
+    "num_roll": "45435345",
+    "slug": "casa-bien-bonita",
+    "uuid": "e5c74c19-6f64-46ca-92d4-3e0372abe6cc"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 11,
+  "fields": {
+    "state": true,
+    "created": "2023-08-24",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "user": 1,
+    "property_type": "in",
+    "publish_type": "at",
+    "title": "Propiedad buenaaaa",
+    "description": "Una parcela bien buena",
+    "common_expenses": 30000,
+    "google_url": "",
+    "video_url": null,
+    "is_new": true,
+    "is_active": true,
+    "region": 8,
+    "commune": 512,
+    "street_address": "los alamos",
+    "street_number": "23334",
+    "num_roll": "5466464646",
+    "slug": "propiedad-buenaaaa",
+    "uuid": "5bbd891c-8952-49ce-bb0e-e799145e0428"
+  }
+},
+{
+  "model": "properties.property",
+  "pk": 12,
+  "fields": {
+    "state": true,
+    "created": "2023-09-03",
+    "modified": "2023-10-10",
+    "deleted": null,
+    "user": 1,
+    "property_type": "bo",
+    "publish_type": "ar",
+    "title": "La bodega de prueba",
+    "description": "es una bodega de prueba",
+    "common_expenses": 0,
+    "google_url": "",
+    "video_url": null,
+    "is_new": true,
+    "is_active": true,
+    "region": 5,
+    "commune": 456,
+    "street_address": "los alamos",
+    "street_number": "343",
+    "num_roll": "45434wqwe",
+    "slug": "la-bodega-de-prueba",
+    "uuid": "c6ebe49a-f4a0-4613-bbb9-d4ab57bea8a2"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 41,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 12,
+    "image": "image/upload/v1696995108/j0r0aei4v7zvakl8hepu.png"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 42,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 12,
+    "image": "image/upload/v1696995114/lkrlryutuxneem7mm4hu.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 43,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 12,
+    "image": "image/upload/v1696995122/yqtclbimykfiiwgr1cf1.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 44,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 12,
+    "image": "image/upload/v1696995123/kpvfqn0q65kooa9jmezr.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 45,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 5,
+    "image": "image/upload/v1696995290/jkfvceyrssxzo7bfgjdt.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 46,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 6,
+    "image": "image/upload/v1696995305/lsr9z6swjeko0v2okymo.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 47,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 7,
+    "image": "image/upload/v1696995327/ncaevsicxwjaruzz6hy4.png"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 48,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 7,
+    "image": "image/upload/v1696995328/stfq96ok6ygxe80nif2l.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 49,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 8,
+    "image": "image/upload/v1696995349/wk4btrehgyqmmg1xrvzl.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 50,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 8,
+    "image": "image/upload/v1696995349/jvjgiiyxjkginmha6dns.png"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 51,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 9,
+    "image": "image/upload/v1696995370/wagaxpqzlfv2tngu7x8i.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 52,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 10,
+    "image": "image/upload/v1696995390/r15op2dkcj3uiriu1swx.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 53,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 11,
+    "image": "image/upload/v1696995423/vkasj3nfqbiqlfequgzj.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 54,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 11,
+    "image": "image/upload/v1696995424/aoeljtbp8j1vtwj6qwdn.jpg"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 55,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 11,
+    "image": "image/upload/v1696995424/jijiexrubx6gsbvrzvo0.png"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 56,
+  "fields": {
+    "state": true,
+    "created": "2023-10-11",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 11,
+    "image": "image/upload/v1696995425/urfqce3x6epbmejuqmwt.png"
+  }
+},
+{
+  "model": "properties.propertyimage",
+  "pk": 57,
+  "fields": {
+    "state": true,
+    "created": "2023-12-25",
+    "modified": "2023-12-25",
+    "deleted": null,
+    "property": 5,
+    "image": "image/upload/v1703554882/vvrbx8s9tmztxetp6r0k.jpg"
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 3,
+  "fields": {
+    "state": false,
+    "created": "2023-02-25",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 6000,
+    "appraisal_value": 6000,
+    "commission_percentage": "4.50",
+    "commission_value": 270,
+    "is_iva": true,
+    "is_featured": false,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 6,
+  "fields": {
+    "state": false,
+    "created": "2023-02-25",
+    "modified": "2023-02-26",
+    "deleted": null,
+    "property": 6,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 7000,
+    "appraisal_value": null,
+    "commission_percentage": null,
+    "commission_value": 10,
+    "is_iva": true,
+    "is_featured": false,
+    "views": []
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 9,
+  "fields": {
+    "state": false,
+    "created": "2023-02-26",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 6000,
+    "appraisal_value": 7000,
+    "commission_percentage": "2.50",
+    "commission_value": 150,
+    "is_iva": true,
+    "is_featured": false,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 10,
+  "fields": {
+    "state": false,
+    "created": "2023-02-26",
+    "modified": "2023-08-22",
+    "deleted": null,
+    "property": 6,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 2000,
+    "appraisal_value": null,
+    "commission_percentage": null,
+    "commission_value": 200,
+    "is_iva": false,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 11,
+  "fields": {
+    "state": false,
+    "created": "2023-02-26",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 7,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "usd",
+    "price": 5000,
+    "appraisal_value": 5000,
+    "commission_percentage": "2.50",
+    "commission_value": 125,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 12,
+  "fields": {
+    "state": false,
+    "created": "2023-08-22",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 7,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 2400,
+    "appraisal_value": 3000,
+    "commission_percentage": "3.00",
+    "commission_value": 72,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 13,
+  "fields": {
+    "state": false,
+    "created": "2023-08-22",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 7,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 5000,
+    "appraisal_value": 5000,
+    "commission_percentage": "34.00",
+    "commission_value": 1700,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 14,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-09-16",
+    "deleted": null,
+    "property": 6,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 4000,
+    "appraisal_value": null,
+    "commission_percentage": null,
+    "commission_value": 3000,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 15,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 8,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "pu",
+    "type_price": "uf",
+    "price": 2323,
+    "appraisal_value": 2333,
+    "commission_percentage": "23.00",
+    "commission_value": 534,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 16,
+  "fields": {
+    "state": false,
+    "created": "2023-08-22",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 9,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 3333,
+    "appraisal_value": 3333,
+    "commission_percentage": "1.00",
+    "commission_value": 33,
+    "is_iva": false,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 17,
+  "fields": {
+    "state": false,
+    "created": "2023-08-23",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 10,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "usd",
+    "price": 14000,
+    "appraisal_value": 15000,
+    "commission_percentage": "3.00",
+    "commission_value": 420,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 18,
+  "fields": {
+    "state": true,
+    "created": "2023-09-03",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 12,
+    "user": 1,
+    "owner": 2,
+    "realtor": 1,
+    "status": "pu",
+    "type_price": "clp",
+    "price": 400000,
+    "appraisal_value": null,
+    "commission_percentage": null,
+    "commission_value": 40000,
+    "is_iva": false,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 19,
+  "fields": {
+    "state": true,
+    "created": "2023-09-11",
+    "modified": "2023-10-10",
+    "deleted": null,
+    "property": 7,
+    "user": 1,
+    "owner": 2,
+    "realtor": 2,
+    "status": "pu",
+    "type_price": "usd",
+    "price": 30000,
+    "appraisal_value": 30000,
+    "commission_percentage": "2.00",
+    "commission_value": 600,
+    "is_iva": true,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 20,
+  "fields": {
+    "state": true,
+    "created": "2023-09-11",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 9,
+    "user": 1,
+    "owner": 2,
+    "realtor": 2,
+    "status": "pu",
+    "type_price": "uf",
+    "price": 4000,
+    "appraisal_value": 4000,
+    "commission_percentage": "1.00",
+    "commission_value": 40,
+    "is_iva": true,
+    "is_featured": false,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 21,
+  "fields": {
+    "state": true,
+    "created": "2023-09-11",
+    "modified": "2023-09-11",
+    "deleted": null,
+    "property": 10,
+    "user": 1,
+    "owner": 2,
+    "realtor": 2,
+    "status": "pu",
+    "type_price": "clp",
+    "price": 5000000,
+    "appraisal_value": 5000000,
+    "commission_percentage": "3.00",
+    "commission_value": 150000,
+    "is_iva": false,
+    "is_featured": true,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 22,
+  "fields": {
+    "state": false,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 3,
+    "realtor": 1,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 3500,
+    "appraisal_value": 4000,
+    "commission_percentage": "2.00",
+    "commission_value": 70,
+    "is_iva": true,
+    "is_featured": false,
+    "views": []
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 23,
+  "fields": {
+    "state": false,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 3,
+    "realtor": 2,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 4000,
+    "appraisal_value": 4000,
+    "commission_percentage": "3.00",
+    "commission_value": 120,
+    "is_iva": true,
+    "is_featured": false,
+    "views": []
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 24,
+  "fields": {
+    "state": false,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 2,
+    "realtor": 2,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 333,
+    "appraisal_value": 333,
+    "commission_percentage": "2.00",
+    "commission_value": 7,
+    "is_iva": false,
+    "is_featured": false,
+    "views": []
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 25,
+  "fields": {
+    "state": false,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 3,
+    "realtor": 2,
+    "status": "dr",
+    "type_price": "uf",
+    "price": 222,
+    "appraisal_value": 222,
+    "commission_percentage": "2.00",
+    "commission_value": 4,
+    "is_iva": false,
+    "is_featured": false,
+    "views": []
+  }
+},
+{
+  "model": "properties.publication",
+  "pk": 26,
+  "fields": {
+    "state": true,
+    "created": "2023-10-09",
+    "modified": "2023-10-09",
+    "deleted": null,
+    "property": 5,
+    "user": 1,
+    "owner": 3,
+    "realtor": 2,
+    "status": "pu",
+    "type_price": "uf",
+    "price": 3000,
+    "appraisal_value": 3000,
+    "commission_percentage": "7.00",
+    "commission_value": 210,
+    "is_iva": false,
+    "is_featured": false,
+    "views": [
+      1
+    ]
+  }
+},
+{
+  "model": "properties.house",
+  "pk": 4,
+  "fields": {
+    "state": true,
+    "created": "2023-02-26",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 7,
+    "land_surface": 300,
+    "builded_surface": 200,
+    "num_rooms": "2",
+    "num_bathrooms": "3",
+    "num_parkings": null,
+    "num_cellars": null,
+    "num_floors": null,
+    "num_house": "wewq",
+    "builded_year": null,
+    "distribution": "Estar de Servicio",
+    "service": "Luz,Agua Potable,Alarma",
+    "kitchen": "Cocina Equipada,Cocina Amoblada",
+    "other": "Protecciones Ventana"
+  }
+},
+{
+  "model": "properties.house",
+  "pk": 5,
+  "fields": {
+    "state": true,
+    "created": "2023-08-23",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 10,
+    "land_surface": 400,
+    "builded_surface": 400,
+    "num_rooms": "2",
+    "num_bathrooms": "2",
+    "num_parkings": "1",
+    "num_cellars": "2",
+    "num_floors": "2",
+    "num_house": "111",
+    "builded_year": 1998,
+    "distribution": "Patio de Servicio,Sala Estar",
+    "service": "Internet,Luz,Agua Potable,Alcantarillado",
+    "kitchen": "Cocina Amoblada",
+    "other": "Piscina"
+  }
+},
+{
+  "model": "properties.shop",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-02-25",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 6,
+    "land_surface": 400,
+    "builded_surface": 390,
+    "num_bathrooms": "2",
+    "num_local": "444",
+    "builded_year": null,
+    "service": "Agua Potable,Alcantarillado",
+    "kitchen": ""
+  }
+},
+{
+  "model": "properties.cellar",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 8,
+    "land_surface": 400,
+    "builded_surface": 300,
+    "num_enclosures": "2",
+    "num_bathrooms": "2",
+    "num_offices": "1",
+    "num_local": "32"
+  }
+},
+{
+  "model": "properties.cellar",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-09-03",
+    "modified": "2023-10-10",
+    "deleted": null,
+    "property": 12,
+    "land_surface": 250,
+    "builded_surface": 200,
+    "num_enclosures": "1",
+    "num_bathrooms": "2",
+    "num_offices": "2",
+    "num_local": "12"
+  }
+},
+{
+  "model": "properties.industrial",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-08-24",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 11,
+    "land_surface": 1000,
+    "builded_surface": 900,
+    "num_cellars": "3",
+    "num_bathrooms": "2",
+    "num_offices": "2",
+    "num_local": "21"
+  }
+},
+{
+  "model": "properties.parcel",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-12-25",
+    "deleted": null,
+    "property": 5,
+    "land_surface": 500,
+    "num_cellars": "5",
+    "num_lot": "32232",
+    "sector": "las gaviotas",
+    "water_feasibility": "no",
+    "electricity_feasibility": "si",
+    "sewer_feasibility": "no",
+    "gas_feasibility": "no",
+    "feasibility": "sdasdasdas"
+  }
+},
+{
+  "model": "properties.parcel",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-10-11",
+    "deleted": null,
+    "property": 9,
+    "land_surface": 23333,
+    "num_cellars": "1",
+    "num_lot": "2323",
+    "sector": "bueno",
+    "water_feasibility": "si",
+    "electricity_feasibility": "si",
+    "sewer_feasibility": "no",
+    "gas_feasibility": "no",
+    "feasibility": "algo"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Metropolitana"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Antofagasta"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 3,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Araucanía"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 4,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Arica y Parinatoca"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 5,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Atacama"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 6,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Aysén"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 7,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Bernardo Ohiggins"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 8,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Biobío"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 9,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Coquimbo"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 10,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Los Lagos"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 11,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Los Ríos"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 12,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Magallanes"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 13,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Maule"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 14,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Ñuble"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 15,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Tarapacá"
+  }
+},
+{
+  "model": "properties.region",
+  "pk": 16,
+  "fields": {
+    "state": true,
+    "created": "2023-02-23",
+    "modified": "2023-02-23",
+    "deleted": null,
+    "name": "Valparaíso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 355,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Tiltil",
+    "location_slug": "tiltil-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 356,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Lampa",
+    "location_slug": "lampa-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 357,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Colina",
+    "location_slug": "colina-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 358,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San José de Maipo",
+    "location_slug": "san-jose-de-maipo-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 359,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Puente Alto",
+    "location_slug": "puente-alto-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 360,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Pirque",
+    "location_slug": "pirque-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 361,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San Bernardo",
+    "location_slug": "san-bernardo-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 362,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Paine",
+    "location_slug": "paine-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 363,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Calera de Tango",
+    "location_slug": "calera-de-tango-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 364,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Buin",
+    "location_slug": "buin-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 365,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San Pedro",
+    "location_slug": "san-pedro-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 366,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Melipilla",
+    "location_slug": "melipilla-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 367,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "María Pinto",
+    "location_slug": "maria-pinto-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 368,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Curacaví",
+    "location_slug": "curacavi-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 369,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Alhué",
+    "location_slug": "alhue-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 370,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Vitacura",
+    "location_slug": "vitacura-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 371,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Santiago",
+    "location_slug": "santiago-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 372,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San Ramón",
+    "location_slug": "san-ramon-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 373,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San Miguel",
+    "location_slug": "san-miguel-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 374,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "San Joaquín",
+    "location_slug": "san-joaquin-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 375,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Renca",
+    "location_slug": "renca-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 376,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Recoleta",
+    "location_slug": "recoleta-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 377,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Quinta Normal",
+    "location_slug": "quinta-normal-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 378,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Quilicura",
+    "location_slug": "quilicura-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 379,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Pudahuel",
+    "location_slug": "pudahuel-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 380,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Providencia",
+    "location_slug": "providencia-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 381,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Peñalolén",
+    "location_slug": "penalolen-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 382,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Pedro Aguirre Cerda",
+    "location_slug": "pedro-aguirre-cerda-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 383,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Ñuñoa",
+    "location_slug": "nunoa-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 384,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Maipú",
+    "location_slug": "maipu-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 385,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Macul",
+    "location_slug": "macul-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 386,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Lo Prado",
+    "location_slug": "lo-prado-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 387,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Lo Espejo",
+    "location_slug": "lo-espejo-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 388,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Lo Barnechea",
+    "location_slug": "lo-barnechea-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 389,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Las Condes",
+    "location_slug": "las-condes-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 390,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "La Reina",
+    "location_slug": "la-reina-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 391,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "La Pintana",
+    "location_slug": "la-pintana-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 392,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "La Granja",
+    "location_slug": "la-granja-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 393,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "La Florida",
+    "location_slug": "la-florida-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 394,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "La Cisterna",
+    "location_slug": "la-cisterna-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 395,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Independencia",
+    "location_slug": "independencia-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 396,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Huechuraba",
+    "location_slug": "huechuraba-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 397,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Estación Central",
+    "location_slug": "estacion-central-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 398,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "El Bosque",
+    "location_slug": "el-bosque-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 399,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Conchalí",
+    "location_slug": "conchali-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 400,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Cerro Navia",
+    "location_slug": "cerro-navia-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 401,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Cerrillos",
+    "location_slug": "cerrillos-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 402,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Talagante",
+    "location_slug": "talagante-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 403,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Peñaflor",
+    "location_slug": "penaflor-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 404,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Padre Hurtado",
+    "location_slug": "padre-hurtado-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 405,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "Isla de Maipo",
+    "location_slug": "isla-de-maipo-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 406,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 1,
+    "name": "El Monte",
+    "location_slug": "el-monte-metropolitana"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 407,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Taltal",
+    "location_slug": "taltal-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 408,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Sierra Gorda",
+    "location_slug": "sierra-gorda-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 409,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Mejillones",
+    "location_slug": "mejillones-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 410,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Antofagasta",
+    "location_slug": "antofagasta-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 411,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "San Pedro de Atacama",
+    "location_slug": "san-pedro-de-atacama-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 412,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Ollagüe",
+    "location_slug": "ollague-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 413,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Calama",
+    "location_slug": "calama-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 414,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "Tocopilla",
+    "location_slug": "tocopilla-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 415,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 2,
+    "name": "María Elena",
+    "location_slug": "maria-elena-antofagasta"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 416,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Villarrica",
+    "location_slug": "villarrica-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 417,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Vilcún",
+    "location_slug": "vilcun-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 418,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Toltén",
+    "location_slug": "tolten-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 419,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Teodoro Schmidt",
+    "location_slug": "teodoro-schmidt-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 420,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Temuco",
+    "location_slug": "temuco-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 421,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Saavedra",
+    "location_slug": "saavedra-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 422,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Pucón",
+    "location_slug": "pucon-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 423,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Pitrufquén",
+    "location_slug": "pitrufquen-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 424,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Perquenco",
+    "location_slug": "perquenco-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 425,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Padre Las Casas",
+    "location_slug": "padre-las-casas-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 426,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Nueva Imperial",
+    "location_slug": "nueva-imperial-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 427,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Melipeuco",
+    "location_slug": "melipeuco-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 428,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Loncoche",
+    "location_slug": "loncoche-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 429,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Lautaro",
+    "location_slug": "lautaro-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 430,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Gorbea",
+    "location_slug": "gorbea-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 431,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Galvarino",
+    "location_slug": "galvarino-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 432,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Freire",
+    "location_slug": "freire-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 433,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Curarrehue",
+    "location_slug": "curarrehue-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 434,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Cunco",
+    "location_slug": "cunco-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 435,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Cholchol",
+    "location_slug": "cholchol-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 436,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Carahue",
+    "location_slug": "carahue-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 437,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Victoria",
+    "location_slug": "victoria-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 438,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Traiguén",
+    "location_slug": "traiguen-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 439,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Renaico",
+    "location_slug": "renaico-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 440,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Purén",
+    "location_slug": "puren-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 441,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Lumaco",
+    "location_slug": "lumaco-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 442,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Los Sauces",
+    "location_slug": "los-sauces-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 443,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Lonquimay",
+    "location_slug": "lonquimay-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 444,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Ercilla",
+    "location_slug": "ercilla-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 445,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Curacautín",
+    "location_slug": "curacautin-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 446,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Collipulli",
+    "location_slug": "collipulli-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 447,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 3,
+    "name": "Angol",
+    "location_slug": "angol-araucania"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 448,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 4,
+    "name": "Camarones",
+    "location_slug": "camarones-arica-y-parinatoca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 449,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 4,
+    "name": "Arica",
+    "location_slug": "arica-arica-y-parinatoca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 450,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 4,
+    "name": "Putre",
+    "location_slug": "putre-arica-y-parinatoca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 451,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 4,
+    "name": "General Lagos",
+    "location_slug": "general-lagos-arica-y-parinatoca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 452,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Diego de Almagro",
+    "location_slug": "diego-de-almagro-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 453,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Chañaral",
+    "location_slug": "chanaral-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 454,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Tierra Amarilla",
+    "location_slug": "tierra-amarilla-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 455,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Copiapó",
+    "location_slug": "copiapo-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 456,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Caldera",
+    "location_slug": "caldera-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 457,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Vallenar",
+    "location_slug": "vallenar-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 458,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Huasco",
+    "location_slug": "huasco-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 459,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Freirina",
+    "location_slug": "freirina-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 460,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 5,
+    "name": "Alto del Carmen",
+    "location_slug": "alto-del-carmen-atacama"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 461,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Guaitecas",
+    "location_slug": "guaitecas-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 462,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Cisnes",
+    "location_slug": "cisnes-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 463,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Aysén",
+    "location_slug": "aysen-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 464,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Tortel",
+    "location_slug": "tortel-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 465,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "O Higgins",
+    "location_slug": "o-higgins-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 466,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Cochrane",
+    "location_slug": "cochrane-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 467,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Lago Verde",
+    "location_slug": "lago-verde-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 468,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Coihaique",
+    "location_slug": "coihaique-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 469,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Río Ibáñez",
+    "location_slug": "rio-ibanez-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 470,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 6,
+    "name": "Chile Chico",
+    "location_slug": "chile-chico-aysen"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 471,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "San Vicente",
+    "location_slug": "san-vicente-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 472,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Requínoa",
+    "location_slug": "requinoa-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 473,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Rengo",
+    "location_slug": "rengo-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 474,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Rancagua",
+    "location_slug": "rancagua-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 475,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Quinta de Tilcoco",
+    "location_slug": "quinta-de-tilcoco-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 476,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Pichidegua",
+    "location_slug": "pichidegua-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 477,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Peumo",
+    "location_slug": "peumo-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 478,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Olivar",
+    "location_slug": "olivar-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 479,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Mostazal",
+    "location_slug": "mostazal-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 480,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Malloa",
+    "location_slug": "malloa-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 481,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Machalí",
+    "location_slug": "machali-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 482,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Las Cabras",
+    "location_slug": "las-cabras-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 483,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Graneros",
+    "location_slug": "graneros-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 484,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Doñihue",
+    "location_slug": "donihue-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 485,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Coltauco",
+    "location_slug": "coltauco-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 486,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Coinco",
+    "location_slug": "coinco-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 487,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Codegua",
+    "location_slug": "codegua-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 488,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Pichilemu",
+    "location_slug": "pichilemu-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 489,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Paredones",
+    "location_slug": "paredones-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 490,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Navidad",
+    "location_slug": "navidad-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 491,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Marchihue",
+    "location_slug": "marchihue-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 492,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Litueche",
+    "location_slug": "litueche-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 493,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "La Estrella",
+    "location_slug": "la-estrella-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 494,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Santa Cruz",
+    "location_slug": "santa-cruz-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 495,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "San Fernando",
+    "location_slug": "san-fernando-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 496,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Pumanque",
+    "location_slug": "pumanque-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 497,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Placilla",
+    "location_slug": "placilla-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 498,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Peralillo",
+    "location_slug": "peralillo-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 499,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Palmilla",
+    "location_slug": "palmilla-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 500,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Nancagua",
+    "location_slug": "nancagua-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 501,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Lolol",
+    "location_slug": "lolol-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 502,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Chimbarongo",
+    "location_slug": "chimbarongo-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 503,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 7,
+    "name": "Chépica",
+    "location_slug": "chepica-bernardo-ohiggins"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 504,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Tirúa",
+    "location_slug": "tirua-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 505,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Los Álamos",
+    "location_slug": "los-alamos-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 506,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Lebu",
+    "location_slug": "lebu-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 507,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Curanilahue",
+    "location_slug": "curanilahue-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 508,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Contulmo",
+    "location_slug": "contulmo-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 509,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Cañete",
+    "location_slug": "canete-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 510,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Arauco",
+    "location_slug": "arauco-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 511,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Yumbel",
+    "location_slug": "yumbel-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 512,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Tucapel",
+    "location_slug": "tucapel-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 513,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Santa Bárbara",
+    "location_slug": "santa-barbara-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 514,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "San Rosendo",
+    "location_slug": "san-rosendo-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 515,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Quilleco",
+    "location_slug": "quilleco-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 516,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Quilaco",
+    "location_slug": "quilaco-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 517,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Negrete",
+    "location_slug": "negrete-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 518,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Nacimiento",
+    "location_slug": "nacimiento-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 519,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Mulchén",
+    "location_slug": "mulchen-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 520,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Los Ángeles",
+    "location_slug": "los-angeles-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 521,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Laja",
+    "location_slug": "laja-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 522,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Cabrero",
+    "location_slug": "cabrero-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 523,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Antuco",
+    "location_slug": "antuco-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 524,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Alto Biobío",
+    "location_slug": "alto-biobio-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 525,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Tomé",
+    "location_slug": "tome-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 526,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Talcahuano",
+    "location_slug": "talcahuano-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 527,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Santa Juana",
+    "location_slug": "santa-juana-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 528,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "San Pedro de la Paz",
+    "location_slug": "san-pedro-de-la-paz-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 529,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Penco",
+    "location_slug": "penco-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 530,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Lota",
+    "location_slug": "lota-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 531,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Hualqui",
+    "location_slug": "hualqui-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 532,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Hualpén",
+    "location_slug": "hualpen-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 533,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Florida",
+    "location_slug": "florida-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 534,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Coronel",
+    "location_slug": "coronel-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 535,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Concepción",
+    "location_slug": "concepcion-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 536,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 8,
+    "name": "Chiguayante",
+    "location_slug": "chiguayante-biobio"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 537,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Salamanca",
+    "location_slug": "salamanca-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 538,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Los Vilos",
+    "location_slug": "los-vilos-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 539,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Illapel",
+    "location_slug": "illapel-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 540,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Canela",
+    "location_slug": "canela-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 541,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Vicuña",
+    "location_slug": "vicuna-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 542,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Paiguano",
+    "location_slug": "paiguano-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 543,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "La Serena",
+    "location_slug": "la-serena-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 544,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "La Higuera",
+    "location_slug": "la-higuera-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 545,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Coquimbo",
+    "location_slug": "coquimbo-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 546,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Andacollo",
+    "location_slug": "andacollo-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 547,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Río Hurtado",
+    "location_slug": "rio-hurtado-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 548,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Punitaqui",
+    "location_slug": "punitaqui-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 549,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Ovalle",
+    "location_slug": "ovalle-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 550,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Monte Patria",
+    "location_slug": "monte-patria-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 551,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 9,
+    "name": "Combarbalá",
+    "location_slug": "combarbala-coquimbo"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 552,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Quinchao",
+    "location_slug": "quinchao-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 553,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Quemchi",
+    "location_slug": "quemchi-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 554,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Quellón",
+    "location_slug": "quellon-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 555,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Queilén",
+    "location_slug": "queilen-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 556,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Puqueldón",
+    "location_slug": "puqueldon-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 557,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Dalcahue",
+    "location_slug": "dalcahue-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 558,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Curaco de Vélez",
+    "location_slug": "curaco-de-velez-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 559,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Chonchi",
+    "location_slug": "chonchi-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 560,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Castro",
+    "location_slug": "castro-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 561,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Ancud",
+    "location_slug": "ancud-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 562,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Puerto Varas",
+    "location_slug": "puerto-varas-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 563,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Puerto Montt",
+    "location_slug": "puerto-montt-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 564,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Maullín",
+    "location_slug": "maullin-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 565,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Los Muermos",
+    "location_slug": "los-muermos-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 566,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Llanquihue",
+    "location_slug": "llanquihue-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 567,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Frutillar",
+    "location_slug": "frutillar-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 568,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Fresia",
+    "location_slug": "fresia-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 569,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Cochamó",
+    "location_slug": "cochamo-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 570,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Calbuco",
+    "location_slug": "calbuco-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 571,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "San Pablo",
+    "location_slug": "san-pablo-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 572,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "San Juan de la Costa",
+    "location_slug": "san-juan-de-la-costa-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 573,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Río Negro",
+    "location_slug": "rio-negro-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 574,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Puyehue",
+    "location_slug": "puyehue-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 575,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Purranque",
+    "location_slug": "purranque-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 576,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Puerto Octay",
+    "location_slug": "puerto-octay-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 577,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Osorno",
+    "location_slug": "osorno-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 578,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Palena",
+    "location_slug": "palena-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 579,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Hualaihué",
+    "location_slug": "hualaihue-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 580,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Futaleufú",
+    "location_slug": "futaleufu-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 581,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 10,
+    "name": "Chaitén",
+    "location_slug": "chaiten-los-lagos"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 582,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Río Bueno",
+    "location_slug": "rio-bueno-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 583,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Lago Ranco",
+    "location_slug": "lago-ranco-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 584,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "La Unión",
+    "location_slug": "la-union-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 585,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Futrono",
+    "location_slug": "futrono-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 586,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Valdivia",
+    "location_slug": "valdivia-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 587,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Panguipulli",
+    "location_slug": "panguipulli-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 588,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Paillaco",
+    "location_slug": "paillaco-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 589,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Mariquina",
+    "location_slug": "mariquina-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 590,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Máfil",
+    "location_slug": "mafil-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 591,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Los Lagos",
+    "location_slug": "los-lagos-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 592,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Lanco",
+    "location_slug": "lanco-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 593,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 11,
+    "name": "Corral",
+    "location_slug": "corral-los-rios"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 594,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Cabo de Hornos",
+    "location_slug": "cabo-de-hornos-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 595,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Antártica",
+    "location_slug": "antartica-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 596,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "San Gregorio",
+    "location_slug": "san-gregorio-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 597,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Río Verde",
+    "location_slug": "rio-verde-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 598,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Punta Arenas",
+    "location_slug": "punta-arenas-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 599,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Laguna Blanca",
+    "location_slug": "laguna-blanca-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 600,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Timaukel",
+    "location_slug": "timaukel-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 601,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Primavera",
+    "location_slug": "primavera-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 602,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Porvenir",
+    "location_slug": "porvenir-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 603,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Torres del Paine",
+    "location_slug": "torres-del-paine-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 604,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 12,
+    "name": "Natales",
+    "location_slug": "natales-magallanes"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 605,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Pelluhue",
+    "location_slug": "pelluhue-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 606,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Chanco",
+    "location_slug": "chanco-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 607,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Cauquenes",
+    "location_slug": "cauquenes-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 608,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Vichuquén",
+    "location_slug": "vichuquen-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 609,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Teno",
+    "location_slug": "teno-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 610,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Sagrada Familia",
+    "location_slug": "sagrada-familia-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 611,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Romeral",
+    "location_slug": "romeral-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 612,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Rauco",
+    "location_slug": "rauco-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 613,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Molina",
+    "location_slug": "molina-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 614,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Licantén",
+    "location_slug": "licanten-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 615,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Hualañé",
+    "location_slug": "hualane-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 616,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Curicó",
+    "location_slug": "curico-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 617,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Yerbas Buenas",
+    "location_slug": "yerbas-buenas-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 618,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Villa Alegre",
+    "location_slug": "villa-alegre-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 619,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "San Javier",
+    "location_slug": "san-javier-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 620,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Retiro",
+    "location_slug": "retiro-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 621,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Parral",
+    "location_slug": "parral-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 622,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Longaví",
+    "location_slug": "longavi-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 623,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Linares",
+    "location_slug": "linares-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 624,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Colbún",
+    "location_slug": "colbun-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 625,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Talca",
+    "location_slug": "talca-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 626,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "San Rafael",
+    "location_slug": "san-rafael-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 627,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "San Clemente",
+    "location_slug": "san-clemente-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 628,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Río Claro",
+    "location_slug": "rio-claro-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 629,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Pencahue",
+    "location_slug": "pencahue-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 630,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Pelarco",
+    "location_slug": "pelarco-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 631,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Maule",
+    "location_slug": "maule-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 632,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Empedrado",
+    "location_slug": "empedrado-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 633,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Curepto",
+    "location_slug": "curepto-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 634,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 13,
+    "name": "Constitución",
+    "location_slug": "constitucion-maule"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 635,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Pelluhue",
+    "location_slug": "pelluhue-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 636,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Chanco",
+    "location_slug": "chanco-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 637,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Cauquenes",
+    "location_slug": "cauquenes-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 638,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Vichuquén",
+    "location_slug": "vichuquen-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 639,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Teno",
+    "location_slug": "teno-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 640,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Sagrada Familia",
+    "location_slug": "sagrada-familia-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 641,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Romeral",
+    "location_slug": "romeral-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 642,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Rauco",
+    "location_slug": "rauco-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 643,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Molina",
+    "location_slug": "molina-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 644,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Licantén",
+    "location_slug": "licanten-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 645,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Hualañé",
+    "location_slug": "hualane-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 646,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Curicó",
+    "location_slug": "curico-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 647,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Yerbas Buenas",
+    "location_slug": "yerbas-buenas-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 648,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Villa Alegre",
+    "location_slug": "villa-alegre-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 649,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "San Javier",
+    "location_slug": "san-javier-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 650,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Retiro",
+    "location_slug": "retiro-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 651,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Parral",
+    "location_slug": "parral-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 652,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Longaví",
+    "location_slug": "longavi-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 653,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Linares",
+    "location_slug": "linares-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 654,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Colbún",
+    "location_slug": "colbun-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 655,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Talca",
+    "location_slug": "talca-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 656,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "San Rafael",
+    "location_slug": "san-rafael-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 657,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "San Clemente",
+    "location_slug": "san-clemente-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 658,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Río Claro",
+    "location_slug": "rio-claro-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 659,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Pencahue",
+    "location_slug": "pencahue-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 660,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Pelarco",
+    "location_slug": "pelarco-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 661,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Maule",
+    "location_slug": "maule-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 662,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Empedrado",
+    "location_slug": "empedrado-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 663,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Curepto",
+    "location_slug": "curepto-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 664,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 14,
+    "name": "Constitución",
+    "location_slug": "constitucion-nuble"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 665,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Iquique",
+    "location_slug": "iquique-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 666,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Alto Hospicio",
+    "location_slug": "alto-hospicio-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 667,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Pozo Almonte",
+    "location_slug": "pozo-almonte-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 668,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Pica",
+    "location_slug": "pica-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 669,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Huara",
+    "location_slug": "huara-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 670,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 15,
+    "name": "Colchane,Camiña",
+    "location_slug": "colchanecamina-tarapaca"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 671,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Isla de Pascua",
+    "location_slug": "isla-de-pascua-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 672,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "San Esteban",
+    "location_slug": "san-esteban-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 673,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Rinconada",
+    "location_slug": "rinconada-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 674,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Los Andes",
+    "location_slug": "los-andes-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 675,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Calle Larga",
+    "location_slug": "calle-larga-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 676,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Villa Alemana",
+    "location_slug": "villa-alemana-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 677,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Quilpué",
+    "location_slug": "quilpue-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 678,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Limache",
+    "location_slug": "limache-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 679,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Olmué",
+    "location_slug": "olmue-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 680,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Zapallar",
+    "location_slug": "zapallar-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 681,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Petorca",
+    "location_slug": "petorca-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 682,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Papudo",
+    "location_slug": "papudo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 683,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "La Ligua",
+    "location_slug": "la-ligua-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 684,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Cabildo",
+    "location_slug": "cabildo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 685,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Quillota",
+    "location_slug": "quillota-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 686,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Nogales",
+    "location_slug": "nogales-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 687,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "La Cruz",
+    "location_slug": "la-cruz-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 688,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "La Calera",
+    "location_slug": "la-calera-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 689,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Hijuelas",
+    "location_slug": "hijuelas-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 690,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Santo Domingo",
+    "location_slug": "santo-domingo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 691,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "San Antonio",
+    "location_slug": "san-antonio-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 692,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "El Tabo",
+    "location_slug": "el-tabo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 693,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "El Quisco",
+    "location_slug": "el-quisco-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 694,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Cartagena",
+    "location_slug": "cartagena-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 695,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Algarrobo",
+    "location_slug": "algarrobo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 696,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Santa María",
+    "location_slug": "santa-maria-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 697,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "San Felipe",
+    "location_slug": "san-felipe-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 698,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Putaendo",
+    "location_slug": "putaendo-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 699,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Panquehue",
+    "location_slug": "panquehue-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 700,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Llaillay",
+    "location_slug": "llaillay-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 701,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Catemu",
+    "location_slug": "catemu-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 702,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Viña del Mar",
+    "location_slug": "vina-del-mar-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 703,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Valparaíso",
+    "location_slug": "valparaiso-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 704,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Quintero",
+    "location_slug": "quintero-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 705,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Puchuncaví",
+    "location_slug": "puchuncavi-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 706,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Concón",
+    "location_slug": "concon-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 707,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Juan Fernández",
+    "location_slug": "juan-fernandez-valparaiso"
+  }
+},
+{
+  "model": "properties.commune",
+  "pk": 708,
+  "fields": {
+    "state": true,
+    "created": "2023-02-24",
+    "modified": "2023-02-24",
+    "deleted": null,
+    "region": 16,
+    "name": "Casablanca",
+    "location_slug": "casablanca-valparaiso"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 1,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 3,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 4,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 5,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 6,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 7,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 8,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro Ordenes",
+    "from_email": "Pedro@gmail.com",
+    "phone": "923423432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 9,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "pedro ordenes",
+    "from_email": "pedro@gmail.com",
+    "phone": "923432432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 10,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "Pedro Ordenes",
+    "from_email": "pedro.o@gmail.com",
+    "phone": "924242424",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 11,
+  "fields": {
+    "state": true,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "Pedro Herinquez",
+    "from_email": "pedro.h@gmail.com",
+    "phone": "923423423",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 12,
+  "fields": {
+    "state": false,
+    "created": "2023-08-21",
+    "modified": "2023-08-21",
+    "deleted": null,
+    "property": 6,
+    "name": "Pedro Heriquez",
+    "from_email": "pedro.hennn@gmail.com",
+    "phone": "239432432",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "properties.propertycontact",
+  "pk": 13,
+  "fields": {
+    "state": true,
+    "created": "2023-08-22",
+    "modified": "2023-08-22",
+    "deleted": null,
+    "property": 6,
+    "name": "sebastian olivares",
+    "from_email": "seba@gmail.com",
+    "phone": "924213213",
+    "message": "Hola , Estoy interesado en Local Comercial en Arriendo de 444 Dormitorios En Aysén, por favor comunícate conmigo. ¡Gracias!"
+  }
+},
+{
+  "model": "reports.operationbuyhistory",
+  "pk": 167,
+  "fields": {
+    "state": false,
+    "created": "2023-09-13",
+    "modified": "2023-09-16",
+    "deleted": null,
+    "client": 14,
+    "publication": 3,
+    "uuid": "85c0ca87-add9-4b03-9ac9-5fe85c4e1906",
+    "purchase_sale_advance": 0,
+    "purchase_sale_agreement": "",
+    "signature_purchase_sale_agreement": null,
+    "sales_document": "operation_files/buy/85c0ca87-add9-4b03-9ac9-5fe85c4e1906/sales_document/Licencia_Educacion_Media.pdf",
+    "signature_sales_document": "2023-09-16",
+    "total": 5000000,
+    "total_commission": 0,
+    "is_commission_paid": false,
+    "has_promise": false,
+    "is_completed": true
+  }
+},
+{
+  "model": "reports.operationbuyhistory",
+  "pk": 168,
+  "fields": {
+    "state": false,
+    "created": "2023-09-16",
+    "modified": "2023-09-16",
+    "deleted": null,
+    "client": null,
+    "publication": 3,
+    "uuid": "7ab4e973-e004-4667-847e-b807fc11e9ce",
+    "purchase_sale_advance": 0,
+    "purchase_sale_agreement": "",
+    "signature_purchase_sale_agreement": null,
+    "sales_document": "",
+    "signature_sales_document": null,
+    "total": 0,
+    "total_commission": 0,
+    "is_commission_paid": false,
+    "has_promise": false,
+    "is_completed": false
+  }
+},
+{
+  "model": "reports.operationbuyhistory",
+  "pk": 169,
+  "fields": {
+    "state": false,
+    "created": "2023-09-18",
+    "modified": "2023-09-18",
+    "deleted": null,
+    "client": null,
+    "publication": 19,
+    "uuid": "a1f7a64a-f7ee-4c15-a9f4-1c5067966105",
+    "purchase_sale_advance": 0,
+    "purchase_sale_agreement": "",
+    "signature_purchase_sale_agreement": null,
+    "sales_document": "",
+    "signature_sales_document": null,
+    "total": 0,
+    "total_commission": 0,
+    "is_commission_paid": false,
+    "has_promise": false,
+    "is_completed": false
+  }
+},
+{
+  "model": "reports.operationbuyhistory",
+  "pk": 170,
+  "fields": {
+    "state": false,
+    "created": "2023-09-18",
+    "modified": "2023-10-10",
+    "deleted": null,
+    "client": null,
+    "publication": 19,
+    "uuid": "b787f06e-fadf-46e8-a2c3-5b7b85999d61",
+    "purchase_sale_advance": 0,
+    "purchase_sale_agreement": "",
+    "signature_purchase_sale_agreement": null,
+    "sales_document": "",
+    "signature_sales_document": null,
+    "total": 0,
+    "total_commission": 0,
+    "is_commission_paid": false,
+    "has_promise": false,
+    "is_completed": false
+  }
+},
+{
+  "model": "reports.operationrent",
+  "pk": 2,
+  "fields": {
+    "state": true,
+    "created": "2023-09-13",
+    "modified": "2023-09-16",
+    "deleted": null,
+    "client": 20,
+    "publication": 14,
+    "uuid": "7556d435-6056-47fa-b187-03d7b61d49fe",
+    "guarantee_value": 0,
+    "guarantee_document": "",
+    "lease_agreement": "",
+    "signature_lease_agreement": null,
+    "lease_start_date": "2023-09-16",
+    "lease_final_date": "2023-11-16",
+    "monthly_total": 40000,
+    "is_lease_commission_paid": true,
+    "monthly_commission": 0,
+    "is_completed": false
+  }
+},
+{
+  "model": "reports.operationrent",
+  "pk": 3,
+  "fields": {
+    "state": false,
+    "created": "2023-09-13",
+    "modified": "2023-09-16",
+    "deleted": null,
+    "client": null,
+    "publication": 18,
+    "uuid": "e9ea639d-0c79-4f08-a201-653ce4e37531",
+    "guarantee_value": 0,
+    "guarantee_document": "",
+    "lease_agreement": "",
+    "signature_lease_agreement": null,
+    "lease_start_date": null,
+    "lease_final_date": null,
+    "monthly_total": 0,
+    "is_lease_commission_paid": false,
+    "monthly_commission": 0,
+    "is_completed": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 4,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 2000,
+    "payment_date": "2023-09-16",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 5,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 2100,
+    "payment_date": "2023-09-16",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 6,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 300,
+    "payment_date": "2023-09-23",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 7,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 40000,
+    "payment_date": "2023-09-23",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 8,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 80000,
+    "payment_date": "2023-09-22",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 9,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 1111,
+    "payment_date": "2023-09-30",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 10,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 333,
+    "payment_date": "2023-09-23",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 11,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 66666,
+    "payment_date": "2023-09-23",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 12,
+  "fields": {
+    "state": false,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 4545,
+    "payment_date": "2023-09-21",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "reports.paymentrent",
+  "pk": 13,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "operation_rent": 2,
+    "total_payment": 5656,
+    "payment_date": "2023-09-15",
+    "is_commission_paid": false,
+    "is_partial_payment": false
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 13,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "mono act",
+    "last_name": "bu",
+    "address": "los pinos 334",
+    "rut": "2313123",
+    "phone": "997676776",
+    "email": "aweawe@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 14,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "pedro",
+    "last_name": "rosto",
+    "address": "los pinos 334",
+    "rut": "2313123",
+    "phone": "923423432",
+    "email": "asdead@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 15,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "manu2",
+    "last_name": "weqeqwe",
+    "address": "los pinos 334",
+    "rut": "2313123",
+    "phone": "232323",
+    "email": "aweawe@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 16,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "asdasd",
+    "last_name": "adasd",
+    "address": "asdasdsad",
+    "rut": "asdasd",
+    "phone": "asdasd",
+    "email": "asdead@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 17,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "asda23232e",
+    "last_name": "asda",
+    "address": "daseda2we",
+    "rut": "2324242",
+    "phone": "2424242",
+    "email": "24242@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 18,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "4442qwewaqweaweawe",
+    "last_name": "asdasdasd",
+    "address": "asdasdasdas",
+    "rut": "232444242",
+    "phone": "232323",
+    "email": "aweawe@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 19,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "asdasd",
+    "last_name": "asda",
+    "address": "awewae",
+    "rut": "232323",
+    "phone": "23232323",
+    "email": "asdead@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 20,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "pedro2",
+    "last_name": "rosto",
+    "address": "los pinos 334",
+    "rut": "2313123",
+    "phone": "923423432",
+    "email": "asdead@gmail.com"
+  }
+},
+{
+  "model": "crm.client",
+  "pk": 21,
+  "fields": {
+    "state": true,
+    "created": "2023-09-14",
+    "modified": "2023-09-14",
+    "deleted": null,
+    "first_name": "majin2",
+    "last_name": "bu",
+    "address": "los pinos 334",
+    "rut": "2313123",
+    "phone": "997676776",
+    "email": "aweawe@gmail.com"
+  }
+}
+]

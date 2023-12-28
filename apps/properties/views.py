@@ -1,6 +1,6 @@
 import os
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.urls import reverse_lazy,reverse
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import ViewDoesNotExist
 from django.db.models import Q
@@ -44,6 +44,8 @@ from .models import (
     Parcel, Cellar, Industrial, Shop, IpVisitor,
     Publication
 )
+from apps.accounts.forms import AgentCreationForm, AgentProfileForm, AgentChangeForm
+from apps.accounts.models import Agent, AgentProfile
 
 from .forms import (
     PropertyForm, HouseForm, ApartmentForm,
@@ -53,6 +55,8 @@ from .forms import (
     PropertyRentForm, PublicationForm,
     PublicationRentForm
 )
+
+from .mixins import CustomPermissionRequiredMixin, PaginationMixin
 
 
 def property_create_test(request, property_type):
@@ -130,30 +134,76 @@ def property_create_test(request, property_type):
     return render(request, 'test2.html', context)
 
 
-class PaginationMixin:
-    paginate_by = 2
-
-
 # ========== CRUD AGENTE ========== |
 
-class RealtorCreateView(LoginRequiredMixin, CreateView):
-    model = Realtor
-    # fields = ['first_name', 'last_name', 'phone1', 'phone2', 'email']
-    form_class = RealtorForm
+class RealtorCreateView(LoginRequiredMixin, CustomPermissionRequiredMixin, CreateView):
+    model = Agent
+    form_class = AgentCreationForm
     template_name = 'properties/realtor_create.html'
     success_url = reverse_lazy('properties:realtor_list')
+    permission_required = ('properties.add_realtor',)
+
+    def form_valid(self, form):
+        # Personaliza este método para guardar datos en ambos formularios.
+        # Llama a form.save() para guardar el primer formulario (AgentCreationForm).
+        # Luego, guarda los datos del segundo formulario (OtroFormulario).
+
+        response = super().form_valid(form)
+
+        # Guarda los datos en el segundo formulario (OtroFormulario)
+        otro_form = AgentProfileForm(self.request.POST)
+        if otro_form.is_valid():
+            otro_instance = otro_form.save(commit=False)
+            otro_instance.user = self.object
+            otro_instance.save()
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # context['AgentProfileForm'] = AgentProfileForm
         context['title'] = 'Creación'
         return context
+    
+
+# class RealtorCreateView(LoginRequiredMixin, View):
+#     def get(self, request, uuid, slug, *args, **kwargs):
+#         property = Property.objects.filter(uuid=uuid, slug=slug).first()
+#         if property.publish_type == 'ar' or property.publish_type == 'at':
+#             form = PublicationRentForm(
+#                 user=request.user, publish_type=property.publish_type
+#             )  # forma mas robusta pasandosela al form y ahi asignandola
+#         else:
+#             form = PublicationForm(
+#                 user=request.user, publish_type=property.publish_type
+#             )  # forma mas robusta pasandosela al form y ahi asignandola
+#         context = {
+#             "form": form,
+#             'form_realtor': RealtorForm(),
+#             'form_owner': OwnerForm(),
+#             'title': 'Creación de Publicación',
+#             'subtitle': 'Maneje la creación de sus publicaciones',
+#         }
+#         return render(request, 'properties/publication_form.html', context)
+
+# class RealtorCreateView(LoginRequiredMixin, CreateView):
+#     model = Realtor
+#     # fields = ['first_name', 'last_name', 'phone1', 'phone2', 'email']
+#     form_class = RealtorForm
+#     template_name = 'properties/realtor_create.html'
+#     success_url = reverse_lazy('properties:realtor_list')
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'Creación'
+#         return context
 
 
-class RealtorUpdateView(LoginRequiredMixin, UpdateView):
-    model = Realtor
-    fields = ['first_name', 'last_name', 'phone1', 'phone2', 'email']
+class RealtorUpdateView(LoginRequiredMixin, CustomPermissionRequiredMixin, UpdateView):
+    model = Agent
+    form_class = AgentChangeForm
     template_name = 'properties/realtor_create.html'
     success_url = reverse_lazy('properties:realtor_list')
+    permission_required = ('properties.change_realtor',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -162,11 +212,11 @@ class RealtorUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class RealtorListView(LoginRequiredMixin, PaginationMixin, ListView):
-    model = Realtor
+    model = Agent
     template_name = 'properties/realtor_list.html'
 
     def get_queryset(self):
-        return Realtor.objects.filter(state=True)
+        return Agent.objects.filter(is_active=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,17 +225,19 @@ class RealtorListView(LoginRequiredMixin, PaginationMixin, ListView):
         return context
 
 
-class RealtorDetailView(LoginRequiredMixin, DetailView):
-    model = Realtor
+class RealtorDetailView(LoginRequiredMixin, CustomPermissionRequiredMixin, DetailView):
+    model = Agent
     template_name = 'properties/realtor_detail.html'
+    permission_required = ('properties.view_realtor',)
 
 
 # partials
 class TableRealtorView(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
 
-        realtors = Realtor.objects.filter(state=True)
+        realtors = Agent.objects.filter(is_active=True)
         realtors = realtors.filter(Q(first_name__icontains=q) | Q(last_name__icontains=q))
         paginator = Paginator(realtors, 2)
         realtors_data = paginator.get_page(kwargs['page_number'])
@@ -199,18 +251,21 @@ class TableRealtorView(LoginRequiredMixin, View):
         return HttpResponse(html)
 
 
-class RealtorDeleteView(LoginRequiredMixin, View):
+class RealtorDeleteView(LoginRequiredMixin, CustomPermissionRequiredMixin, View):
+    permission_required = ('properties.delete_realtor',)
+
     def delete(self, request, *args, **kwargs):
-        realtor = Realtor.objects.get(id=kwargs['pk'])
-        realtor.state = False
+        realtor = Agent.objects.get(id=kwargs['pk'])
+        realtor.is_active = False
         realtor.save()
-        realtors = Realtor.objects.filter(state=True)
-        paginator = Paginator(realtors, 1)
+
+        realtors = Agent.objects.filter(is_active=True)
+        paginator = Paginator(realtors, 2)
         realtors_data = paginator.get_page(kwargs['page_number'])
 
         context = {
             'object_list': realtors_data.object_list, 
-            'page_obj': realtors_data, 
+            'page_obj': realtors_data
         }
         html = render_block_to_string('properties/realtor_list.html', 'table_list', context)
         return HttpResponse(html)
@@ -259,6 +314,7 @@ class OwnerListView(LoginRequiredMixin, PaginationMixin, ListView):
 
 # partials
 class TableOwnerView(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
         owners = Owner.objects.filter(state=True)
@@ -275,7 +331,9 @@ class TableOwnerView(LoginRequiredMixin, View):
         return HttpResponse(html)
 
 
-class OwnerDeleteView(LoginRequiredMixin, View):
+class OwnerDeleteView(LoginRequiredMixin, CustomPermissionRequiredMixin, View):
+    permission_required = ('properties.delete_owner',)
+
     def get(self, request, *args, **kwargs):
         owner = Owner.objects.get(id=kwargs['pk'])
         owner.state = False
@@ -307,6 +365,7 @@ class PropertyContactListView(LoginRequiredMixin, PaginationMixin, ListView):
 
 # partials
 class TableContactView(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
     
@@ -323,7 +382,9 @@ class TableContactView(LoginRequiredMixin, View):
         return HttpResponse(html)
 
 
-class ModalContactView(View):
+class ModalContactView(LoginRequiredMixin, CustomPermissionRequiredMixin, View):
+    permission_required = ('properties.delete_propertycontact',)
+
     def get(self, request, *args, **kwargs):
         contact = PropertyContact.objects.get(id=kwargs['pk'])
         contact.state = False

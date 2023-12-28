@@ -1,5 +1,9 @@
-from django.contrib.auth.forms import (UserCreationForm, UserChangeForm,
-                                       AuthenticationForm)
+from django.contrib.auth.models import Group
+from django.contrib.auth.forms import (
+    UserCreationForm, UserChangeForm,
+    AuthenticationForm
+)
+from .models import Agent, AgentProfile, Admin
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django import forms
@@ -69,13 +73,13 @@ class CustomUserCreationForm(UserCreationForm): # campo de contraseña se incluy
     def clean_rut(self):
         rut = self.cleaned_data.get('rut')
         msg = ["El rut es invalido", "Ingrese sin puntos y con guion"]
-        try:
-            if not is_valid_rut(rut):
-                raise forms.ValidationError(msg)
-        except:
+        if not is_valid_rut(rut):
             raise forms.ValidationError(msg)
+        # try:
+         
+        # except:
+        #     raise forms.ValidationError(msg)
         return rut
-
 
 
 class CustomUserChangeForm(UserChangeForm): # campo de contraseña se incluye implicitamente cuando heredamos este formulario
@@ -181,4 +185,196 @@ class UserRegistrationForm(forms.ModelForm):
         return user
 
 
+###################### AGENTE FORM #######################|
+class AgentCreationForm(UserCreationForm):
 
+    start_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Inicio Contrato'
+    )
+
+    end_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Termino Contrato'
+    )
+
+    zone = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Zona'
+    )
+
+    class Meta:
+        model = Agent
+        # solo incluye username, password 1 y password 2
+        fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email', 'phone', 'rut')
+
+    def clean_rut(self):
+        rut = self.cleaned_data['rut']
+        rut = rut.lower()
+        if User.objects.filter(rut=rut).exclude(pk=self.instance.pk).exists():
+            msg = 'El rut ya se encuentra en uso'
+            raise forms.ValidationError(msg)
+        if not is_valid_rut(rut):
+            msg = ["El rut es invalido", "Ingrese sin puntos y con guion"]
+            raise forms.ValidationError(msg)
+        return rut
+    
+    def clean(self):
+        clean_data = super().clean()
+        start_contract = clean_data.get('start_contract')
+        end_contract = clean_data.get('end_contract')
+        # ==== evitar hora de inicio mayor que la de termino, o igual
+        if start_contract and end_contract:
+            if start_contract > end_contract:
+                msg = 'La fecha de inicio de contrato no puede ser mayor a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+            if start_contract == end_contract:
+                msg = 'La fecha  de inicio de contrato no puede ser igual a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+        return clean_data
+    
+        
+    # def save(self, commit=True):
+    #     user = super().save(commit=False)
+    #     if commit:
+    #         user.save()
+    #         if user.tipo == "AGE":
+    #             group, _ = Group.objects.get_or_create(name='Agente')
+    #             user.groups.add(group)
+    #         elif user.tipo == "ADM":
+    #             group, _ = Group.objects.get_or_create(name='Administrador')
+    #             user.groups.add(group)
+    #     return user
+
+
+class AgentChangeForm(UserChangeForm):
+
+    password = None
+
+    start_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Inicio Contrato'
+    )
+
+    end_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Termino Contrato',
+    )
+
+    zone = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Zona'
+    )
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        valores_iniciales = {
+            'start_contract': self.instance.agentprofile.start_contract.strftime('%Y-%m-%d') if self.instance.agentprofile else '',
+            'end_contract': self.instance.agentprofile.end_contract.strftime('%Y-%m-%d') if self.instance.agentprofile else '', 
+            'zone': self.instance.agentprofile.zone if self.instance.agentprofile else ''
+        }
+
+        for key, value in valores_iniciales.items():
+            self.fields[key].initial = value
+               
+    class Meta:
+        model = Agent
+        # solo incluye username, password 1 y password 2
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'rut')
+
+    def clean_rut(self):
+        rut = self.cleaned_data['rut']
+        rut = rut.lower()
+        if User.objects.filter(rut=rut).exclude(pk=self.instance.pk).exists():
+            msg = 'El rut ya se encuentra en uso'
+            raise forms.ValidationError(msg)
+        if not is_valid_rut(rut):
+            msg = ["El rut es invalido", "Ingrese sin puntos y con guion"]
+            raise forms.ValidationError(msg)
+        return rut
+    
+    def clean(self):
+        clean_data = super().clean()
+        start_contract = clean_data.get('start_contract')
+        end_contract = clean_data.get('end_contract')
+        # ==== evitar hora de inicio mayor que la de termino, o igual
+        if start_contract and end_contract:
+            if start_contract > end_contract:
+                msg = 'La fecha de inicio de contrato no puede ser mayor a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+            if start_contract == end_contract:
+                msg = 'La fecha  de inicio de contrato no puede ser igual a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+        return clean_data
+    
+
+class AgentProfileForm(forms.ModelForm):
+
+    zone = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Zona'
+    )
+
+    start_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Inicio Contrato'
+    )
+
+    end_contract = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Termino Contrato'
+    )
+
+    class Meta:
+        model = AgentProfile
+        fields = ('start_contract', 'end_contract', 'zone')
+
+    def clean(self):
+        clean_data = super().clean()
+        start_contract = clean_data.get('start_contract')
+        end_contract = clean_data.get('end_contract')
+        # ==== evitar hora de inicio mayor que la de termino, o igual
+        if start_contract and end_contract:
+            if start_contract > end_contract:
+                msg = 'La fecha de inicio de contrato no puede ser mayor a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+            if start_contract == end_contract:
+                msg = 'La fecha  de inicio de contrato no puede ser igual a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+        return clean_data
+    
+
+###################### ADMIN FORM #######################|
+class AdminCreationForm(UserCreationForm):
+
+    class Meta:
+        model = Admin
+        # solo incluye username, password 1 y password 2
+        # fields = UserCreationForm.Meta.fields + ('first_name', 'last_name', 'email', 'phone', 'rut')
+        fields = ('username', 'password', 'first_name', 'last_name', 'email', 'phone', 'rut')
+
+    def clean_rut(self):
+        rut = self.cleaned_data['rut']
+        rut = rut.lower()
+        if User.objects.filter(rut=rut).exclude(pk=self.instance.pk).exists():
+            msg = 'El rut ya se encuentra en uso'
+            raise forms.ValidationError(msg)
+        if not is_valid_rut(rut):
+            msg = ["El rut es invalido", "Ingrese sin puntos y con guion"]
+            raise forms.ValidationError(msg)
+        return rut
+    
+    def clean(self):
+        clean_data = super().clean()
+        start_contract = clean_data.get('start_contract')
+        end_contract = clean_data.get('end_contract')
+        # ==== evitar hora de inicio mayor que la de termino, o igual
+        if start_contract and end_contract:
+            if start_contract > end_contract:
+                msg = 'La fecha de inicio de contrato no puede ser mayor a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+            if start_contract == end_contract:
+                msg = 'La fecha  de inicio de contrato no puede ser igual a la fecha de termino de contrato'
+                self.add_error('start_contract', msg)
+        return clean_data
+    

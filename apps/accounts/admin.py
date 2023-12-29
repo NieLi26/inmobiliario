@@ -10,21 +10,18 @@ from .models import CustomUser, AgentProfile, AdminProfile, Admin
 
 
 class CustomUserAdmin(UserAdmin):
-    pass
+    list_display = UserAdmin.list_display + ('is_active', 'tipo', 'rut')
 
 
-class AdminAdmin(admin.ModelAdmin):
-    add_form = AdminCreationForm
-    # form = CustomUserChangeForm
-    model = Admin
-
-
-# class PricingAdmin(admin.ModelAdmin):
-#     list_display = ('name', )
+# class AdminAdmin(admin.ModelAdmin):
+#     add_form = AdminCreationForm
+#     # form = CustomUserChangeForm
+#     model = Admin
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Admin, AdminAdmin)
+
+# admin.site.register(Admin, AdminAdmin)
 
 # admin.site.register(Pricing, PricingAdmin)
 

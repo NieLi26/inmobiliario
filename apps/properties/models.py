@@ -291,9 +291,10 @@ class Publication(TimeStampedModel):
         # LEASED_SEASON = 'at', 'Arrendada por temporada'
 
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="publications")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications_user')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications_user', null=True)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='publications_owner', verbose_name='Propietario')
-    realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
+    realtor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
+    # realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE, related_name='publications_realtor', verbose_name='Agente')
     status = models.CharField(choices=Status.choices, max_length=3, default=Status.PUBLISH)
     # operation = models.CharField(choices=Operations.choices, max_length=2, default=Operations.WAITING)
     type_price = models.CharField('Tipo Moneda', choices=TYPE_PRICE_CHOICES, max_length=3)

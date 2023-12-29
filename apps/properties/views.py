@@ -236,16 +236,22 @@ class TableRealtorView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', '')
-
         realtors = Agent.objects.filter(is_active=True)
         realtors = realtors.filter(Q(first_name__icontains=q) | Q(last_name__icontains=q))
         paginator = Paginator(realtors, 2)
         realtors_data = paginator.get_page(kwargs['page_number'])
-        print(realtors_data.object_list)
+        
         context = {
             'object_list': realtors_data.object_list, 
             'page_obj': realtors_data, 
-            'q': q
+            'q': q,
+            'perms': {
+                'properties': {
+                    'change_realtor': request.user.has_perm('properties.change_realtor'),
+                    'delete_realtor': request.user.has_perm('properties.delete_realtor'),
+                    # Agrega otros permisos según sea necesario
+                }
+            },
         }
         html = render_block_to_string('properties/realtor_list.html', 'table_list', context)
         return HttpResponse(html)
@@ -642,6 +648,8 @@ class PublicationCreateView(LoginRequiredMixin, View):
             if form.is_valid():
                 instance = form.save(commit=False)
                 instance.property = property
+                # if request.user.tipo != 'ADM' or not request.user.is_superuser:
+                #     instance.realtor = request.user
                 instance.save()
                 messages.add_message(request, messages.INFO, "Su Publicación ha sido creada con exito")
                 if property.publish_type == 've':
@@ -714,9 +722,6 @@ class PublicationUpdateView(LoginRequiredMixin, View):
                 request.POST, instance=publication,
                 user=request.user, publish_type=publication.property.publish_type
             )  # forma mas robusta pasandosela al form y ahi asignandola
-        if form.is_valid():
-            form.save()
-            return redirect('reports:dashboard')
 
         url_back = None
         if publication.property.publish_type == 'ar':
@@ -727,7 +732,12 @@ class PublicationUpdateView(LoginRequiredMixin, View):
             url_back = 'properties:publish_buy_list'
         elif publication.property.publish_type == 'pe':
             url_back = 'properties:publish_exchange_list'
-        
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Publicacion Modificada Correctamente')
+            return redirect(url_back)
+
         context = {
             "form": form,
             'title': 'Modificación de Publicación',
@@ -1356,7 +1366,7 @@ def realtor_create(request):
 
 @login_required
 def realtor_select(request):
-    realtors = Realtor.objects.last()
+    realtors = Agent.objects.last()
     form = PublicationForm(initial={'realtor': realtors.id})
 
     context = {

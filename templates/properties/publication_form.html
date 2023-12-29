@@ -245,7 +245,8 @@
   </form>
 
     <!-- Agente -->
-    <div class="mt-5 md:mt-0 md:col-span-2 shadow-xl">
+ 
+    <div class="mt-5 md:mt-0 md:col-span-2 shadow-xl {% if not request.user.tipo in "['SUP', 'ADM']" %} hidden {% endif %}">
       <h2 class="px-6 py-4 text-xl text-white font-semibold bg-gradient-to-tr from-orange-400 via-red-500 to-red-600 rounded-t-md">Contacto</h2>
           <div class="shadow overflow-hidden sm:rounded-md">
             <div class="px-4 py-5 bg-white sm:p-6">
@@ -261,9 +262,7 @@
                       {% block realtors %}
 
                       <div 
-                      hx-get="{% url 'properties:realtor_select' %}"
-                      hx-trigger="realtor_select from:body"
-                      hx-target="#realtors"
+           
                       >
                       {{ form.realtor }}
                       </div>   
@@ -272,12 +271,12 @@
                     </div>
 
                       <div x-data="{ isOpen: false }" class="relative flex justify-center">
-                        <button type="button" @click="isOpen = true" class="ml-2 px-4 py-2 mx-auto tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#11104d] hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+                        <!-- <button type="button" @click="isOpen = true" class="ml-2 px-4 py-2 mx-auto tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#11104d] hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 rounded-md  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:animate-bounce">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                           </svg>
                         </button>
-                    
+                     -->
                  
                         
                         <div x-cloak x-show="isOpen" 
@@ -395,7 +394,7 @@
                           </div>
                       </div>
              
-                    </div>
+                      </div>
                   </div>
 
                   {% if form.errors.realtor %}
@@ -429,9 +428,9 @@
                     {% block owners %}
 
                     <div 
-                    hx-get="{% url 'properties:owner_select' %}"
-                    hx-trigger="owner_select from:body"
-                    hx-target="#owners"
+                      hx-get="{% url 'properties:owner_select' %}"
+                      hx-trigger="owner_select from:body"
+                      hx-target="#owners"
                     >
                     {{ form.owner }}
                     </div>   
@@ -441,13 +440,12 @@
 
 
                       <div x-data="{ isOpen: false }" class="relative flex justify-center">
-                        <button type="button" @click="isOpen = true" class="ml-2 px-4 py-2 mx-auto tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#11104d] hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+                        <!-- <button type="button" @click="isOpen = true" class="ml-2 px-4 py-2 mx-auto tracking-wide text-white capitalize transition-colors duration-300 transform bg-[#11104d] hover:bg-gradient-to-tr hover:from-orange-400 hover:via-red-500 hover:to-red-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:animate-bounce">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                           </svg>
-                        </button>
+                        </button> -->
                       
-          
                         <div x-cloak x-show="isOpen" 
                             x-transition:enter="transition duration-300 ease-out"
                             x-transition:enter-start="translate-y-4 opacity-0 sm:translate-y-0 sm:scale-95"

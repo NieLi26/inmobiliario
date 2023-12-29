@@ -1,5 +1,6 @@
 import re
 import random
+from typing import Any
 from django import forms
 from django.utils.text import slugify
 from datetime import date
@@ -15,6 +16,8 @@ from .models import (
     Parcel, Industrial, Cellar, Shop,
     Publication
 )
+
+from apps.accounts.models import Agent
 
 from .validators import (
     LowerCase,
@@ -40,11 +43,17 @@ class PublicationBaseForm(forms.ModelForm):
         label='Monto Comision',
         validators=[number_validator]
     )
+    # realtor = forms.ModelChoiceField(
+    #     label='Agente',
+    #     queryset=Agent.objects.filter(is_active=True),
+    #     empty_label='---------',
+    #     required=False
+    # )
 
     def __init__(self, *args, **kwargs):
         self.publish_type = kwargs.pop('publish_type', None) 
         self.user = kwargs.pop('user', None)
-        print(self.publish_type)
+
         super().__init__(*args, **kwargs)
 
         # ========== ADVANCE CONTROL PANEL (multiple <inputs>) ========== |
@@ -67,20 +76,36 @@ class PublicationBaseForm(forms.ModelForm):
        # ========== BASIC CONTROL PANEL (single <inputs>) ========== |
 
         self.fields['owner'].queryset = Owner.objects.filter(state=True)
-        self.fields['realtor'].queryset = Realtor.objects.filter(state=True)
+        self.fields['realtor'].queryset = Agent.objects.filter(is_active=True)
 
         self.fields['price'].widget.attrs['x-mask:dynamic'] = '$money($input)' # no funciona en todos    
         if self.publish_type != 'ar' and self.publish_type != 'at':
             self.fields['commission_value'].widget.attrs['readonly'] = 'true'
 
+        # # ========== BASIC CONTROL PANEL (Valores iniciales) ========== | 
+        if self.instance.pk is None:
+            self.fields['realtor'].initial = self.user
+
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     if self.instance.pk is None:
+    #         if self.user.tipo != 'ADM' or not self.user.is_super:
+    #             print('holaa clean')
+    #             print(self.user)
+    #             # self.instance.user = self.user
+    #             cleaned_data['realtor'] = self.user
+    #     return cleaned_data
+
     # mas seguro y puedes restringir que no se pueda cambiar un valor, en este caso el usuario, ya que la instancia si se puede modificar
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if not instance.pk:
-            instance.user = self.user
-        if commit:
-            instance.save()
-        return instance
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     if not instance.pk:
+    #         if self.user.tipo != 'ADM' or not self.user.is_super:
+    #             instance.realtor = self.user
+    #     if commit:
+    #         instance.save()
+    #     return instance
 
 
 class PublicationForm(PublicationBaseForm):
